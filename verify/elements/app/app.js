@@ -2,7 +2,7 @@ import XAppScreen from '/elements/x-screen/x-app-screen.js';
 import ScreenWelcome from '../screen-welcome/screen-welcome.js';
 import ScreenTerms from '../screen-terms/screen-terms.js';
 
-export default class ActivationTool extends XAppScreen {
+export default class Verify extends XAppScreen {
     html() {
         return `
             <screen-welcome></screen-welcome>
@@ -24,4 +24,4 @@ export default class ActivationTool extends XAppScreen {
     }
 }
 
-ActivationTool.launch();
+Verify.launch();

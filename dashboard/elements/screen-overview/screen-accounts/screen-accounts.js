@@ -1,6 +1,6 @@
 import XScreen from '/elements/x-screen/x-screen.js';
 
-export default class ScreenDashboard extends XScreen {
+export default class ScreenAccounts extends XScreen {
     html() {
         return `
             <h1>Accounts Dashboard</h1>
@@ -9,3 +9,5 @@ export default class ScreenDashboard extends XScreen {
         `
     }
 }
+
+// Todo: [low] Show account balances with help of NET balances etherscan: https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress={}&address={}&tag=latest&apikey=YourApiKeyToken

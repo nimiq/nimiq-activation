@@ -1,0 +1,11 @@
+@import '../screen-welcome/screen-welcome.css';
+@import '../screen-activation/screen-activation.css';
+@import '/elements/screen-backup-phrase/screen-backup-phrase.css';
+@import '/elements/screen-backup-phrase-validate/screen-backup-phrase-validate.css';
+@import '/elements/screen-backup-file/screen-backup-file.css';
+@import '/elements/screen-identicons/screen-identicons.css';
+
+/* Disable "continue without password" option for backup file */
+screen-create-password > a[secondary]{
+	display: none; 
+}

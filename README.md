@@ -1,2 +1,2 @@
-# nimiq-activation
-Tools for the Nimiq activation process
+# Nimiq Activation
+Tools to create and activate Genesis Nimiq Accounts

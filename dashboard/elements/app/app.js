@@ -1,7 +1,7 @@
 import XAppScreen from '/elements/x-screen/x-app-screen.js';
 import ScreenLoading from '/elements/screen-loading/screen-loading.js';
 import ScreenOverview from '../screen-overview/screen-overview.js';
-import ActivationTools from '/elements/x-activation-api/x-activation-api.js'
+import ActivationUtils from '/elements/x-activation-utils/x-activation-utils.js'
 
 export default class Dashboard extends XAppScreen {
     html() {
@@ -15,7 +15,7 @@ export default class Dashboard extends XAppScreen {
 
     children() {
         return [
-            ScreenLoading, ScreenOverview, ActivationApi
+            ScreenLoading, ScreenOverview, ActivationUtils
         ]
     }
 
@@ -28,12 +28,12 @@ export default class Dashboard extends XAppScreen {
 
     onEntry() {
         const dashboard_token = null; // Todo get token from url
-        this.$activationApi.getAddressList({dashboard_token})
+        this.$activationUtils.getDashboardData(dashboard_token);
     }
 
     _onDashboardDataResult(e) {
         const { addresses, activationToken } = e.details;
-        this.$screenOverview.set({ addresses, activationToken });
+        this.$screenOverview.addresses = addresses;
     }
     
     _getDefaultScreen() { return this.$screenLoading; }

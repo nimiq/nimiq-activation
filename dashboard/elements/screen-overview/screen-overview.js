@@ -5,11 +5,18 @@ export default class ScreenOverview extends XScreen {
     html() {
         return `
             <screen-accounts></screen-accounts>
-            <a icon-add></a>
         `
     }
 
     children() {
         return [ ScreenAccounts ];
+    }
+
+    onCreate() {
+        // this.$screenAccounts.$button.text = "Create Account";
+    }
+
+    set accounts(accounts) {
+        this.$screenAccounts.accounts = accounts;
     }
 }

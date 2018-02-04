@@ -54,8 +54,6 @@ export default class ActivationTool extends XAppScreen {
         }
     }
 
-    get defaultLocation() { return '#welcome' }
-
     onStateChange(state) {
         if (this._keyInitialized) return true;
         if (!(state === 'welcome' || state === 'identicons')) location = '';

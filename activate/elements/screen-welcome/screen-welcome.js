@@ -36,9 +36,9 @@ class ScreenWelcomeIntro extends XScreenFit {
             <h1>Welcome to the Nimiq Activation Tool</h1>
             <h2>This tool will help you to activate your NET to NIM</h2>
             <ol>
-                <li>Create your Nimiq Genesis Account</li>
                 <li>Validate your Data</li>
-                <li>Activate your NET to Mainnet Nimiq (NIM)</li>
+                <li>Create your Nimiq Genesis Account</li>
+                <li>Activate your Nimiq (NIM) from NET</li>
             </ol>
             <x-grow></x-grow>
             <a href="#welcome/warning" button>Let's go!</a>`

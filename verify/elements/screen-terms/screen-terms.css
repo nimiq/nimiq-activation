@@ -1,0 +1,14 @@
+screen-terms p {
+    text-align: left;
+    padding-bottom: 8px;
+}
+
+screen-terms section {
+	overflow-y: scroll;
+}
+ 
+screen-terms [button]{
+	width: 100%;
+	display: block;
+	margin: 32px auto;
+}

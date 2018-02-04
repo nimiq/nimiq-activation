@@ -9,7 +9,7 @@ export default class Dashboard extends XAppScreen {
             <h1>Accounts Dashboard</h1>
             <screen-loading></screen-loading>
             <screen-overview></screen-overview>
-            <x-activation-api></x-activation-api>
+            <x-activation-utils></x-activation-utils>
         `
     }
 
@@ -23,6 +23,7 @@ export default class Dashboard extends XAppScreen {
         return {
             'x-api-ready': '_onApiReady',
             'x-api-dashboard-data': '_onDashboardDataResult',
+            'x-create-account': '_onCreateAccount',
         }
     }
 
@@ -31,12 +32,17 @@ export default class Dashboard extends XAppScreen {
         this.$activationUtils.getDashboardData(dashboard_token);
     }
 
-    _onDashboardDataResult(e) {
-        const { addresses, activationToken } = e.details;
-        this.$screenOverview.addresses = addresses;
-    }
-    
     _getDefaultScreen() { return this.$screenLoading; }
 
+    _onDashboardDataResult(e) {
+        const { addresses, activationToken } = e.details;
+        this._activationToken = activationToken;
+        this.$screenOverview.addresses = addresses;
+        this.goTo('overview');
+    }
+
+    _onCreateAccount() {
+        window.location.href = '/activate/' + this._activationToken;
+    }
 }
 Dashboard.launch();

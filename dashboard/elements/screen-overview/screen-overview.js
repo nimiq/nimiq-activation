@@ -8,6 +8,8 @@ export default class ScreenOverview extends XScreen {
         `
     }
 
+    get route() { return 'overview'; }
+
     children() {
         return [ ScreenAccounts ];
     }

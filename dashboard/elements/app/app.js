@@ -27,8 +27,8 @@ export default class Dashboard extends XAppScreen {
         }
     }
 
-    onEntry() {
-        const dashboard_token = null; // Todo get token from url
+    _onEntry() {
+        const dashboard_token = new URLSearchParams(document.location.search).get("dashboard_token")
         this.$activationUtils.getDashboardData(dashboard_token);
     }
 

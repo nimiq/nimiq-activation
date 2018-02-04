@@ -6,7 +6,6 @@ import ScreenBackupPhrase from '/elements/screen-backup-phrase/screen-backup-phr
 import ScreenBackupPhraseValidate from '/elements/screen-backup-phrase-validate/screen-backup-phrase-validate.js';
 import ScreenError from '/elements/screen-error/screen-error.js';
 import ScreenActivation from '../screen-activation/screen-activation.js';
-import ScreenKyc from '../screen-kyc/screen-kyc.js';
 import ScreenSuccess from '../screen-complete/screen-complete.js';
 import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
 import XToast from '/elements/x-toast/x-toast.js';
@@ -16,7 +15,6 @@ export default class ActivationTool extends XAppScreen {
         return `
             <screen-welcome></screen-welcome>
             <screen-identicons></screen-identicons>
-            <screen-kyc></screen-kyc>
             <screen-backup-phrase></screen-backup-phrase>
             <screen-backup-phrase-validate></screen-backup-phrase-validate>
             <screen-backup-file></screen-backup-file>
@@ -30,7 +28,6 @@ export default class ActivationTool extends XAppScreen {
     children() {
         return [
             ScreenWelcome,
-            ScreenKyc,
             ScreenBackupPhrase,
             ScreenBackupPhraseValidate,
             ScreenBackupFile,
@@ -72,7 +69,7 @@ export default class ActivationTool extends XAppScreen {
         this.$screenBackupPhraseValidate.privateKey = hexedPrivKey;
         this._keyPair = keyPair;
         this._keyInitialized = true;
-        location = '#backup-file';
+        location.href = '#backup-file';
     }
 
 

@@ -24,7 +24,7 @@ export default class ScreenWelcome extends XScreen {
     }
 
     _onWarningComplete() {
-        document.location = '#identicons';
+        document.location.href = '#identicons';
     }
 }
 
@@ -33,10 +33,9 @@ class ScreenWelcomeIntro extends XScreenFit {
     html() {
         return `
             <nimiq-logo large>Nimiq Activation Tool</nimiq-logo>
-            <h1>Welcome to the Nimiq Activation Tool</h1>
-            <h2>This tool will help you to activate your NET to NIM</h2>
+            <h1>Welcome to the Nimiq Wallet Creation</h1>
+            <h2>Create a wallet to activate your NIM from NET</h2>
             <ol>
-                <li>Validate your Data</li>
                 <li>Create your Nimiq Genesis Account</li>
                 <li>Activate your Nimiq (NIM) from NET</li>
             </ol>

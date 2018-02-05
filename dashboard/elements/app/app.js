@@ -24,8 +24,7 @@ export default class Dashboard extends XAppScreen {
 
     listeners() {
         return {
-            'x-api-ready': '_onApiReady',
-            'x-api-dashboard-data': '_onDashboardDataResult',
+            'x-activation-dashboard-data': '_onDashboardDataResult',
             'x-create-account': '_onCreateAccount',
         }
     }
@@ -49,3 +48,5 @@ export default class Dashboard extends XAppScreen {
 }
 
 Dashboard.launch();
+
+// Todo: Error if there is no dashboard_token in url or if it is invalid

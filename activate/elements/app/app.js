@@ -7,12 +7,15 @@ import ScreenBackupPhraseValidate from '/elements/screen-backup-phrase-validate/
 import ScreenError from '/elements/screen-error/screen-error.js';
 import ScreenActivation from '../screen-activation/screen-activation.js';
 import ScreenSuccess from '../screen-complete/screen-complete.js';
+import ScreenLoading from '/elements/screen-loading/screen-loading.js';
 import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
 import XToast from '/elements/x-toast/x-toast.js';
+import XActivationUtils from '/elements/x-activation-utils/x-activation-utils.js';
 
 export default class ActivationTool extends XAppScreen {
     html() {
         return `
+            <screen-loading><h2>Checking activation token...</h2></screen-loading>
             <screen-welcome></screen-welcome>
             <screen-identicons></screen-identicons>
             <screen-backup-phrase></screen-backup-phrase>
@@ -22,11 +25,13 @@ export default class ActivationTool extends XAppScreen {
             <screen-complete></screen-complete>
             <screen-error></screen-error>
             <x-nimiq-api></x-nimiq-api>
+            <x-activation-utils></x-activation-utils>
         `
     }
 
     children() {
         return [
+            ScreenLoading,
             ScreenWelcome,
             ScreenBackupPhrase,
             ScreenBackupPhraseValidate,
@@ -35,26 +40,40 @@ export default class ActivationTool extends XAppScreen {
             ScreenSuccess,
             ScreenError,
             ScreenIdenticons,
-            XNimiqApi
+            XNimiqApi,
+            XActivationUtils
         ]
     }
 
     listeners() {
         return {
+            'x-activation-valid-token': '_onValidToken',
             'x-api-ready': '_onApiReady',
             'x-keypair': '_onKeyPair',
             'x-phrase-validated': '_onPhraseValidated',
             'x-encrypt-backup': '_onEncryptBackup',
             'x-backup-file-complete': '_onBackupFileComplete',
-            'x-sign-complete': '_onSignComplete',
             'x-different-tab-error':'_onDifferentTabError'
         }
+    }
+
+    _onEntry() {
+        const activationToken = new URLSearchParams(document.location.search).get("activation_token"); 
+        this.$activationUtils._api.isValidToken(activationToken);
     }
 
     onStateChange(state) {
         if (this._keyInitialized) return true;
         if (!(state === 'welcome' || state === 'identicons')) location = '';
         else return true;
+    }
+
+    _onValidToken(response) {
+        if (response === true) this.goTo('welcome');
+        else {
+            this.$screenError.show('Your activation token is invalid. Please go back to the dashboard try again.');
+            this.goTo('error');
+        }
     }
 
     _onApiReady(api) {
@@ -71,7 +90,6 @@ export default class ActivationTool extends XAppScreen {
         this._keyInitialized = true;
         location.href = '#backup-file';
     }
-
 
     async _onEncryptBackup(password) {
         const encryptedKey = await this._importAndEncrypt(password);
@@ -93,10 +111,6 @@ export default class ActivationTool extends XAppScreen {
 
     _onPhraseValidated() {
         location = '#activation';
-    }
-
-    _onSignComplete() {
-        location = '#kyc';
     }
 
     _onDifferentTabError() {

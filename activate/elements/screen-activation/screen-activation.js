@@ -3,7 +3,7 @@ import XScreenFit from '/elements/x-screen/x-screen-fit.js';
 import XAddress from '/elements/x-address/x-address.js';
 import ScreenWarning from '/elements/screen-warning/screen-warning.js';
 import ScreenSuccess from '/elements/screen-success/screen-success.js';
-import GenesisUtils from '/library/nimiq-utils/genesis-utils/genesis-utils.js';
+import GenesisUtils from '/library/nimiq-utils/activation-utils/activation-utils.js';
 
 export default class ScreenActivation extends XScreen {
     html() {
@@ -64,7 +64,7 @@ class ScreenActivationAddress extends XScreenFit {
     children() { return [XAddress] }
 
     async setAddress(address) {
-        address = await GenesisUtils.nim2ethAddress(address);
+        address = await ActivationUtils.nim2ethAddress(address);
         this.$address.address = address;
     }
 

@@ -9,6 +9,7 @@ export default class Dashboard extends XAppScreen {
         return `
             <div class="x-screen" style="display:flex;">
                 <h1>Accounts Dashboard</h1>
+                <h2>Activate Nimiq Accounts and manage your activated Accounts</h2>
                 <x-slides>
                     <screen-loading>Loading Data</screen-loading>                
                     <screen-error>Loading Accounts</screen-error>                
@@ -31,17 +32,20 @@ export default class Dashboard extends XAppScreen {
 
     _onEntry() {
         const dashboard_token = new URLSearchParams(document.location.search).get("dashboard_token");
-        this.$activationUtils.getDashboardData(dashboard_token);
+        this.$activationUtils._api.getDashboardData(dashboard_token);
     }
 
-    _onDashboardDataResult(e) {
-        const { addresses, activationToken } = e.detail;
+    _onDashboardDataResult(result) {
+        const addresses = result.addresses;
+        const activationToken = result.activation_token;
         this._activationToken = activationToken;
-        this.$screenOverview.addresses = addresses;
+        this.$screenAccounts.addresses = addresses;
+        this.goTo('accounts');
     }
 
     _onCreateAccount() {
-        window.location.href = '/activate/' + this._activationToken;
+        window.location = '../activate/?activation_token=' + this._activationToken;
     }
 }
+
 Dashboard.launch();

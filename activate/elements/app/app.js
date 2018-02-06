@@ -12,6 +12,7 @@ import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
 import XToast from '/elements/x-toast/x-toast.js';
 import XActivationUtils from '/elements/x-activation-utils/x-activation-utils.js';
 import ActivationUtils from '/library/nimiq-utils/activation-utils/activation-utils.js'
+import ScreenComplete from '../screen-complete/screen-complete.js';
 
 export default class ActivationTool extends XAppScreen {
     html() {
@@ -41,6 +42,7 @@ export default class ActivationTool extends XAppScreen {
             ScreenSuccess,
             ScreenError,
             ScreenIdenticons,
+            ScreenComplete,
             XNimiqApi,
             XActivationUtils
         ]
@@ -56,6 +58,7 @@ export default class ActivationTool extends XAppScreen {
             'x-backup-file-complete': '_onBackupFileComplete',
             'x-different-tab-error':'_onDifferentTabError',
             'x-activation-activate-address': '_onActivateAddress',
+            'x-activation-complete': '_onActivationComplete'
         }
     }
 
@@ -81,6 +84,10 @@ export default class ActivationTool extends XAppScreen {
             this.$screenError.show('Your address could not be activated. Please try again.');
             this.goTo('error');
         }
+    }
+
+    _onActivationComplete() {
+        this.goTo('complete');
     }
 
     _onValidToken(response) {

@@ -3,7 +3,7 @@ import XScreenFit from '/elements/x-screen/x-screen-fit.js';
 import XAddress from '/elements/x-address/x-address.js';
 import ScreenWarning from '/elements/screen-warning/screen-warning.js';
 import ScreenSuccess from '/elements/screen-success/screen-success.js';
-import GenesisUtils from '/library/nimiq-utils/activation-utils/activation-utils.js';
+import ActivationUtils from '/library/nimiq-utils/activation-utils/activation-utils.js'
 
 export default class ScreenActivation extends XScreen {
     html() {
@@ -21,7 +21,6 @@ export default class ScreenActivation extends XScreen {
                 <screen-activation-address></screen-activation-address>
                 <screen-success></screen-success>
             </x-slides>
-
             `
     }
 
@@ -29,7 +28,8 @@ export default class ScreenActivation extends XScreen {
 
     listeners() {
         return {
-            'x-warning-complete': '_onWarningComplete'
+            'x-warning-complete': '_onWarningComplete',
+            'x-balance': '_onBalance'
         }
     }
 
@@ -37,8 +37,15 @@ export default class ScreenActivation extends XScreen {
         this.goTo('address');
     }
 
-    setAddress(address) {
-        this.$screenActivationAddress.setAddress(address);
+    _onCheckBalance(balance) {
+        if (balance > 0) {
+            this.$screenSuccess.show(`Activation successfull. Balance: ${balance}`);
+            window.setTimeout(() => this.goTo('success'), 1000);
+        }
+    }
+
+    setAddress(ethAddress) {
+        this.$screenActivationAddress.setAddress(ethAddress);
     }
 }
 
@@ -58,17 +65,26 @@ class ScreenActivationAddress extends XScreenFit {
             <x-grow></x-grow>
             3. Check your balance with the Nimiq Genesis Explorer
             <button>Check Balance</button>
+            <div id='balance'></div>
         `
     }
 
     children() { return [XAddress] }
 
-    async setAddress(address) {
-        address = await ActivationUtils.nim2ethAddress(address);
-        this.$address.address = address;
+    _onCreate() {
+        this.$('button').addEventListener('click', e => _onCheckBalance());
+    }
+
+    async _onCheckBalance() {
+        const balance = await ActivationUtils.fetchBalance(this._ethAddress);
+        this.$('#balance').innerHTML = balance;
+        this.fire('x-balance', balance);
+    }
+
+    setAddress(ethAddress) {
+        this.$address.address = ethAddress;
+        this._ethAddress = ethAddress;
     }
 
     get route() { return 'address' }
 }
-
-// Todo: [high priority] connect this view to the redeem backend

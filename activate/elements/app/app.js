@@ -11,6 +11,7 @@ import ScreenLoading from '/elements/screen-loading/screen-loading.js';
 import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
 import XToast from '/elements/x-toast/x-toast.js';
 import XActivationUtils from '/elements/x-activation-utils/x-activation-utils.js';
+import ActivationUtils from '/library/nimiq-utils/activation-utils/activation-utils.js'
 
 export default class ActivationTool extends XAppScreen {
     html() {
@@ -53,19 +54,33 @@ export default class ActivationTool extends XAppScreen {
             'x-phrase-validated': '_onPhraseValidated',
             'x-encrypt-backup': '_onEncryptBackup',
             'x-backup-file-complete': '_onBackupFileComplete',
-            'x-different-tab-error':'_onDifferentTabError'
+            'x-different-tab-error':'_onDifferentTabError',
+            'x-activation-activate-address': '_onActivateAddress',
         }
     }
 
-    _onEntry() {
-        const activationToken = new URLSearchParams(document.location.search).get("activation_token"); 
-        this.$activationUtils._api.isValidToken(activationToken);
+    allowedTransitions() {
+        return  [
+            { from: '', to: 'welcome' },
+        ]
     }
 
     onStateChange(state) {
         if (this._keyInitialized) return true;
         if (!(state === 'welcome' || state === 'identicons')) location = '';
         else return true;
+    }
+
+    _onEntry() {
+        this._activationToken = new URLSearchParams(document.location.search).get("activation_token"); 
+        this.$activationUtils._api.isValidToken(this._activationToken);
+    }
+
+    _onActivateAddress(success) {
+        if (!success) {
+            this.$screenError.show('Your address could not be activated. Please try again.');
+            this.goTo('error');
+        }
     }
 
     _onValidToken(response) {
@@ -100,7 +115,11 @@ export default class ActivationTool extends XAppScreen {
         await this._api.importKey(this._keyPair.privateKey, false);
         const encryptedKey = await this._api.exportEncrypted(password);
         this._keyPair.privateKey = null;
-        this.$screenActivation.setAddress(this._api.$.wallet.address);
+        const nimAddress = this._api.$.wallet.address;
+        const ethAddress = await ActivationUtils.nim2ethAddress(nimAddress);
+        const userFriendlyNimAddress = nimAddress.toUserFriendlyAddress();
+        this.$screenActivation.setAddress(ethAddress);
+        this.$activationUtils._api.activateAddress(this._activationToken, ethAddress, userFriendlyNimAddress);
         this._keyPair = null;
         return encryptedKey;
     }
@@ -120,3 +139,6 @@ export default class ActivationTool extends XAppScreen {
 }
 
 ActivationTool.launch();
+
+// Todo: [Max] Enforce Proper order of actions.
+// Todo: Store dashboard_token in local storage and show link to dashboard after successfull creation

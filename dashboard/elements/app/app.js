@@ -30,8 +30,8 @@ export default class Dashboard extends XAppScreen {
     }
 
     _onEntry() {
-        const dashboard_token = new URLSearchParams(document.location.search).get("dashboard_token");
-        this.$activationUtils._api.getDashboardData(dashboard_token);
+        const dashboardToken = new URLSearchParams(document.location.search).get("dashboard_token");
+        this.$activationUtils._api.getDashboardData(dashboardToken);
     }
 
     _onDashboardDataResult(result) {

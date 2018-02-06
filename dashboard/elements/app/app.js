@@ -2,6 +2,7 @@ import XAppScreen from '/elements/x-screen/x-app-screen.js';
 import ScreenLoading from '/elements/screen-loading/screen-loading.js';
 import ScreenError from '/elements/screen-error/screen-error.js';
 import ScreenAccounts from '/elements/screen-accounts/screen-accounts.js';
+import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
 import XActivationUtils from '/elements/x-activation-utils/x-activation-utils.js'
 
 export default class Dashboard extends XAppScreen {
@@ -16,20 +17,22 @@ export default class Dashboard extends XAppScreen {
                     <screen-accounts></screen-accounts>
                 </x-slides>
                 <x-activation-utils></x-activation-utils>
+                <x-nimiq-api></x-nimiq-api>
             </div>
         `
     }
 
-    children() { return [ ScreenLoading, ScreenAccounts, ScreenError, XActivationUtils ] }
+    children() { return [ ScreenLoading, ScreenAccounts, ScreenError, XNimiqApi, XActivationUtils ] }
 
     listeners() {
         return {
             'x-activation-dashboard-data': '_onDashboardDataResult',
             'x-create-account': '_onCreateAccount',
+            'x-api-ready': '_onApiReady'
         }
     }
 
-    _onEntry() {
+    _onApiReady() {
         const dashboardToken = new URLSearchParams(document.location.search).get("dashboard_token");
         this.$activationUtils._api.getDashboardData(dashboardToken);
     }

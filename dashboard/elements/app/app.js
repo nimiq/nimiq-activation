@@ -38,7 +38,7 @@ export default class Dashboard extends XAppScreen {
         const addresses = result.addresses;
         const activationToken = result.activation_token;
         this._activationToken = activationToken;
-        this.$screenAccounts.addresses = addresses;
+        this.$screenAccounts.accounts = addresses;
         this.goTo('accounts');
     }
 

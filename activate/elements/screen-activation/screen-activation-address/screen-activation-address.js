@@ -1,7 +1,6 @@
 import XScreenFit from '/elements/x-screen/x-screen-fit.js';
 import XAddress from '/elements/x-address/x-address.js';
 import ActivationUtils from '/library/nimiq-utils/activation-utils/activation-utils.js'
-import XAmount from '../../../../../../elements/x-amount/x-amount';
 
 export default class ScreenActivationAddress extends XScreenFit {
     html() {
@@ -29,7 +28,6 @@ export default class ScreenActivationAddress extends XScreenFit {
 
     async _onCheckBalance() {
         const balance = await ActivationUtils.fetchBalance(this._ethAddress);
-        this.$('#balance').innerHTML = balance;
         this.fire('x-balance', balance);
     }
 

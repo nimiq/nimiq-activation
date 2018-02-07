@@ -6,7 +6,7 @@ import ScreenBackupPhrase from '/elements/screen-backup-phrase/screen-backup-phr
 import ScreenBackupPhraseValidate from '/elements/screen-backup-phrase-validate/screen-backup-phrase-validate.js';
 import ScreenError from '/elements/screen-error/screen-error.js';
 import ScreenActivation from '../screen-activation/screen-activation.js';
-import ScreenSuccess from '../screen-complete/screen-complete.js';
+import ScreenSuccess from '/elements/screen-success/screen-success.js';
 import ScreenLoading from '/elements/screen-loading/screen-loading.js';
 import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
 import XToast from '/elements/x-toast/x-toast.js';
@@ -123,7 +123,7 @@ export default class ActivationTool extends XAppScreen {
         const ethAddress = await ActivationUtils.nim2ethAddress(nimAddress);
         this._userFriendlyNimAddress = nimAddress.toUserFriendlyAddress();
         this.$screenActivation.setAddress(ethAddress);
-        this.$activationUtils._api.activateAddress(this._activationToken, ethAddress, userFriendlyNimAddress);
+        this.$activationUtils._api.activateAddress(this._activationToken, this._userFriendlyNimAddress);
         this._keyPair = null;
         return encryptedKey;
     }

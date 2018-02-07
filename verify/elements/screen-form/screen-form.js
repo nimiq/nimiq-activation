@@ -1,12 +1,15 @@
 import XScreen from '/elements/x-screen/x-screen.js';
+import XCountrySelect from '../x-country-select/x-country-select.js';
 
 export default class ScreenWelcome extends XScreen {
     html() {
         return `
-            <nimiq-logo large>Nimiq Activation</nimiq-logo>
-            <h1>Welcome to Nimiq Activation</h1>
-            <h2>The Nimiq Activation Tool will help guide you through the process of activating your Genesis Nimiq (NIM) from NET.</h2>
+            <form>
+                <x-country-select></x-country-select>
+            </form>
             <a button href="#terms">View Terms</a>
         `
     }
+
+    children() { return [XCountrySelect]; }
 }

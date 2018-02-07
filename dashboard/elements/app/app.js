@@ -22,5 +22,3 @@ export default class Dashboard extends XAppScreen {
 }
 
 Dashboard.launch();
-
-// Todo: Error if there is no dashboard_token in url or if it is invalid

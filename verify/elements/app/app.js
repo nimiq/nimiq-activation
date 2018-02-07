@@ -12,6 +12,16 @@ export default class Verify extends XAppScreen {
         `
     }
 
+    /** Just for typing. Can't do this in constructor because children are set in super(). */
+    types() {
+        /** @type {ScreenWelcome} */
+        this.$screenWelcome = null;
+        /** @type {ScreenTerms} */
+        this.$screenTerms = null;
+        /** @type {ScreenForm} /*/
+        this.$screenForm = null;
+    }
+
     children() {
         return [
             ScreenWelcome,
@@ -28,15 +38,3 @@ export default class Verify extends XAppScreen {
 }
 
 Verify.launch();
-
-// Todo: Collect following data from user and send it to kyc api:
-/* firstName    String    100
-lastName    String    100
-dob    String Date of birth in the format YYYY-MM-DD
-address String 100
-city String 100
-zip String 100
-country    String    3    Possible countries:
-• ISO 3166-1 alpha-3 country code
-• XKX (Kosovo)
-mail address */

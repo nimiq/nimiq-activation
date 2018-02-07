@@ -251,6 +251,6 @@ export default class CountrySelect extends XElement {
                 <option value="ZMB">Zambia</option>
                 <option value="ZWE">Zimbabwe</option>
             </select>
-        `;
+        `
     }
 }

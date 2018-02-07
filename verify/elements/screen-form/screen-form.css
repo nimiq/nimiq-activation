@@ -1,0 +1,21 @@
+form input, x-country-select {
+    width: 50%;
+}
+
+form x-country-select select {
+    width: 100%;
+}
+
+form label {
+    width: 50%;
+    text-align: left;
+}
+
+form > div {
+    display: flex;
+    margin: 10px;
+}
+
+form {
+    width: 100%;
+}

@@ -3,26 +3,49 @@ import XCountrySelect from '../x-country-select/x-country-select.js';
 
 export default class ScreenForm extends XScreen {
     html() {
-       return `
+        return `
             <form>
-               <x-country-select></x-country-select>
+                <div>
+                    <label>E-Mail Address</label>
+                    <input name="email" maxlength="100" required />
+                </div>
+                <div>
+                    <label for="first_name">First name</label>
+                    <input name="first_name" maxlength="100" required />
+                </div>
+                <div>
+                    <label for="last_name">Last name</label>
+                    <input name="last_name" maxlength="100" required />
+                </div>
+                <div>
+                    <label>Birthday</label>
+                    <input name="birthday" placeholder="YYYY-MM-DD" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" required />
+                </div>
+                <div>
+                    <label>Address (Street, Flat)</label>
+                    <input name="street" maxlength="100" required />
+                </div>
+                <div>
+                    <label>City</label>
+                    <input name="city" maxlength="100" required />
+                </div>
+                <div>
+                    <label>Zip Code</label>
+                    <input name="zip" maxlength="100" required />
+                </div>
+                <div>
+                    <label>Country</label>
+                    <x-country-select></x-country-select>
+               </div>
+               <button type="submit">Send</button>
             </form>
-            <a button href="#terms">View Terms</a>
         `
     }
 
-    children() { return [XCountrySelect]; }
+    children() {
+        return [XCountrySelect];
+    }
 }
 
 
-// Todo: Collect following data from user and send it to kyc api:
-/* firstName    String    100
-lastName    String    100
-dob    String Date of birth in the format YYYY-MM-DD
-address String 100
-city String 100
-zip String 100
-country    String    3    Possible countries:
-• ISO 3166-1 alpha-3 country code
-• XKX (Kosovo)
-mail address */
+// Todo: Send it to kyc api

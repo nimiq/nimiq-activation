@@ -1,0 +1,21 @@
+@import '/elements/x-amount/x-amount.css';
+
+screen-account x-identicon{
+	width: 104px;
+	height: 104px;
+}
+
+screen-account x-grow{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+screen-account x-address{
+	margin-bottom: 48px;
+}
+
+screen-account button{
+	margin-top: 72px;
+}

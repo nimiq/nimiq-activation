@@ -1,6 +1,6 @@
 import XElement from '/library/x-element/x-element.js';
 
-export default class CountrySelect extends XElement {
+export default class XCountrySelect extends XElement {
     html() {
         return `
             <select>

@@ -12,7 +12,6 @@ import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
 import XToast from '/elements/x-toast/x-toast.js';
 import XActivationUtils from '/elements/x-activation-utils/x-activation-utils.js';
 import ActivationUtils from '/library/nimiq-utils/activation-utils/activation-utils.js'
-import ScreenComplete from '../screen-complete/screen-complete.js';
 
 export default class ActivationTool extends XAppScreen {
     html() {
@@ -24,7 +23,6 @@ export default class ActivationTool extends XAppScreen {
             <screen-backup-phrase-validate></screen-backup-phrase-validate>
             <screen-backup-file></screen-backup-file>
             <screen-activation></screen-activation>
-            <screen-complete></screen-complete>
             <screen-error></screen-error>
             <x-nimiq-api></x-nimiq-api>
             <x-activation-utils></x-activation-utils>
@@ -42,7 +40,6 @@ export default class ActivationTool extends XAppScreen {
             ScreenSuccess,
             ScreenError,
             ScreenIdenticons,
-            ScreenComplete,
             XNimiqApi,
             XActivationUtils
         ]
@@ -87,7 +84,7 @@ export default class ActivationTool extends XAppScreen {
     }
 
     _onActivationComplete() {
-        this.goTo('complete');
+        window.location.href = `../dashboard/?address=${this._userFriendlyNimAddress}#account`;
     }
 
     _onValidToken(response) {
@@ -124,7 +121,7 @@ export default class ActivationTool extends XAppScreen {
         this._keyPair.privateKey = null;
         const nimAddress = this._api.$.wallet.address;
         const ethAddress = await ActivationUtils.nim2ethAddress(nimAddress);
-        const userFriendlyNimAddress = nimAddress.toUserFriendlyAddress();
+        this._userFriendlyNimAddress = nimAddress.toUserFriendlyAddress();
         this.$screenActivation.setAddress(ethAddress);
         this.$activationUtils._api.activateAddress(this._activationToken, ethAddress, userFriendlyNimAddress);
         this._keyPair = null;

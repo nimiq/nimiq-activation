@@ -1,6 +1,7 @@
 import XScreenFit from '/elements/x-screen/x-screen-fit.js';
 import XAddress from '/elements/x-address/x-address.js';
 import ActivationUtils from '/library/nimiq-utils/activation-utils/activation-utils.js'
+import XAmount from '../../../../../../elements/x-amount/x-amount';
 
 export default class ScreenActivationAddress extends XScreenFit {
     html() {
@@ -16,16 +17,14 @@ export default class ScreenActivationAddress extends XScreenFit {
                 <li>or any wallet that supports ERC20 tokens.</li>
             </ul>
             <x-grow></x-grow>
-            3. Check your balance with the Nimiq Genesis Explorer
-            <button>Check Balance</button>
-            <div id='balance'></div>
+            3. Wait here until your activation balance arrives.
         `
     }
 
     children() { return [XAddress] }
 
-    onCreate() {
-        this.$('button').addEventListener('click', e => this._onCheckBalance());
+    _onEntry() {
+        window.setInterval(this._onCheckBalance.bind(this), 10000);
     }
 
     async _onCheckBalance() {

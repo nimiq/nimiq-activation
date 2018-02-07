@@ -38,7 +38,7 @@ export default class ScreenActivation extends XScreen {
     _onCheckBalance(balance) {
         if (balance > 0) {
             window.setTimeout(() => {
-                this.$screenSuccess.show(`Activation successfull. Balance: ${balance}`);
+                this.$screenSuccess.show(`Activation successfull.`);
                 this.goTo('success');
                 this.fire('x-activation-complete');
             }, 1000);

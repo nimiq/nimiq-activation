@@ -28,6 +28,14 @@ export default class ScreenAccount extends XScreen {
         }
     }
 
+    onCreate() {
+        this.$('button').addEventListener('click', e => this._onBack());
+    }
+
+    _onBack() {
+        this.goTo('home/accounts');
+    }
+
     _onApiReady() {
         if (!this._address) return;
         this._fetchAmount(this._address);

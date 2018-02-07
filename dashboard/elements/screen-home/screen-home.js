@@ -11,7 +11,7 @@ export default class ScreenHome extends XScreen {
             <h2>Activate Nimiq Accounts and manage your activated Accounts</h2>
             <x-slides>
                 <screen-loading>Loading Data</screen-loading>                
-                <screen-error>Loading Accounts</screen-error>                
+                <screen-error></screen-error>              
                 <screen-accounts></screen-accounts>
             </x-slides>
             <x-activation-utils></x-activation-utils>
@@ -23,13 +23,19 @@ export default class ScreenHome extends XScreen {
     listeners() {
         return {
             'x-activation-dashboard-data': '_onDashboardDataResult',
+            'x-activation-dashboard-token-error': '_onDashboardTokenError',
             'x-create-account': '_onCreateAccount',
             'x-api-ready': '_onApiReady'
         }
     }
 
     _onBeforeEntry() {
-        const dashboardToken = new URLSearchParams(document.location.search).get("dashboard_token");
+        let dashboardToken = new URLSearchParams(document.location.search).get("dashboard_token");
+        if (dashboardToken !== null) {
+            localStorage.setItem('dashboardToken', dashboardToken);
+        } else {
+            dashboardToken = localStorage.getItem('dashboardToken');
+        }
         this.$activationUtils._api.getDashboardData(dashboardToken);
     }
 
@@ -41,8 +47,13 @@ export default class ScreenHome extends XScreen {
         this.goTo('accounts');
     }
 
+    _onDashboardTokenError() {
+        this.$screenError.show('Invalid dashboard token. Please use a valid link.');
+        this.goTo('error');
+    }
+
     _onCreateAccount() {
-        window.location = '../activate/?activation_token=' + this._activationToken;
+        window.location.href = '../activate/?activation_token=' + this._activationToken;
     }
 }
 

@@ -2,6 +2,7 @@ import XScreen from '/elements/x-screen/x-screen.js';
 import XActivationUtils from '/elements/x-activation-utils/x-activation-utils.js';
 import ScreenError from '/elements/screen-error/screen-error.js';
 import ScreenForm from './screen-form/screen-form.js';
+import FormToObject from '/library/nimiq-utils/form-to-object/form-to-object.js';
 
 export default class ScreenFormHandler extends XScreen {
     html() {
@@ -35,12 +36,14 @@ export default class ScreenFormHandler extends XScreen {
     }
 
     onCreate() {
-        this.$screenForm.$form.addEventListener('submit', e => this._onFormSubmit());
+        this.$screenForm.$form.addEventListener('submit', this._onFormSubmit.bind(this));
     }
 
-    _onFormSubmit() {
-        // form to json
-        this.$activationUtils._api.submitKyc();
+    _onFormSubmit(e) {
+        e.preventDefault();
+        const data = FormToObject(this.$screenForm.$form);
+        data.gender = parseInt(data.gender);
+        this.$activationUtils._api.submitKyc(data);
     }
 
     _onPostSuccess(clientRedirectUrl) {
@@ -52,6 +55,3 @@ export default class ScreenFormHandler extends XScreen {
     }
 
 }
-
-
-// Todo: Send it to kyc api

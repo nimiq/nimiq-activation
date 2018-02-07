@@ -18,7 +18,7 @@ export default class ScreenForm extends XScreen {
 <input name="email" maxlength="100" required />
 </div>
 <div>
-<select name="sex" required><option>Mr.</option><option>Mrs.</option></select>
+<select name="gender" required><option value="0">Mr.</option><option value="1">Mrs.</option></select>
 </div>
 <div>
 <label for="first_name">First name</label>

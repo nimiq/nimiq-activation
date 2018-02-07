@@ -1,14 +1,16 @@
 import XAppScreen from '/elements/x-screen/x-app-screen.js';
 import ScreenWelcome from '../screen-welcome/screen-welcome.js';
 import ScreenTerms from '../screen-terms/screen-terms.js';
-import ScreenForm from '../screen-form/screen-form.js';
+import ScreenFormHandler from '../screen-form-handler/screen-form-handler.js';
 
 export default class Verify extends XAppScreen {
     html() {
         return `
-            <screen-welcome></screen-welcome>
-            <screen-terms></screen-terms>
-            <screen-form></screen-form>
+            <x-slides>
+                <screen-welcome></screen-welcome>
+                <screen-terms></screen-terms>
+                <screen-form-handler></screen-form-handler>
+            </x-slides>
         `
     }
 
@@ -19,21 +21,16 @@ export default class Verify extends XAppScreen {
         /** @type {ScreenTerms} */
         this.$screenTerms = null;
         /** @type {ScreenForm} /*/
-        this.$screenForm = null;
+        this.$screenFormHandler = null;
+
     }
 
     children() {
         return [
             ScreenWelcome,
             ScreenTerms,
-            ScreenForm
+            ScreenFormHandler
         ]
-    }
-
-    listeners() {
-        return {
-            'x-api-ready': '_onApiReady',
-        }
     }
 }
 

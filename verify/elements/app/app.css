@@ -1,4 +1,4 @@
 @import '/elements/x-screen/x-screen.css';
 @import '../screen-welcome/screen-welcome.css';
 @import '../screen-terms/screen-terms.css';
-@import '../screen-form/screen-form.css';
+@import '../screen-form-handler/screen-form-handler.css';

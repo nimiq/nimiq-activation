@@ -1,20 +1,21 @@
-form input, form x-country-select {
+input, x-country-select {
     width: 50%;
 }
 
-form x-country-select select {
+x-country-select select {
     width: 100%;
 }
 
-form label {
+label {
     width: 50%;
     text-align: left;
 }
 
-form > div {
+form > div, fieldset > div {
     display: flex;
     flex-flow: wrap;
     margin: 10px;
+    align-items: center;
 }
 
 form {
@@ -27,7 +28,7 @@ form {
     }
 }
 
-form input{
+input{
     background: none;
     color: white;
     padding: 8px 4px 4px; 
@@ -38,7 +39,7 @@ form input{
     border-bottom: 1px solid rgba(255,255,255,0.5);
 }
 
-form input:focus{
+input:focus{
     border-bottom: 1px solid rgba(255,255,255,0.5);
 }
 
@@ -49,11 +50,27 @@ input::-webkit-input-placeholder {
     font-size: 14px;
 }
 
-form button{
+button{
     margin-top: 40px;
 }
 
-form select{
+select{
     float: right;
     padding: 8px;
+    color: white;
+}
+
+legend {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+fieldset {
+    border: 1px solid #fff;
+    margin: 15px;
+    padding: 15px;
+}
+
+form {
+    overflow-y: scroll;
 }

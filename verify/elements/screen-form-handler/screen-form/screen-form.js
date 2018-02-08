@@ -41,7 +41,7 @@ export default class ScreenForm extends XScreen {
                 </div>
                 
                 <div>
-                <label>Address (Street, Flat)</label>
+                <label>Address</label>
                 <input name="street" maxlength="100" required />
                 </div>
                 <div>
@@ -49,13 +49,13 @@ export default class ScreenForm extends XScreen {
                 <input name="city" maxlength="100" required />
                 </div>
                 <div>
-                <label>Zip Code</label>
+                <label>Postal Code</label>
                 <input name="zip" maxlength="100" required />
                 </div>
                 </fieldset>
                 <fieldset>
                 <legend>Please provide your personal email address, to which the NIM activation link
-                        will be sent after passing KYC/AML</legend>
+                        will be sent after passing the KYC/AML checks</legend>
                 <div>
                 <label>E-Mail</label>
                 <input name="email" maxlength="100" type="email" placeholder="satoshin@gmx.com" required/>

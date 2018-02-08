@@ -10,7 +10,7 @@ export default class ScreenFormHandler extends XScreen {
             <x-activation-utils></x-activation-utils>
             <x-slides>
                 <screen-form></screen-form>
-                <screen-error></screen-error>
+                <screen-error message="Your data was already used to initiate the KYC process."></screen-error>
             </x-slides>
         `
     }

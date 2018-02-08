@@ -2,6 +2,8 @@ import XAppScreen from '/elements/x-screen/x-app-screen.js';
 import ScreenWelcome from '../screen-welcome/screen-welcome.js';
 import ScreenTerms from '../screen-terms/screen-terms.js';
 import ScreenFormHandler from '../screen-form-handler/screen-form-handler.js';
+import ScreenSuccess from '/elements/screen-success/screen-success.js';
+import ScreenProceed from '../screen-proceed/screen-proceed.js';
 
 export default class Verify extends XAppScreen {
     html() {
@@ -9,6 +11,8 @@ export default class Verify extends XAppScreen {
             <screen-welcome></screen-welcome>
             <screen-terms></screen-terms>
             <screen-form-handler></screen-form-handler>
+            <screen-success>Thank you! Soon you will receive an email with further information.</screen-success>
+            <screen-proceed></screen-proceed>
         `
     }
 
@@ -18,16 +22,21 @@ export default class Verify extends XAppScreen {
         this.$screenWelcome = null;
         /** @type {ScreenTerms} */
         this.$screenTerms = null;
-        /** @type {ScreenForm} /*/
+        /** @type {ScreenForm} */
         this.$screenFormHandler = null;
-
+        /** @type {ScreenSuccess} */
+        this.$screenSuccess = null;
+        /** @tpye {ScreenProceed} */
+        this.$screenProceed = null;
     }
 
     children() {
         return [
             ScreenWelcome,
             ScreenTerms,
-            ScreenFormHandler
+            ScreenFormHandler,
+            ScreenSuccess,
+            ScreenProceed
         ]
     }
 }

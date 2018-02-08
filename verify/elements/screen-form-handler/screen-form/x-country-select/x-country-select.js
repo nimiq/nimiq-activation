@@ -4,6 +4,7 @@ export default class XCountrySelect extends XElement {
     html() {
         return `
             <select>
+                <option>Select Country</option>
                 <option value="AFG">Afghanistan</option>
                 <option value="ALA">&Aring;land Islands</option>
                 <option value="ALB">Albania</option>

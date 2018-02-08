@@ -6,11 +6,9 @@ import ScreenFormHandler from '../screen-form-handler/screen-form-handler.js';
 export default class Verify extends XAppScreen {
     html() {
         return `
-            <x-slides>
-                <screen-welcome></screen-welcome>
-                <screen-terms></screen-terms>
-                <screen-form-handler></screen-form-handler>
-            </x-slides>
+            <screen-welcome></screen-welcome>
+            <screen-terms></screen-terms>
+            <screen-form-handler></screen-form-handler>
         `
     }
 

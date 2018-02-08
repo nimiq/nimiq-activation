@@ -26,3 +26,34 @@ form {
         width: 100%;
     }
 }
+
+form input{
+    background: none;
+    color: white;
+    padding: 8px 4px 4px; 
+    color:white;
+    border: none; 
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+}
+
+form input:focus{
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+}
+
+input::placeholder,
+input::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.3);
+    display: block;
+    font-size: 14px;
+}
+
+form button{
+    margin-top: 40px;
+}
+
+form select{
+    float: right;
+    padding: 8px;
+}

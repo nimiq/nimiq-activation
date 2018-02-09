@@ -56,5 +56,3 @@ export default class ScreenHome extends XScreen {
         window.location.href = '../activate/?activation_token=' + this._activationToken;
     }
 }
-
-// Todo: Error if there is no dashboard_token in url or if it is invalid

@@ -143,6 +143,3 @@ export default class ActivationTool extends XAppScreen {
 }
 
 ActivationTool.launch();
-
-// Todo: [Max] Enforce Proper order of actions.
-// Todo: Store dashboard_token in local storage and show link to dashboard after successfull creation

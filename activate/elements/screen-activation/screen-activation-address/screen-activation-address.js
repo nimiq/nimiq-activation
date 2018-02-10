@@ -1,6 +1,6 @@
 import XScreenFit from '/elements/x-screen/x-screen-fit.js';
 import XAddress from '/elements/x-address/x-address.js';
-import ActivationUtils from '/library/nimiq-utils/activation-utils/activation-utils.js'
+import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js'
 
 export default class ScreenActivationAddress extends XScreenFit {
     html() {

@@ -2,7 +2,7 @@ import XScreen from '/elements/x-screen/x-screen.js';
 import XIdenticon from '/elements/x-identicon/x-identicon.js';
 import XAddress from '/elements/x-address/x-address.js';
 import XAmount from '/elements/x-amount/x-amount.js';
-import ActivationUtils from '/library/nimiq-utils/activation-utils/activation-utils.js';
+import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js';
 import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
 
 export default class ScreenAccount extends XScreen {

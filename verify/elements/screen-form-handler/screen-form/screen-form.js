@@ -11,7 +11,7 @@ export default class ScreenForm extends XScreen {
                 <legend>Please match exactly information of identifying document</legend>
                 <div>
                 <label>Nationality</label>
-                <x-country-select name="country_nationality" required></x-country-select>
+                <x-country-select name="nationality" required></x-country-select>
                 </div> 
                 <div>
                     <label for="gender">Title</label>
@@ -22,27 +22,27 @@ export default class ScreenForm extends XScreen {
                 </div>
                 <div>
                 <label for="first_name">First name(s)</label>
-                <input name="first_name" maxlength="100" placeholder="Satoshi" required />
+                <input name="firstname" maxlength="100" placeholder="Satoshi" required />
                 </div>
                 <div>
                 <label for="last_name">Last name(s)</label>
-                <input name="last_name" maxlength="100" placeholder="Nakamoto" required />
+                <input name="lastname" maxlength="100" placeholder="Nakamoto" required />
                 </div>
                 <div>
                 <label>Date of Birth</label>
-                <input name="birthday" placeholder="YYYY-MM-DD" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" required />
+                <input name="date_of_birth" placeholder="YYYY-MM-DD" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" required />
                 </div> 
                 </fieldset>
                 <fieldset>
                     <legend>Please provide your current address of residence</legend>
                 <div>
                 <label>Country of Residence</label>
-                <x-country-select name="country_residence" required></x-country-select>
+                <x-country-select name="country_of_residence" required></x-country-select>
                 </div>
                 
                 <div>
                 <label>Address</label>
-                <input name="street" maxlength="100" required />
+                <input name="address" maxlength="100" required />
                 </div>
                 <div>
                 <label>City</label>
@@ -50,7 +50,7 @@ export default class ScreenForm extends XScreen {
                 </div>
                 <div>
                 <label>Postal Code</label>
-                <input name="zip" maxlength="100" required />
+                <input name="postal_code" maxlength="100" required />
                 </div>
                 </fieldset>
                 <fieldset>

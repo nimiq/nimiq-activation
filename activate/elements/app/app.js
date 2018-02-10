@@ -9,9 +9,8 @@ import ScreenActivation from '../screen-activation/screen-activation.js';
 import ScreenSuccess from '/elements/screen-success/screen-success.js';
 import ScreenLoading from '/elements/screen-loading/screen-loading.js';
 import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
-import XToast from '/elements/x-toast/x-toast.js';
 import XActivationUtils from '/elements/x-activation-utils/x-activation-utils.js';
-import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js'
+import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js';
 
 export default class ActivationTool extends XAppScreen {
     html() {

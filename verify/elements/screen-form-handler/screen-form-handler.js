@@ -46,7 +46,7 @@ export default class ScreenFormHandler extends XScreen {
         this.$activationUtils._api.submitKyc(data);
     }
 
-    _onPostSuccess(clientRedirectUrl) {
+    _onPostSuccess({clientRedirectUrl}) {
         window.location.href = clientRedirectUrl;
     }
 

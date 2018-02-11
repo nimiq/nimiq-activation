@@ -37,8 +37,7 @@ export default class Verify extends XAppScreen {
             ScreenTerms,
             ScreenFormHandler,
             ScreenSuccess,
-            ScreenProceed,
-            XSlideIndicator
+            ScreenProceed
         ]
     }
 }

@@ -14,7 +14,6 @@ export default class Verify extends XAppScreen {
             <screen-form-handler></screen-form-handler>
             <screen-success>Thank you! Soon you will receive an email with further information.</screen-success>
             <screen-proceed></screen-proceed>
-            <x-slide-indicator></x-slide-indicator>
         `
     }
 
@@ -41,11 +40,6 @@ export default class Verify extends XAppScreen {
             ScreenProceed,
             XSlideIndicator
         ]
-    }
-
-    onCreate() {
-        // Proceed screen should not be part of progress shown by slide indicator
-        this._filteredSlides.push('proceed');
     }
 }
 

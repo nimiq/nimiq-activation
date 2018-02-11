@@ -22,11 +22,11 @@ export default class ScreenForm extends XScreen {
                 </div>
                 <div>
                 <label for="first_name">First name(s)</label>
-                <input name="firstname" maxlength="100" placeholder="Satoshi" required />
+                <input name="first_name" maxlength="100" placeholder="Satoshi" required />
                 </div>
                 <div>
                 <label for="last_name">Last name(s)</label>
-                <input name="lastname" maxlength="100" placeholder="Nakamoto" required />
+                <input name="last_name" maxlength="100" placeholder="Nakamoto" required />
                 </div>
                 <div>
                 <label>Date of Birth</label>

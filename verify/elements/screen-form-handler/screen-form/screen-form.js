@@ -1,5 +1,6 @@
 import XScreen from '/elements/x-screen/x-screen.js';
 import XCountrySelect from './x-country-select/x-country-select.js';
+import XDateofbirthSelect from './x-dateofbirth-select/x-dateofbirth-select.js';
 
 export default class ScreenForm extends XScreen {
     html() {
@@ -11,7 +12,7 @@ export default class ScreenForm extends XScreen {
                 <div>
                 <label>Nationality</label>
                 <x-country-select name="nationality" required></x-country-select>
-                </div> 
+                </div>
                 <div>
                     <label for="gender">Salutation</label>
                     <select name="gender" required>
@@ -29,8 +30,8 @@ export default class ScreenForm extends XScreen {
                 </div>
                 <div>
                 <label>Date of Birth</label>
-                <input name="date_of_birth" placeholder="YYYY-MM-DD" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" required />
-                </div> 
+                <x-dateofbirth-select name="date_of_birth" required></x-dateofbirth-select>
+                </div>
                 </fieldset>
                 <fieldset>
                     <legend>Please provide your current address of residence</legend>
@@ -38,7 +39,7 @@ export default class ScreenForm extends XScreen {
                 <label>Country of Residence</label>
                 <x-country-select name="country_of_residence" required></x-country-select>
                 </div>
-                
+
                 <div>
                 <label>Address</label>
                 <input name="address" maxlength="200" required />
@@ -71,12 +72,14 @@ export default class ScreenForm extends XScreen {
     }
 
     children() {
-        return [ [ XCountrySelect ] ];
+        return [ [ XCountrySelect ], XDateofbirthSelect ];
     }
 
     types() {
         /** @type {XCountrySelect} */
         this.$countrySelect = null;
+        /** @type {XDateofbirthSelect} */
+        this.$dateofbirthSelect = null;
         /** @type {Element} */
         this.$form = null;
     }

@@ -1,3 +1,5 @@
+@import 'screen-form/screen-form.css';
+
 input, x-country-select {
     width: 50%;
 }
@@ -30,10 +32,9 @@ form {
 
 input{
     background: none;
+    padding: 8px 4px 4px;
     color: white;
-    padding: 8px 4px 4px; 
-    color:white;
-    border: none; 
+    border: none;
     font-size: 14px;
     border-bottom: 1px solid rgba(255,255,255,0.5);
     border-bottom: 1px solid rgba(255,255,255,0.5);
@@ -55,9 +56,8 @@ button{
 }
 
 select{
-    float: right;
     padding: 8px;
-    color: white;
+    color: initial;
 }
 
 legend {

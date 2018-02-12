@@ -43,7 +43,9 @@ export default class ScreenFormHandler extends XScreen {
         e.preventDefault();
         const data = FormToObject(this.$screenForm.$form);
         data.gender = parseInt(data.gender);
-        this.$activationUtils._api.submitKyc(data);
+
+        // this.$activationUtils._api.submitKyc(data);
+        console.log(data);
     }
 
     _onPostSuccess({clientRedirectUrl}) {

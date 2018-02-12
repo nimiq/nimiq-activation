@@ -110,7 +110,5 @@ export default class ScreenForm extends XScreen {
 
 }
 
-// Todo: [Sören] 3 dropdowns for date
-// Todo: confirmation page
 // Todo: No Safari, no iOS, no IE
 // Todo: Show somehow possibility to scroll on Apple?

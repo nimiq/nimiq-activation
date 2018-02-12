@@ -71,4 +71,5 @@ fieldset {
 
 form {
     overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 }

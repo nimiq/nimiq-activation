@@ -166,7 +166,7 @@ export default class XDateofbirthSelect extends XElement {
         this.$month = this.$$selects[1];
         this.$day = this.$$selects[2];
 
-        this.addEventListener('change', () => this._onChange());
+        this.addEventListener('change', this._onChange.bind(this));
 
         const name = this.$el.getAttribute('name');
         const required = this.$el.getAttribute('required');

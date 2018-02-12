@@ -87,7 +87,10 @@ export default class ActivationTool extends XAppScreen {
     }
 
     _onValidToken(response) {
-        if (response === true) this.goTo('welcome');
+        if (response === true) {
+            if (this._api) this._onValidTokenAndApiReady();
+            else this._hasValidToken = true;
+        }
         else {
             this.$screenError.show('Your activation token is invalid. Please go back to the dashboard try again.');
             this.goTo('error');
@@ -98,6 +101,11 @@ export default class ActivationTool extends XAppScreen {
         console.log('api ready');
         this._api = api;
         this.$screenIdenticons.onApiReady(api);
+        if (this._hasValidToken) this._onValidTokenAndApiReady();
+    }
+
+    _onValidTokenAndApiReady() {
+        this.goTo('welcome');
     }
 
     _onKeyPair(keyPair) {

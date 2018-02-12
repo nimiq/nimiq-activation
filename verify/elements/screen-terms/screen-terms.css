@@ -8,7 +8,9 @@ screen-terms section {
 }
  
 screen-terms [button]{
-	width: 100%;
-	display: block;
-	margin: 32px auto;
+	margin: 32px 10px;
+}
+
+screen-terms .same-size-buttons {
+    display: flex;
 }

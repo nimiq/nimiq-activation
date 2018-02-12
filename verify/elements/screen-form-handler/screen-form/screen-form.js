@@ -5,7 +5,6 @@ export default class ScreenForm extends XScreen {
     html() {
         return `
             <h1>Enter your Details</h1>
-            <h2>Due to anti money laundering laws we need you to fill out the following form</h2>
             <form>
                 <fieldset>
                 <legend>Please match exactly information of identifying document</legend>
@@ -14,7 +13,7 @@ export default class ScreenForm extends XScreen {
                 <x-country-select name="nationality" required></x-country-select>
                 </div> 
                 <div>
-                    <label for="gender">Title</label>
+                    <label for="gender">Salutation</label>
                     <select name="gender" required>
                         <option value="0">Mr.</option>
                         <option value="1">Mrs./Ms.</option>
@@ -42,15 +41,15 @@ export default class ScreenForm extends XScreen {
                 
                 <div>
                 <label>Address</label>
-                <input name="address" maxlength="100" required />
+                <input name="address" maxlength="200" required />
                 </div>
                 <div>
                 <label>City</label>
-                <input name="city" maxlength="100" required />
+                <input name="city" maxlength="64" required />
                 </div>
                 <div>
                 <label>Postal Code</label>
-                <input name="postal_code" maxlength="100" required />
+                <input name="postal_code" maxlength="15" required />
                 </div>
                 </fieldset>
                 <fieldset>
@@ -60,9 +59,13 @@ export default class ScreenForm extends XScreen {
                 <label>E-Mail</label>
                 <input name="email" maxlength="100" type="email" placeholder="satoshin@gmx.com" required/>
                 </div>
+                <div>
+                <label>E-Mail confirmation</label>
+                <input name="confirm_email" maxlength="100" type="email" placeholder="satoshin@gmx.com" required/>
+                </div>
                 </fieldset>
 
-                <button type="submit">Send</button>
+                <button type="submit">Submit</button>
             </form>
         `
     }
@@ -80,5 +83,31 @@ export default class ScreenForm extends XScreen {
 
     onCreate() {
         this.$form = this.$('form');
+
+        // email validation
+        const $email = this.$('[name="email"]');
+        const $confirm_email = this.$('[name="confirm_email"]');
+
+        const validateEmail = () => {
+            if(email.value != confirm_email.value) {
+                confirm_email.setCustomValidity("Emails don't match");
+            } else {
+                confirm_email.setCustomValidity('');
+            }
+        };
+
+        $email.addEventListener('change', validateEmail);
+        $confirm_email.addEventListener('keyup', validateEmail);
+
+        // disallow paste in email fields
+        $email.addEventListener('paste', e => e.preventDefault());
+        $confirm_email.addEventListener('paste', e => e.preventDefault());
     }
+
+
 }
+
+// Todo: [Sören] 3 dropdowns for date
+// Todo: confirmation page
+// Todo: No Safari, no iOS, no IE
+// Todo: Show somehow possibility to scroll on Apple?

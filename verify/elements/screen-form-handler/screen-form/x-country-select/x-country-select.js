@@ -263,3 +263,5 @@ export default class XCountrySelect extends XElement {
         this.$select.setAttribute('required', required);
     }
 }
+
+// Todo: Remove disallowed countries

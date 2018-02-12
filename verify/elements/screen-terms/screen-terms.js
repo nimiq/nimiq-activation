@@ -23,3 +23,5 @@ export default class ScreenTerms extends XScreen {
 		`
     }
 }
+
+// Todo: Add same sized button for decline => cancel

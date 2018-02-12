@@ -1,4 +1,4 @@
-import XScreen from '/elements/x-screen/x-screen.js';
+import XScreen from '/elements/x-screen/x-screen-fit.js';
 import XCountrySelect from './x-country-select/x-country-select.js';
 import XDateofbirthSelect from './x-dateofbirth-select/x-dateofbirth-select.js';
 

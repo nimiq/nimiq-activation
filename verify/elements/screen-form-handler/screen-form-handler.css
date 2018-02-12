@@ -1,3 +1,5 @@
+@import '/elements/screen-loading/screen-loading.css';
+
 input, x-country-select {
     width: 50%;
 }

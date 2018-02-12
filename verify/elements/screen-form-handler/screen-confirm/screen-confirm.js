@@ -283,7 +283,7 @@ export default class ScreenConfirm extends XScreen {
     set(data) {
         const dob = data.date_of_birth.split('-');
         dob[1] = this.monthsDict[dob[1]];
-        data.date_of_birth = dob.join(' ');
+        const human_dob = dob.join(' ');
 
         // The confirm button is disabled on page-load, to prevent submitting empty
         // data when reloading the page at the #form-handler/confirm URL.
@@ -310,7 +310,7 @@ export default class ScreenConfirm extends XScreen {
                 </div>
                 <div>
                     <label>Date of Birth</label>
-                    <strong>${data.date_of_birth}</strong>
+                    <strong>${human_dob}</strong>
                 </div>
             </fieldset>
             <fieldset>

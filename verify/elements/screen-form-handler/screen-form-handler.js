@@ -3,6 +3,7 @@ import XActivationUtils from '/elements/x-activation-utils/x-activation-utils.js
 import ScreenError from '/elements/screen-error/screen-error.js';
 import ScreenForm from './screen-form/screen-form.js';
 import ScreenConfirm from './screen-confirm/screen-confirm.js';
+import ScreenLoading from '/elements/screen-loading/screen-loading.js';
 import FormToObject from '/libraries/nimiq-utils/form-to-object/form-to-object.js';
 
 export default class ScreenFormHandler extends XScreen {
@@ -12,6 +13,7 @@ export default class ScreenFormHandler extends XScreen {
             <x-slides>
                 <screen-form></screen-form>
                 <screen-confirm></screen-confirm>
+                <screen-loading>Uploading your data...</screen-loading>
                 <screen-error message="Your data was already used to initiate the KYC process."></screen-error>
             </x-slides>
         `
@@ -29,7 +31,7 @@ export default class ScreenFormHandler extends XScreen {
     }
 
     children() {
-        return [XActivationUtils, ScreenForm, ScreenConfirm, ScreenError];
+        return [XActivationUtils, ScreenForm, ScreenConfirm, ScreenLoading, ScreenError];
     }
 
     listeners() {
@@ -53,6 +55,7 @@ export default class ScreenFormHandler extends XScreen {
     }
 
     _onConfirmSubmit() {
+        this.goTo('loading');
         this.$activationUtils._api.submitKyc(this._data);
     }
 

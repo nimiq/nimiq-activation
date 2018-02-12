@@ -146,4 +146,3 @@ ActivationTool.launch();
 // Todo: Bug: Peek of error screen after loading?!
 // Todo: Bug: Nimiq runs in different tab error not shown, identicons just don't work
 // Todo: Back links
-// Todo:

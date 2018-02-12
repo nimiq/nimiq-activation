@@ -92,10 +92,10 @@ export default class ScreenForm extends XScreen {
         const $confirm_email = this.$('[name="confirm_email"]');
 
         const validateEmail = () => {
-            if(email.value != confirm_email.value) {
-                confirm_email.setCustomValidity("Emails don't match");
+            if($email.value != $confirm_email.value) {
+                $confirm_email.setCustomValidity("Emails don't match");
             } else {
-                confirm_email.setCustomValidity('');
+                $confirm_email.setCustomValidity('');
             }
         };
 

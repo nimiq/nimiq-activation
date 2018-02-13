@@ -14,7 +14,7 @@ export default class ScreenFormHandler extends XScreen {
                 <screen-form></screen-form>
                 <screen-confirm></screen-confirm>
                 <screen-loading>Uploading your data...</screen-loading>
-                <screen-error message="Your data was already used to initiate the KYC process."></screen-error>
+                <screen-error></screen-error>
             </x-slides>
         `
     }
@@ -63,7 +63,14 @@ export default class ScreenFormHandler extends XScreen {
         window.location.href = clientRedirectUrl;
     }
 
-    _onPostError() {
+    _onPostError(errorCode) {
+        let message = '';
+        if (errorCode === 401) {
+           message = 'You have to be at least 18 years old.';
+        } else if (errorCode === 403) {
+            message = 'Your data was already used to initiate the KYC process.';
+        }
+        this.$screenError.show(message);
         this.goTo('error');
     }
 

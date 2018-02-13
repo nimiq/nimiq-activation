@@ -44,5 +44,4 @@ export default class Verify extends XAppScreen {
 
 Verify.launch();
 
-// Todo: Check for 18 years old
 // Todo: No safari, no iOS

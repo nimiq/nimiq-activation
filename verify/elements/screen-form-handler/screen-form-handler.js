@@ -68,5 +68,3 @@ export default class ScreenFormHandler extends XScreen {
     }
 
 }
-
-// Todo: [Max] Replace borders by implicit boxes (width +- 64px)

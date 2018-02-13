@@ -110,5 +110,4 @@ export default class ScreenForm extends XScreen {
 
 }
 
-// Todo: No Safari, no iOS, no IE
 // Todo: Show somehow possibility to scroll on Apple?

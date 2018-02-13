@@ -14,7 +14,7 @@ export default class Verify extends XAppScreen {
             <screen-form-handler></screen-form-handler>
             <screen-success>Thank you! Soon you will receive an email with further information.</screen-success>
             <screen-proceed></screen-proceed>
-            <screen-error message="Your browser is not supported by our external service providers. Sorry!"></screen-error>
+            <screen-error message="The Safari browser and iOS devices are not supported by our external service providers. Please use another browser or device."></screen-error>
             <screen-error route="kyc-error" message="Thank you! Soon you will receive an email with further information."></screen-error>
         `
     }

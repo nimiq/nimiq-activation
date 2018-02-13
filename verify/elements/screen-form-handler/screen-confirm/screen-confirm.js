@@ -5,7 +5,59 @@ export default class ScreenConfirm extends XScreen {
     html() {
         return `
             <h1>Review your Details</h1>
-            <div class="x-screen-confirm-container"></div>
+            <div>
+                <fieldset>
+                    <legend>Information of identifying document</legend>
+                    <div>
+                        <label>Nationality</label>
+                        <strong name="nationality"></strong>
+                    </div>
+                    <div>
+                        <label>Salutation</label>
+                        <strong name="gender"></strong>
+                    </div>
+                    <div>
+                        <label>First name(s)</label>
+                        <strong name="first_name"></strong>
+                    </div>
+                    <div>
+                        <label>Last name(s)</label>
+                        <strong name="last_name"></strong>
+                    </div>
+                    <div>
+                        <label>Date of Birth</label>
+                        <strong name="date_of_birth"></strong>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Your current address of residence</legend>
+                    <div>
+                        <label>Country of Residence</label>
+                        <strong name="country_of_residence"></strong>
+                    </div>
+
+                    <div>
+                        <label>Address</label>
+                        <strong name="address"></strong>
+                    </div>
+                    <div>
+                        <label>City</label>
+                        <strong name="city"></strong>
+                    </div>
+                    <div>
+                        <label>Postal Code</label>
+                        <strong name="postal_code"></strong>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Your personal email address, to which the NIM activation link
+                            will be sent after passing the KYC/AML checks</legend>
+                    <div>
+                        <label>E-Mail</label>
+                        <strong name="email"></strong>
+                    </div>
+                </fieldset>
+            </div>
             <button disabled="disabled">Confirm</button>
             <a secondary href="#form-handler">Back</a>
         `
@@ -13,7 +65,17 @@ export default class ScreenConfirm extends XScreen {
 
     onCreate() {
         this.$button = this.$('button');
-        this.$container = this.$('.x-screen-confirm-container');
+
+        this.$nationality = this.$('strong[name="nationality"]');
+        this.$gender = this.$('strong[name="gender"]');
+        this.$first_name = this.$('strong[name="first_name"]');
+        this.$last_name = this.$('strong[name="last_name"]');
+        this.$date_of_birth = this.$('strong[name="date_of_birth"]');
+        this.$country_of_residence = this.$('strong[name="country_of_residence"]');
+        this.$address = this.$('strong[name="address"]');
+        this.$city = this.$('strong[name="city"]');
+        this.$postal_code = this.$('strong[name="postal_code"]');
+        this.$email = this.$('strong[name="email"]');
 
         this.monthsDict = {
             '01': 'January',
@@ -32,7 +94,7 @@ export default class ScreenConfirm extends XScreen {
 
         this.countriesDict = {
             "AFG": "Afghanistan",
-            "ALA": "&Aring;land Islands",
+            "ALA": "&#197;land Islands",
             "ALB": "Albania",
             "DZA": "Algeria",
             "ASM": "American Samoa",
@@ -84,7 +146,7 @@ export default class ScreenConfirm extends XScreen {
             "COD": "Congo, the Democratic Republic of the",
             "COK": "Cook Islands",
             "CRI": "Costa Rica",
-            "CIV": "C&ocirc;te d'Ivoire",
+            "CIV": "C&#244;te d'Ivoire",
             "HRV": "Croatia",
             "CUB": "Cuba",
             "CYP": "Cyprus",
@@ -210,11 +272,11 @@ export default class ScreenConfirm extends XScreen {
             "PRT": "Portugal",
             "PRI": "Puerto Rico",
             "QAT": "Qatar",
-            "REU": "R&eacute;union",
+            "REU": "R&#233;union",
             "ROU": "Romania",
             "RUS": "Russian Federation",
             "RWA": "Rwanda",
-            "BLM": "Saint Barth&eacute;lemy",
+            "BLM": "Saint Barth&#233;lemy",
             "SHN": "Saint Helena, Ascension and Tristan da Cunha",
             "KNA": "Saint Kitts and Nevis",
             "LCA": "Saint Lucia",
@@ -285,63 +347,27 @@ export default class ScreenConfirm extends XScreen {
         dob[1] = this.monthsDict[dob[1]];
         const human_dob = dob.join(' ');
 
+        this.$nationality.textContent = this._parseHtmlEntities(this.countriesDict[data.nationality]);
+        this.$gender.textContent = data.gender === 0 ? 'Mr.' : 'Mrs.';
+        this.$first_name.textContent = data.first_name;
+        this.$last_name.textContent = data.last_name;
+        this.$date_of_birth.textContent = human_dob;
+        this.$country_of_residence.textContent = this._parseHtmlEntities(this.countriesDict[data.country_of_residence]);
+        this.$address.textContent = data.address;
+        this.$city.textContent = data.city;
+        this.$postal_code.textContent = data.postal_code;
+        this.$email.textContent = data.email;
+
         // The confirm button is disabled on page-load, to prevent submitting empty
         // data when reloading the page at the #form-handler/confirm URL.
         this.$button.removeAttribute('disabled');
+    }
 
-        this.$container.innerHTML = `
-            <fieldset>
-                <legend>Information of identifying document</legend>
-                <div>
-                    <label>Nationality</label>
-                    <strong>${this.countriesDict[data.nationality]}</strong>
-                </div>
-                <div>
-                    <label>Salutation</label>
-                    <strong>${data.gender === 0 ? 'Mr.' : 'Mrs.'}</strong>
-                </div>
-                <div>
-                    <label>First name(s)</label>
-                    <strong>${data.first_name}</strong>
-                </div>
-                <div>
-                    <label>Last name(s)</label>
-                    <strong>${data.last_name}</strong>
-                </div>
-                <div>
-                    <label>Date of Birth</label>
-                    <strong>${human_dob}</strong>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Your current address of residence</legend>
-                <div>
-                    <label>Country of Residence</label>
-                    <strong>${this.countriesDict[data.country_of_residence]}</strong>
-                </div>
-
-                <div>
-                    <label>Address</label>
-                    <strong>${data.address}</strong>
-                </div>
-                <div>
-                    <label>City</label>
-                    <strong>${data.city}</strong>
-                </div>
-                <div>
-                    <label>Postal Code</label>
-                    <strong>${data.postal_code}</strong>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Your personal email address, to which the NIM activation link
-                        will be sent after passing the KYC/AML checks</legend>
-                <div>
-                    <label>E-Mail</label>
-                    <strong>${data.email}</strong>
-                </div>
-            </fieldset>
-        `
+    _parseHtmlEntities(str) {
+        return str.replace(/&#([0-9]{1,3});/gi, function(match, numStr) {
+            var num = parseInt(numStr, 10); // read num as normal number
+            return String.fromCharCode(num);
+        });
     }
 
 }

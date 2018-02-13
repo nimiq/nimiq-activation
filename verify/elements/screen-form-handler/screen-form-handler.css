@@ -56,7 +56,7 @@ button{
 }
 
 select{
-    padding: 8px;
+    padding: 15px;
     color: initial;
 }
 
@@ -66,8 +66,8 @@ legend {
 }
 
 fieldset {
-    border: 1px solid #fff;
-    margin: 15px;
+    border: none;
+    margin-top: 20px;
     padding: 15px;
 }
 

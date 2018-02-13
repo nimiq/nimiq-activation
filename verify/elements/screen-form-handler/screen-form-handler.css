@@ -24,11 +24,7 @@ form {
     width: 100%;
 }
 
-@media (max-width: 650px) {
-    form input, form x-country-select, form label {
-        width: 100%;
-    }
-}
+
 
 input{
     background: none;
@@ -55,9 +51,11 @@ button{
     margin-top: 40px;
 }
 
-select{
-    padding: 15px;
-    color: initial;
+select {
+    padding: 0 15px;
+    color: white;
+    background-color: #937efe;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 legend {
@@ -74,4 +72,20 @@ fieldset {
 form {
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
+}
+
+x-dateofbirth-select {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+}
+
+x-dateofbirth-select select {
+    flex: 1;
+}
+
+@media (max-width: 650px) {
+    form input, form x-country-select, form label, x-dateofbirth-select {
+        width: 100%;
+    }
 }

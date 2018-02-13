@@ -4,9 +4,9 @@ screen-terms p {
 }
 
 screen-terms section {
-	overflow-y: scroll;
+	overflow-y: auto;
 }
- 
+
 screen-terms [button]{
 	margin: 32px 10px;
 }

@@ -5,7 +5,7 @@ export default class ScreenConfirm extends XScreen {
     html() {
         return `
             <h1>Review your Details</h1>
-            <div>
+            <div scroll-container>
                 <fieldset>
                     <legend>Information of identifying document</legend>
                     <div>
@@ -57,9 +57,9 @@ export default class ScreenConfirm extends XScreen {
                         <strong name="email"></strong>
                     </div>
                 </fieldset>
+                <button disabled="disabled">Confirm</button>
+                <a secondary href="#form-handler">Back</a>
             </div>
-            <button disabled="disabled">Confirm</button>
-            <a secondary href="#form-handler">Back</a>
         `
     }
 

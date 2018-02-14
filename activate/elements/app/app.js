@@ -18,9 +18,9 @@ export default class ActivationTool extends XAppScreen {
             <screen-loading><h2>Checking activation token...</h2></screen-loading>
             <screen-welcome></screen-welcome>
             <screen-identicons></screen-identicons>
+            <screen-backup-file></screen-backup-file>
             <screen-backup-phrase></screen-backup-phrase>
             <screen-backup-phrase-validate></screen-backup-phrase-validate>
-            <screen-backup-file></screen-backup-file>
             <screen-activation></screen-activation>
             <screen-error></screen-error>
             <x-nimiq-api></x-nimiq-api>

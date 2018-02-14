@@ -8,9 +8,9 @@ import ScreenError from '/elements/screen-error/screen-error.js';
 import ScreenActivation from '../screen-activation/screen-activation.js';
 import ScreenSuccess from '/elements/screen-success/screen-success.js';
 import ScreenLoading from '/elements/screen-loading/screen-loading.js';
-import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
-import XActivationUtils from '/elements/x-activation-utils/x-activation-utils.js';
 import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js';
+import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
+import NanoApi from '/libraries/nano-api/nano-api.js';
 
 export default class ActivationTool extends XAppScreen {
     html() {
@@ -25,7 +25,6 @@ export default class ActivationTool extends XAppScreen {
             <screen-backup-file></screen-backup-file>
             <screen-activation></screen-activation>
             <x-nimiq-api></x-nimiq-api>
-            <x-activation-utils></x-activation-utils>
         `
     }
 
@@ -36,104 +35,55 @@ export default class ActivationTool extends XAppScreen {
             ScreenBackupPhrase,
             ScreenBackupPhraseValidate,
             ScreenBackupFile,
+            ScreenIdenticons,
             ScreenActivation,
             ScreenSuccess,
             ScreenError,
-            ScreenIdenticons,
-            XNimiqApi,
-            XActivationUtils
+            XNimiqApi
         ]
     }
 
     listeners() {
         return {
-            'x-activation-valid-token': '_onValidToken',
-            'x-api-ready': '_onApiReady',
+            'nimiq-different-tab-error':'_onDifferentTabError',
             'x-keypair': '_onKeyPair',
             'x-phrase-validated': '_onPhraseValidated',
-            'x-encrypt-backup': '_onEncryptBackup',
             'x-backup-file-complete': '_onBackupFileComplete',
-            'x-different-tab-error':'_onDifferentTabError',
             'x-activation-activate-address': '_onActivateAddress',
             'x-activation-complete': '_onActivationComplete'
         }
     }
 
-    allowedTransitions() {
-        return  [
-            { from: '', to: 'welcome' },
-        ]
-    }
-
-    onStateChange(state) {
-        if (this._keyInitialized) return true;
-        if (!(state === 'welcome' || state === 'identicons')) location = '';
-        else return true;
-    }
-
-    _onEntry() {
+    async _onEntry() {
         this._activationToken = new URLSearchParams(document.location.search).get("activation_token");
-        this.$activationUtils._api.isValidToken(this._activationToken);
+        const isValidToken = await ActivationUtils.isValidToken(this._activationToken);
+        if (isValidToken) {
+            location.href = '#welcome';
+        }
+        else {
+            this.$screenError.show('Your activation token is invalid. Please go back to the dashboard try again.');
+            location.href = '#error';
+        }
     }
 
     _onActivateAddress(success) {
         if (!success) {
             this.$screenError.show('Your address could not be activated. Please try again.');
-            this.goTo('error');
+            location.href = '#error';
         }
     }
 
-    _onActivationComplete() {
-        window.location.href = `../dashboard/?address=${this._userFriendlyNimAddress}#account`;
-    }
-
-    _onValidToken(response) {
-        if (response === true) {
-            if (this._api) this._onValidTokenAndApiReady();
-            else this._hasValidToken = true;
-        }
-        else {
-            this.$screenError.show('Your activation token is invalid. Please go back to the dashboard try again.');
-            this.goTo('error');
-        }
-    }
-
-    _onApiReady(api) {
-        console.log('api ready');
-        this._api = api;
-        this.$screenIdenticons.onApiReady(api);
-        if (this._hasValidToken) this._onValidTokenAndApiReady();
-    }
-
-    _onValidTokenAndApiReady() {
-        this.goTo('welcome');
-    }
-
-    _onKeyPair(keyPair) {
+    async _onKeyPair(keyPair) {
         const hexedPrivKey = keyPair.privateKey.toHex();
         this.$screenBackupPhrase.privateKey = hexedPrivKey
         this.$screenBackupPhraseValidate.privateKey = hexedPrivKey;
-        this._keyPair = keyPair;
-        this._keyInitialized = true;
-        location.href = '#backup-file';
-    }
-
-    async _onEncryptBackup(password) {
-        const encryptedKey = await this._importAndEncrypt(password);
-        this.$screenBackupFile.backup(this._api.address, encryptedKey);
-    }
-
-    async _importAndEncrypt(password) {
-        await this._api.importKey(this._keyPair.privateKey, false);
-        const encryptedKey = await this._api.exportEncrypted(password);
-        this._keyPair.privateKey = null;
-        const nimAddress = this._api.$.wallet.address;
+        this.$screenBackupFile.setKeyPair(keyPair);
+        const nimAddress = NanoApi.getApi().$.wallet.address;
         const ethAddress = await ActivationUtils.nim2ethAddress(nimAddress);
         this._userFriendlyNimAddress = nimAddress.toUserFriendlyAddress();
         this.$screenActivation.setAddress(ethAddress);
-        this.$activationUtils._api.activateAddress(this._activationToken, this._userFriendlyNimAddress);
-        this._keyPair = null;
-        return encryptedKey;
+        ActivationUtils.activateAddress(this._activationToken, this._userFriendlyNimAddress);
+        location.href = '#backup-file';
     }
 
     _onBackupFileComplete() {
@@ -142,6 +92,10 @@ export default class ActivationTool extends XAppScreen {
 
     _onPhraseValidated() {
         location = '#activation';
+    }
+
+    _onActivationComplete() {
+        window.location.href = `../dashboard/?address=${this._userFriendlyNimAddress}#account`;
     }
 
     _onDifferentTabError() {

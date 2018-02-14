@@ -57,5 +57,3 @@ export default class Verify extends XAppScreen {
 }
 
 Verify.launch();
-
-// Todo: No safari, no iOS

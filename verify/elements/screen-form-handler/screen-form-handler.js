@@ -9,7 +9,6 @@ import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-
 export default class ScreenFormHandler extends XScreen {
     html() {
         return `
-            <x-activation-utils></x-activation-utils>
             <x-slides>
                 <screen-form></screen-form>
                 <screen-confirm></screen-confirm>
@@ -24,19 +23,14 @@ export default class ScreenFormHandler extends XScreen {
         this.$screenForm = null;
         /** @type {ScreenConfirm} */
         this.$screenConfirm = null;
+        /** @type {ScreenLoading} */
+        this.$screenLoading = null;
         /** @type {ScreenError} */
         this.$screenError = null;
     }
 
     children() {
         return [ScreenForm, ScreenConfirm, ScreenLoading, ScreenError];
-    }
-
-    listeners() {
-        return {
-            'x-activation-post-success': '_onPostSuccess',
-            'x-activation-post-error': '_onPostError'
-        }
     }
 
     onCreate() {

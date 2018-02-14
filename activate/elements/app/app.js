@@ -15,7 +15,6 @@ import NanoApi from '/libraries/nano-api/nano-api.js';
 export default class ActivationTool extends XAppScreen {
     html() {
         return `
-            <screen-error></screen-error>
             <screen-loading><h2>Checking activation token...</h2></screen-loading>
             <screen-welcome></screen-welcome>
             <screen-identicons></screen-identicons>
@@ -23,6 +22,7 @@ export default class ActivationTool extends XAppScreen {
             <screen-backup-phrase-validate></screen-backup-phrase-validate>
             <screen-backup-file></screen-backup-file>
             <screen-activation></screen-activation>
+            <screen-error></screen-error>
             <x-nimiq-api></x-nimiq-api>
         `
     }
@@ -36,7 +36,6 @@ export default class ActivationTool extends XAppScreen {
             ScreenBackupFile,
             ScreenIdenticons,
             ScreenActivation,
-            ScreenSuccess,
             ScreenError,
             XNimiqApi
         ]

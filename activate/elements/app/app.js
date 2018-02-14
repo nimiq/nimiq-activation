@@ -58,7 +58,7 @@ export default class ActivationTool extends XAppScreen {
             location.href = '#welcome';
         }
         else {
-            this.$screenError.show('Your activation token is invalid. Please go back to the dashboard try again.');
+            this.$screenError.show('Your activation token is invalid. Please go back to the dashboard and try again.');
             location.href = '#error';
         }
     }
@@ -66,16 +66,20 @@ export default class ActivationTool extends XAppScreen {
     async _onKeyPair(keyPair) {
         const api = NanoApi.getApi();
         const nimAddress = await api.getAddress();
-        const ethAddress = await api.nim2ethAddress(nimAddress);
 
-        this.$screenActivation.setAddress(ethAddress);
-        ActivationUtils.activateAddress(this._activationToken, nimAddress);
-
-        const hexedPrivKey = keyPair.privateKey.toHex();
-        this.$screenBackupPhrase.privateKey = hexedPrivKey
-        this.$screenBackupPhraseValidate.privateKey = hexedPrivKey;
-        this.$screenBackupFile.setKeyPair(keyPair);
-        location.href = '#backup-file';
+        const activationSuccessfull = await ActivationUtils.activateAddress(this._activationToken, nimAddress);
+        if (activationSuccessfull) {
+            const ethAddress = await api.nim2ethAddress(nimAddress);
+            this.$screenActivation.setAddress(ethAddress);
+            const hexedPrivKey = keyPair.privateKey.toHex();
+            this.$screenBackupPhrase.privateKey = hexedPrivKey
+            this.$screenBackupPhraseValidate.privateKey = hexedPrivKey;
+            this.$screenBackupFile.setKeyPair(keyPair);
+            location.href = '#backup-file'
+        } else {
+            this.$screenError.show('Your activation token is invalid. Please go back to the dashboard and try again.');
+            location.href = '#error';
+        }
     }
 
     _onBackupFileComplete() {

@@ -1,10 +1,10 @@
 import XScreen from '/elements/x-screen/x-screen.js';
-import XActivationUtils from '/elements/x-activation-utils/x-activation-utils.js';
 import ScreenError from '/elements/screen-error/screen-error.js';
 import ScreenForm from './screen-form/screen-form.js';
 import ScreenConfirm from './screen-confirm/screen-confirm.js';
 import ScreenLoading from '/elements/screen-loading/screen-loading.js';
 import FormToObject from '/libraries/nimiq-utils/form-to-object/form-to-object.js';
+import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js';
 
 export default class ScreenFormHandler extends XScreen {
     html() {
@@ -20,8 +20,6 @@ export default class ScreenFormHandler extends XScreen {
     }
 
     types() {
-        /** @type {XActivationUtils} */
-        this.$activationUtils = null;
         /** @type {ScreenForm} */
         this.$screenForm = null;
         /** @type {ScreenConfirm} */
@@ -31,7 +29,7 @@ export default class ScreenFormHandler extends XScreen {
     }
 
     children() {
-        return [XActivationUtils, ScreenForm, ScreenConfirm, ScreenLoading, ScreenError];
+        return [ScreenForm, ScreenConfirm, ScreenLoading, ScreenError];
     }
 
     listeners() {
@@ -54,24 +52,25 @@ export default class ScreenFormHandler extends XScreen {
         this.goTo('confirm');
     }
 
-    _onConfirmSubmit() {
+    async _onConfirmSubmit() {
         this.goTo('loading');
-        this.$activationUtils._api.submitKyc(this._data);
-    }
-
-    _onPostSuccess({clientRedirectUrl}) {
-        window.location.href = clientRedirectUrl;
-    }
-
-    _onPostError(errorCode) {
-        let message = '';
-        if (errorCode === 401) {
-           message = 'You have to be at least 18 years old.';
-        } else if (errorCode === 403) {
-            message = 'Your data was already used to initiate the KYC process.';
+        const submitResult = await ActivationUtils.submitKyc(this._data);
+        if (submitResult.ok) {
+            const result = await submitResult.json();
+            window.location.href = result.clientRedirectUrl;
         }
-        this.$screenError.show(message);
-        this.goTo('error');
+        else {
+            const errorCode = submitResult.status;
+            let message = '';
+            if (errorCode === 401) {
+                message = 'You have to be at least 18 years old.';
+            } else if (errorCode === 403) {
+                message = 'Your data was already used to initiate the KYC process.';
+            }
+            this.$screenError.show(message);
+            this.goTo('error');
+        }
     }
-
 }
+
+// Todo: Bug: Error message not working

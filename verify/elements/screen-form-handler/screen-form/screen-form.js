@@ -100,6 +100,8 @@ export default class ScreenForm extends XScreen {
         };
 
         $email.addEventListener('change', validateEmail);
+        $email.addEventListener('keyup', validateEmail);
+        $confirm_email.addEventListener('change', validateEmail);
         $confirm_email.addEventListener('keyup', validateEmail);
 
         // disallow paste in email fields

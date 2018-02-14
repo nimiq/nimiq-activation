@@ -15,6 +15,8 @@ import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-
 export default class ActivationTool extends XAppScreen {
     html() {
         return `
+            <screen-success></screen-success>
+            <screen-error></screen-error>
             <screen-loading><h2>Checking activation token...</h2></screen-loading>
             <screen-welcome></screen-welcome>
             <screen-identicons></screen-identicons>
@@ -22,7 +24,6 @@ export default class ActivationTool extends XAppScreen {
             <screen-backup-phrase-validate></screen-backup-phrase-validate>
             <screen-backup-file></screen-backup-file>
             <screen-activation></screen-activation>
-            <screen-error></screen-error>
             <x-nimiq-api></x-nimiq-api>
             <x-activation-utils></x-activation-utils>
         `
@@ -71,7 +72,7 @@ export default class ActivationTool extends XAppScreen {
     }
 
     _onEntry() {
-        this._activationToken = new URLSearchParams(document.location.search).get("activation_token"); 
+        this._activationToken = new URLSearchParams(document.location.search).get("activation_token");
         this.$activationUtils._api.isValidToken(this._activationToken);
     }
 

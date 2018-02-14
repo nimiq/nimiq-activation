@@ -7,13 +7,13 @@ export default class ScreenActivation extends XScreen {
     html() {
         return `
             <h1>Activate your Nimiq Account</h1>
-            <h2 secondary>Send your NET to the unique Activation Address for your Nimiq Account</h2> 
+            <h2 secondary>Send your NET to the unique Activation Address for your Nimiq Account</h2>
             <x-slides>
                 <screen-warning>
-                    On the next screen you will see an Ethereum Address. 
+                    On the next screen you will see an Ethereum Address.
                     <ul>
-                        <li>Send only NET to this address.</li>  
-                        <li>If you send Ether it will get destroyed!</li>  
+                        <li>Send only NET to this address.</li>
+                        <li>If you send Ether it will become inaccessible!</li>
                     </ul>
                 </screen-warning>
                 <screen-activation-address></screen-activation-address>

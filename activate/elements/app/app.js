@@ -65,12 +65,11 @@ export default class ActivationTool extends XAppScreen {
 
     async _onKeyPair(keyPair) {
         const api = NanoApi.getApi();
-        const nimAddress = api.wallet.address;
+        const nimAddress = await api.getAddress();
         const ethAddress = await api.nim2ethAddress(nimAddress);
-        this._userFriendlyNimAddress = nimAddress.toUserFriendlyAddress();
 
         this.$screenActivation.setAddress(ethAddress);
-        ActivationUtils.activateAddress(this._activationToken, this._userFriendlyNimAddress);
+        ActivationUtils.activateAddress(this._activationToken, nimAddress);
 
         const hexedPrivKey = keyPair.privateKey.toHex();
         this.$screenBackupPhrase.privateKey = hexedPrivKey

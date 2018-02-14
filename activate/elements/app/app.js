@@ -15,7 +15,6 @@ import NanoApi from '/libraries/nano-api/nano-api.js';
 export default class ActivationTool extends XAppScreen {
     html() {
         return `
-            <screen-success></screen-success>
             <screen-error></screen-error>
             <screen-loading><h2>Checking activation token...</h2></screen-loading>
             <screen-welcome></screen-welcome>
@@ -49,7 +48,6 @@ export default class ActivationTool extends XAppScreen {
             'x-keypair': '_onKeyPair',
             'x-phrase-validated': '_onPhraseValidated',
             'x-backup-file-complete': '_onBackupFileComplete',
-            'x-activation-activate-address': '_onActivateAddress',
             'x-activation-complete': '_onActivationComplete'
         }
     }
@@ -66,23 +64,19 @@ export default class ActivationTool extends XAppScreen {
         }
     }
 
-    _onActivateAddress(success) {
-        if (!success) {
-            this.$screenError.show('Your address could not be activated. Please try again.');
-            location.href = '#error';
-        }
-    }
-
     async _onKeyPair(keyPair) {
+        const api = NanoApi.getApi();
+        const nimAddress = api.wallet.address;
+        const ethAddress = await api.nim2ethAddress(nimAddress);
+        this._userFriendlyNimAddress = nimAddress.toUserFriendlyAddress();
+
+        this.$screenActivation.setAddress(ethAddress);
+        ActivationUtils.activateAddress(this._activationToken, this._userFriendlyNimAddress);
+
         const hexedPrivKey = keyPair.privateKey.toHex();
         this.$screenBackupPhrase.privateKey = hexedPrivKey
         this.$screenBackupPhraseValidate.privateKey = hexedPrivKey;
         this.$screenBackupFile.setKeyPair(keyPair);
-        const nimAddress = NanoApi.getApi().$.wallet.address;
-        const ethAddress = await ActivationUtils.nim2ethAddress(nimAddress);
-        this._userFriendlyNimAddress = nimAddress.toUserFriendlyAddress();
-        this.$screenActivation.setAddress(ethAddress);
-        ActivationUtils.activateAddress(this._activationToken, this._userFriendlyNimAddress);
         location.href = '#backup-file';
     }
 

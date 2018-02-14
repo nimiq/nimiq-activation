@@ -3,7 +3,7 @@ import XIdenticon from '/elements/x-identicon/x-identicon.js';
 import XAddress from '/elements/x-address/x-address.js';
 import XAmount from '/elements/x-amount/x-amount.js';
 import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js';
-import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
+import NanoApi from '/libraries/nano-api/nano-api.js';
 
 export default class ScreenAccount extends XScreen {
     html() {
@@ -15,18 +15,11 @@ export default class ScreenAccount extends XScreen {
 				<x-address></x-address>
 				<x-amount></x-amount>
 			</x-grow>
-			<x-nimiq-api></x-nimiq-api>
 			<button>Back to Dashboard</button>
 		`
     }
 
-    children() { return [XIdenticon, XAddress, XAmount, XNimiqApi] }
-
-    listeners() {
-        return {
-            'x-api-ready': '_onApiReady'
-        }
-    }
+    children() { return [XIdenticon, XAddress, XAmount] }
 
     onCreate() {
         this.$('button').addEventListener('click', e => this._onBack());
@@ -36,26 +29,20 @@ export default class ScreenAccount extends XScreen {
         this.goTo('home/accounts');
     }
 
-    _onApiReady() {
-        if (!this._address) return;
-        this._fetchAmount(this._address);
+    _onBeforeEntry() {
+        this.address = new URLSearchParams(document.location.search).get("address");
+        this._fetchAmount();
     }
 
     set address(address) {
         this.$identicon.address = address;
         this.$address.address = address;
         this._address = address;
-        if (this.$nimiqApi.initialized)
-            this._onApiReady();
     }
 
     async _fetchAmount(address) {
-        const ethAddress = await ActivationUtils.nim2ethAddress(address);
+        const ethAddress = await NanoApi.getApi().nim2ethAddress(address);
         const balance = await ActivationUtils.fetchBalance(ethAddress);
         this.$amount.value = balance;
-    }
-
-    _onBeforeEntry() {
-        this.address = new URLSearchParams(document.location.search).get("address");
     }
 }

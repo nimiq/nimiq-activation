@@ -66,5 +66,3 @@ export default class ScreenFormHandler extends XScreen {
         }
     }
 }
-
-// Todo: Bug: Error message not working

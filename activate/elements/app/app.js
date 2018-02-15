@@ -27,6 +27,19 @@ export default class ActivationTool extends XAppScreen {
         `
     }
 
+    types() {
+        /** @type {ScreenBackupPhrase} */
+        this.$screenBackupPhrase = null;
+        /** @type {ScreenBackupPhraseValidate} */
+        this.$screenBackupPhraseValidate = null;
+        /** @type {ScreenBackupFile} */
+        this.$screenBackupFile = null;
+        /** @type {ScreenActivation} */
+        this.$screenActivation = null;
+        /** @type {ScreenError} */
+        this.$screenError = null;
+    }
+
     children() {
         return [
             ScreenLoading,
@@ -63,6 +76,7 @@ export default class ActivationTool extends XAppScreen {
         }
         else {
             this.$screenError.show('Your activation token is invalid. Please go back to the dashboard and try again.');
+            this.$screenError.setLink('/apps/nimiq-activation/dashboard', 'Go to Dashboard');
             location.href = '#error';
         }
     }
@@ -82,6 +96,7 @@ export default class ActivationTool extends XAppScreen {
             location.href = '#backup-file'
         } else {
             this.$screenError.show('Your activation token is invalid. Please go back to the dashboard and try again.');
+            this.$screenError.setLink('/apps/nimiq-activation/dashboard', 'Go to Dashboard');
             location.href = '#error';
         }
     }
@@ -107,5 +122,3 @@ export default class ActivationTool extends XAppScreen {
 ActivationTool.launch();
 
 // Todo: Back links
-
-// Todo: Add link to dashboard to invalid token error screen

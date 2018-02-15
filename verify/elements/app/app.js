@@ -45,15 +45,6 @@ export default class Verify extends XAppScreen {
             [ ScreenError ]
         ]
     }
-
-    _onEntry() {
-        const ua = navigator.userAgent.toLowerCase();
-        const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
-        const safari = ua.includes('safari') && !ua.includes('chrome');
-        if (iOS || safari) {
-            this.goTo('error');
-        }
-    }
 }
 
 Verify.launch();

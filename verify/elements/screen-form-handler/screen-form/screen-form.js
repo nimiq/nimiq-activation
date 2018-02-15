@@ -1,8 +1,8 @@
-import XScreen from '/elements/x-screen/x-screen-fit.js';
+import XScreenFit from '/elements/x-screen/x-screen-fit.js';
 import XCountrySelect from './x-country-select/x-country-select.js';
 import XDateofbirthSelect from './x-dateofbirth-select/x-dateofbirth-select.js';
 
-export default class ScreenForm extends XScreen {
+export default class ScreenForm extends XScreenFit {
     html() {
         return `
             <h1>Enter your Details</h1>

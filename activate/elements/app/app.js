@@ -65,7 +65,7 @@ export default class ActivationTool extends XAppScreen {
 
     async _onKeyPair(keyPair) {
         const api = NanoApi.getApi();
-        const nimAddress = await api.getAddress();
+        const nimAddress = keyPair.address;
 
         const activationSuccessfull = await ActivationUtils.activateAddress(this._activationToken, nimAddress);
         if (activationSuccessfull) {

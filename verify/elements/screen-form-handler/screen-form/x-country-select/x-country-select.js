@@ -48,11 +48,11 @@ export default class XCountrySelect extends XElement {
                 <option value="COD">Congo, the Democratic Republic of the</option>
                 <option value="COK">Cook Islands</option>
                 <option value="CRI">Costa Rica</option>
+                <option value="CIV">C&ocirc;te d'Ivoire</option>
                 <option value="HRV">Croatia</option>
                 <option value="CUB">Cuba</option>
                 <option value="CYP">Cyprus</option>
                 <option value="CZE">Czech Republic</option>
-                <option value="CIV">Côte d'Ivoire</option>
                 <option value="DNK">Denmark</option>
                 <option value="DJI">Djibouti</option>
                 <option value="DMA">Dominica</option>
@@ -113,7 +113,7 @@ export default class XCountrySelect extends XElement {
                 <option value="MAC">Macao</option>
                 <option value="MKD">Macedonia, the former Yugoslav Republic of</option>
                 <option value="MDG">Madagascar</option>
-                <option value="MWI">Malawi</option> 
+                <option value="MWI">Malawi</option>
                 <option value="MYS">Malaysia</option>
                 <option value="MDV">Maldives</option>
                 <option value="MLI">Mali</option>
@@ -160,7 +160,6 @@ export default class XCountrySelect extends XElement {
                 <option value="SMR">San Marino</option>
                 <option value="STP">Sao Tome and Principe</option>
                 <option value="SAU">Saudi Arabia</option>
-                <option value="">Select Country</option>
                 <option value="SEN">Senegal</option>
                 <option value="SRB">Serbia</option>
                 <option value="SYC">Seychelles</option>

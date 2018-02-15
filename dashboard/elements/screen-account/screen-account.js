@@ -30,8 +30,8 @@ export default class ScreenAccount extends XScreen {
     }
 
     async _onBeforeEntry() {
-        this._address = new URLSearchParams(document.location.search).get("address");
-        await this._fetchAmount(this._address);
+        this.address = new URLSearchParams(document.location.search).get("address");
+        await this._fetchAmount();
     }
 
     set address(address) {
@@ -40,8 +40,8 @@ export default class ScreenAccount extends XScreen {
         this._address = address;
     }
 
-    async _fetchAmount(address) {
-        const ethAddress = await NanoApi.getApi().nim2ethAddress(address);
+    async _fetchAmount() {
+        const ethAddress = await NanoApi.getApi().nim2ethAddress(this._address);
         const balance = await ActivationUtils.fetchBalance(ethAddress);
         this.$amount.value = balance;
     }

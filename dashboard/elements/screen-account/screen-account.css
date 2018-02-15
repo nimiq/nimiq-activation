@@ -1,6 +1,6 @@
 @import '/elements/x-amount/x-amount.css';
 
-screen-account x-identicon{
+screen-account x-identicon svg {
 	width: 104px;
 	height: 104px;
 }

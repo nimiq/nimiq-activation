@@ -1,6 +1,6 @@
-import XScreen from '/elements/x-screen/x-screen-fit.js';
+import XScreenFit from '/elements/x-screen/x-screen-fit.js';
 
-export default class ScreenConfirm extends XScreen {
+export default class ScreenConfirm extends XScreenFit {
 
     html() {
         return `

@@ -1,6 +1,6 @@
 import XScreen from '/elements/x-screen/x-screen.js';
 
-export default class ScreenTerms extends XScreen {
+export default class ScreenTerms2 extends XScreen {
     html() {
         return `
 		    <h1>Activation Terms</h1>
@@ -20,7 +20,7 @@ export default class ScreenTerms extends XScreen {
 		    	</p>
 		    	<div class="same-size-buttons">
 				    <a id="disagree" button class="small fixed-size secondary" href="https://www.nimiq.com">I Disagree</a>
-				    <a id="agree" button class="small fixed-size" href="#terms2">I Agree</a>
+				    <a id="agree" button class="small fixed-size" href="#form-handler">I Agree</a>
 				</div>
 		    </section>
 		`

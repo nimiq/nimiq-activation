@@ -34,15 +34,14 @@ export default class ScreenHome extends XScreen {
         }
 
         const apiResponse = await ActivationUtils.getDashboardData(dashboardToken);
-        if (!apiResponse.ok) {
-            this.$screenError.show('Invalid dashboard token. Please use a valid link.');
-            this.goTo('error');
-
-        } else {
-            const result = await apiResponse.toJSON();
+        if (apiResponse.ok) {
+            const result = await apiResponse.json();
             this._activationToken = result.activation_token;
             this.$screenAccounts.accounts = result.addresses;
             this.goTo('accounts');
+        } else {
+            this.$screenError.show('Invalid dashboard token. Please use a valid link.');
+            this.goTo('error');
         }
     }
 

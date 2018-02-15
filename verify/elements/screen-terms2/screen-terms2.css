@@ -1,0 +1,16 @@
+screen-terms2 p {
+    text-align: left;
+    padding-bottom: 8px;
+}
+
+screen-terms2 section {
+	overflow-y: auto;
+}
+
+screen-terms2 [button]{
+	margin: 32px 10px;
+}
+
+screen-terms2 .same-size-buttons {
+    display: flex;
+}

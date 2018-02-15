@@ -107,3 +107,5 @@ export default class ActivationTool extends XAppScreen {
 ActivationTool.launch();
 
 // Todo: Back links
+
+// Todo: Add link to dashboard to invalid token error screen

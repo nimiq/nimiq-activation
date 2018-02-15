@@ -26,6 +26,9 @@ export default class ScreenHome extends XScreen {
     }
 
     async _onBeforeEntry() {
+        if (this._hasContent) return;
+        this._hasContent = true;
+
         let dashboardToken = new URLSearchParams(document.location.search).get("dashboard_token");
         if (dashboardToken !== null) {
             localStorage.setItem('dashboardToken', dashboardToken);

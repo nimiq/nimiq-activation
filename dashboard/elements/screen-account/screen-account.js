@@ -29,9 +29,9 @@ export default class ScreenAccount extends XScreen {
         this.goTo('home/accounts');
     }
 
-    _onBeforeEntry() {
-        this.address = new URLSearchParams(document.location.search).get("address");
-        this._fetchAmount();
+    async _onBeforeEntry() {
+        this._address = new URLSearchParams(document.location.search).get("address");
+        await this._fetchAmount(this._address);
     }
 
     set address(address) {

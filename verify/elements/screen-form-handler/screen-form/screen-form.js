@@ -76,8 +76,8 @@ export default class ScreenForm extends XScreenFit {
     }
 
     types() {
-        /** @type {XCountrySelect} */
-        this.$countrySelect = null;
+        /** @type {XCountrySelect[]} */
+        this.$countrySelects = null;
         /** @type {XDateofbirthSelect} */
         this.$dateofbirthSelect = null;
         /** @type {Element} */

@@ -51,6 +51,10 @@ export default class ActivationTool extends XAppScreen {
         }
     }
 
+    onCreate() {
+        location.href = "#";
+    }
+
     async _onEntry() {
         this._activationToken = new URLSearchParams(document.location.search).get("activation_token");
         const isValidToken = await ActivationUtils.isValidToken(this._activationToken);

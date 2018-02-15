@@ -45,6 +45,11 @@ export default class Verify extends XAppScreen {
             [ ScreenError ]
         ]
     }
+
+    onCreate() {
+        location.href = "#";
+    }
+
 }
 
 Verify.launch();

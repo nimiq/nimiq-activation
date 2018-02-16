@@ -3,7 +3,7 @@ import XElement from '/libraries/x-element/x-element.js';
 export default class XCountrySelect extends XElement {
     html() {
         return `
-            <select name="nationality" required="">
+            <select>
                 <option value="">Select Country</option>
                 <option value="AFG">Afghanistan</option>
                 <option value="ALB">Albania</option>

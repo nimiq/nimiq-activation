@@ -1365,7 +1365,7 @@ class NanoApi {
 
     setXElement(xElement) {
        this._xElement = xElement;
-       this.fire = this._xElement.fire;
+       this.fire = this._xElement.fire.bind(xElement);
     }
 
     // Copied from x-element.

@@ -683,7 +683,7 @@ class ScreenTerms extends XScreen {
 class ScreenTerms2 extends XScreen {
     html() {
         return `
-		    <h1>Activation Terms</h1>
+		    <h1>Privacy Policy</h1>
 		    <h2>Please read the following terms carefully</h2>
 		    <section>
 		    	<h3>Heading 1</h3>

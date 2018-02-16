@@ -659,7 +659,7 @@ class ScreenWarning extends XScreenFit {
     }
 }
 
-class ScreenWelcome extends XScreenFit {
+class ScreenWelcome extends XScreen {
     html() {
         return `
             <x-slides>
@@ -686,7 +686,7 @@ class ScreenWelcome extends XScreenFit {
     }
 }
 
-class ScreenWelcomeIntro extends XScreenFit {
+class ScreenWelcomeIntro extends XScreen {
 
     html() {
         return `
@@ -1106,7 +1106,7 @@ class NanoApi {
 
     setXElement(xElement) {
        this._xElement = xElement;
-       this.fire = this._xElement.fire;
+       this.fire = this._xElement.fire.bind(xElement);
     }
 
     // Copied from x-element.
@@ -3042,7 +3042,7 @@ class ActivationTool extends XAppScreen {
     }
 
     onCreate() {
-        location.href = "#";
+        if (!this._error) location.href = "#";
     }
 
     async _onEntry() {
@@ -3091,7 +3091,8 @@ class ActivationTool extends XAppScreen {
     }
 
     _onDifferentTabError() {
-        this.$screenError.show('Nimiq is already running in a different tab');
+        this._error = 'Nimiq is already running in a different tab';
+        this.$screenError.show(this._error);
         location = '#error';
     }
 }

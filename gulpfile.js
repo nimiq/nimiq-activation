@@ -39,6 +39,7 @@ function bundleCss(appName) {
         .pipe(sourcemaps.init())
         .pipe(cssImport({
             includePaths: [ROOT_PATH],
+            // transform absolute paths to nimiq root path
             transform: path => path.startsWith('/')? `${__dirname}/../..${path}` : path
         }))
         // the css import will inline the same css multiple times if imported multiple times thus we'll clean it up.
@@ -47,7 +48,16 @@ function bundleCss(appName) {
         }));
 }
 
-function moveAssets(assetPaths, jsStream, cssStream) {
+function bundleHtml(appName) {
+    return gulp.src(`${appName}/index.html`)
+        .pipe(htmlReplace({
+            'js': 'app.js',
+            'css': 'app.css',
+            'browser-warning': gulp.src(ROOT_PATH + '/elements/browser-warning/browser-warning.html.template')
+        }));
+}
+
+function moveAssets(assetPaths, jsStream, cssStream, htmlStream) {
     const assetFileNames = assetPaths.map(path => path.substr(path.lastIndexOf('/') + 1));
     const resolvedAssetPaths = assetPaths.map(path => path.startsWith('/')? ROOT_PATH+path : path);
     const assetsStream = gulp.src(resolvedAssetPaths); // copy assets unchanged
@@ -56,49 +66,44 @@ function moveAssets(assetPaths, jsStream, cssStream) {
         const regex = new RegExp(assetPaths[i], 'g');
         jsStream = jsStream.pipe(replace(regex, assetFileNames[i]));
         cssStream = cssStream.pipe(replace(regex, assetFileNames[i]));
+        htmlStream = htmlStream.pipe(replace(regex, assetFileNames[i]));
     }
-    return [jsStream, cssStream, assetsStream];
+    return [jsStream, cssStream, htmlStream, assetsStream];
 }
 
 function getAssets(appName) {
+    const commonAssets = [
+        '/elements/screen-error/screen-error.svg',
+        '/elements/browser-warning/browser-warning.js'
+    ];
     switch (appName) {
-        case 'verify':
-        case 'dashboard':
-            return ['/elements/screen-error/screen-error.svg'];
         case 'activate':
-            return ['/elements/screen-error/screen-error.svg', '/libraries/qr-scanner/qr-scanner-worker.min.js'];
+            return commonAssets.concat(['/libraries/qr-scanner/qr-scanner-worker.min.js']);
         default:
-            return [];
+            return commonAssets;
     }
 }
 
 function build(appName) {
     let jsStream = bundleJs(appName);
     let cssStream = bundleCss(appName);
+    let htmlStream = bundleHtml(appName);
     let assetsStream;
-    [jsStream, cssStream, assetsStream] = moveAssets(getAssets(appName), jsStream, cssStream);
+    [jsStream, cssStream, htmlStream, assetsStream] = moveAssets(getAssets(appName), jsStream, cssStream, htmlStream);
     const minJsStream = jsStream
         .pipe(clone())
         .pipe(rename('app.min.js'))
         .pipe(babel({
             presets: ['minify']
         }));
-    const htmlStream = gulp.src(`${appName}/index.html`)
-        .pipe(htmlReplace({
-            'js': 'app.js',
-            'css': 'app.css'
-        }));
-    return merge([jsStream, minJsStream, cssStream, assetsStream, htmlStream])
+    return merge([jsStream, minJsStream, cssStream, htmlStream, assetsStream])
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(`${appName}/dist/`));
 }
 
 function cleanBuild(buildName) {
-    return new Promise(resolve =>
-        gulp.src(`${buildName}/dist`, {read: false})
-            .pipe(clean())
-            .on('end', resolve)
-    );
+    return gulp.src(`${buildName}/dist`, {read: false})
+        .pipe(clean());
 }
 
 gulp.task('clean-activate-app', () => cleanBuild('activate'));

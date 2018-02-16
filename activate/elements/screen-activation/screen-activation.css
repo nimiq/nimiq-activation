@@ -11,3 +11,7 @@ screen-activation h3{
 screen-activation button{
 	margin-top: 16px;
 }
+
+screen-activation strong {
+    color: var(--error-color);
+}

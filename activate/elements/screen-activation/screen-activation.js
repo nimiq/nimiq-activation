@@ -12,8 +12,8 @@ export default class ScreenActivation extends XScreen {
                 <screen-warning>
                     On the next screen you will see an Ethereum Address.
                     <ul>
-                        <li>Send only NET to this address.</li>
-                        <li>If you send Ether it will become inaccessible!</li>
+                        <li>Send <strong>at least 1 NET</strong> to this address.</li>
+                        <li>Sending any other digital asset or less then 1 NET will result in permanent loss!</li>
                     </ul>
                 </screen-warning>
                 <screen-activation-address></screen-activation-address>

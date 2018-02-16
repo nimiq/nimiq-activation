@@ -1,6 +1,6 @@
 @media (min-width: 420px) {
     screen-terms.x-screen {
-        max-width: 848px;
+        max-width: 1072px;
         max-height: none !important;
     }
     screen-terms section {
@@ -24,6 +24,7 @@ screen-terms section {
 
 screen-terms [button]{
 	margin: 32px 10px;
+    max-width: none;
 }
 
 screen-terms .same-size-buttons {

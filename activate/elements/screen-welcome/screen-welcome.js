@@ -1,7 +1,7 @@
-import XScreenFit from '/elements/x-screen/x-screen-fit.js';
+import XScreen from '/elements/x-screen/x-screen.js';
 import ScreenWarning from '/elements/screen-warning/screen-warning.js';
 
-export default class ScreenWelcome extends XScreenFit {
+export default class ScreenWelcome extends XScreen {
     html() {
         return `
             <x-slides>
@@ -28,7 +28,7 @@ export default class ScreenWelcome extends XScreenFit {
     }
 }
 
-class ScreenWelcomeIntro extends XScreenFit {
+class ScreenWelcomeIntro extends XScreen {
 
     html() {
         return `

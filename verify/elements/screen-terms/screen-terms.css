@@ -9,8 +9,13 @@
 }
 
 screen-terms p {
-    text-align: left;
+    text-align: justify;
     padding-bottom: 8px;
+}
+
+screen-terms li {
+    text-align: justify;
+    line-height: 19px;
 }
 
 screen-terms section {

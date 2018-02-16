@@ -1,3 +1,13 @@
+@media (min-width: 420px) {
+    screen-terms {
+        max-width: 900px;
+        padding: 16px 44px 24px;
+    }
+    screen-terms section {
+        padding: 16px 44px 24px;
+    }
+}
+
 screen-terms p {
     text-align: left;
     padding-bottom: 8px;

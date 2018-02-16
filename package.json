@@ -1,0 +1,28 @@
+{
+  "name": "nimiq-activation",
+  "version": "1.0.0",
+  "description": "NET to NIM Activation Tool",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nimiq",
+    "activation"
+  ],
+  "author": "Nimiq Foundation",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-better-rollup": "^3.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-clean-css": "^3.9.2",
+    "gulp-cssimport": "^6.0.0",
+    "gulp-html-replace": "^1.6.2",
+    "gulp-replace": "^0.6.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "merge2": "^1.2.1",
+    "rollup-plugin-root-import": "^0.2.2"
+  }
+}

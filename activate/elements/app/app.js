@@ -65,7 +65,7 @@ export default class ActivationTool extends XAppScreen {
     }
 
     onCreate() {
-        location.href = "#";
+        if (!this._error) location.href = "#";
     }
 
     async _onEntry() {
@@ -114,7 +114,8 @@ export default class ActivationTool extends XAppScreen {
     }
 
     _onDifferentTabError() {
-        this.$screenError.show('Nimiq is already running in a different tab');
+        this._error = 'Nimiq is already running in a different tab';
+        this.$screenError.show(this._error);
         location = '#error';
     }
 }

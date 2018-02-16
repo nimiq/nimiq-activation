@@ -20,7 +20,9 @@
     "gulp-clean-css": "^3.9.2",
     "gulp-cssimport": "^6.0.0",
     "gulp-html-replace": "^1.6.2",
+    "gulp-replace": "^0.6.1",
     "gulp-sourcemaps": "^2.6.4",
+    "merge2": "^1.2.1",
     "rollup-plugin-root-import": "^0.2.2"
   }
 }

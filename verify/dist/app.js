@@ -15,23 +15,24 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {XElement | Element | null} parent
      * @memberof XElement
      */
     __bindDOM(parent) {
-        if (parent instanceof XElement) this.$el = parent.$(this.__tagName); // query in parent for tag name
+        if (parent instanceof XElement) this.$el = parent.$(this.__tagName + ':not([x-initialized])'); // query in parent for tag name
         else if (parent instanceof Element) this.$el = parent; // The parent is this DOM-Element
         else this.$el = document.querySelector(this.__tagName); // query in document for tag name
+        this.$el.setAttribute('x-initialized', true);
         this.__fromHtml();
         this.__bindStyles(this.styles);
     }
 
     /**
-     * 
-     * 
-     * @returns 
+     *
+     *
+     * @returns
      * @memberof XElement
      */
     __createChildren() { // Create all children recursively
@@ -40,8 +41,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {XElement | XElement[]} child
      * @returns {void}
      * @memberof XElement
@@ -52,21 +53,21 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {XElement} child
      * @memberof XElement
      */
     __createArrayOfChild(child) {
         const name = child.__toChildName() + 's';
         const tagName = XElement.__toTagName(child.name);
-        const children = this.$$(tagName);
+        const foundChildren = this.$$(tagName + ':not([x-initialized])');
         this[name] = [];
-        children.forEach(c => this[name].push(new child(c)));
+        foundChildren.forEach(c => this[name].push(new child(c)));
     }
     /**
-     * 
-     * 
+     *
+     *
      * @static
      * @param {string} str
      * @returns {string}
@@ -80,8 +81,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @static
      * @returns {string}
      * @memberof XElement
@@ -93,9 +94,9 @@ class XElement {
     }
 
     /**
-     * 
-     * 
-     * @returns 
+     *
+     *
+     * @returns
      * @memberof XElement
      */
     __fromHtml() {
@@ -111,8 +112,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @readonly
      * @memberof XElement
      */
@@ -121,11 +122,11 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @static
      * @param {string} name
-     * @returns 
+     * @returns
      * @memberof XElement
      */
     static __toTagName(name) {
@@ -133,10 +134,10 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @static
-     * @returns 
+     * @returns
      * @memberof XElement
      */
     static createElement() {
@@ -146,8 +147,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     * Find the first match of a selector within this element.
+     *
      * @param {string} selector
      * @returns {Element}
      * @memberof XElement
@@ -155,34 +156,35 @@ class XElement {
     $(selector) { return this.$el.querySelector(selector) } // Query inside of this DOM-Element
 
     /**
-     * 
-     * 
+     * Finds all matches of a selector within this element.
+     *
      * @param {string} selector
-     * @returns {Element[]}
+     * @returns {NodeList}
      * @memberof XElement
      */
     $$(selector) { return this.$el.querySelectorAll(selector) } // QueryAll inside of this DOM-Element
+
     /**
-     * 
-     * 
+     *
+     *
      * @memberof XElement
      */
     clear() { while (this.$el.firstChild) this.$el.removeChild(this.$el.firstChild); } // Clear all DOM-Element children
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} type
      * @param {function} callback
      * @memberof XElement
      */
     addEventListener(type, callback) { this.$el.addEventListener(type, callback, false); }
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} eventType
-     * @param {any} [detail=null] 
-     * @param {boolean} [bubbles=true] 
+     * @param {any} [detail=null]
+     * @param {boolean} [bubbles=true]
      * @memberof XElement
      */
     fire(eventType, detail = null, bubbles = true) { // Fire DOM-Event
@@ -190,8 +192,8 @@ class XElement {
         this.$el.dispatchEvent(new CustomEvent(eventType, params));
     }
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} type
      * @param {function} callback
      * @param {Element | window} $el
@@ -206,24 +208,24 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} styleClass
      * @memberof XElement
      */
     addStyle(styleClass) { this.$el.classList.add(styleClass); }
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} styleClass
      * @memberof XElement
      */
     removeStyle(styleClass) { this.$el.classList.remove(styleClass); }
     /**
-     * 
-     * 
+     *
+     *
      * @param {() => string[]} styles
-     * @returns 
+     * @returns
      * @memberof XElement
      */
     __bindStyles(styles) {
@@ -233,8 +235,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} className
      * @param {Element | string} $el
      * @param {() => void} afterStartCallback
@@ -257,8 +259,8 @@ class XElement {
         })
     }
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} className
      * @param {Element | string} $el
      * @memberof XElement
@@ -278,8 +280,6 @@ class XElement {
     }
 }
 
-// Todo: Bug/Pitfall: When instantiating a screen twice on a path down a screen tree (e.g. loading), it has to be declared as an array on the higher level.
-
 class XState {
     constructor(path) {
         /** @type {string} */
@@ -291,11 +291,15 @@ class XState {
         if (child.length && child[0]) this._child = new XState(child);
         /** @type {boolean} */
         this._isLeaf = !this._child;
+        /** @type {string[]} */
         this._path = path;
     }
 
     /** @returns {boolean} */
     get isLeaf() { return this._isLeaf; }
+
+    /** @returns {string} */
+    get leafId() { return this._path[this._path.length]; }
 
     /** @returns {string} */
     get id() { return this._id; }
@@ -426,7 +430,7 @@ class XScreen extends XElement {
 
     _registerRootElement() {
         XScreen._registerGlobalStateListener(this._onRootStateChange.bind(this));
-        this._show();
+        setTimeout(e => this._show(), 100);
     }
 
     /**
@@ -552,10 +556,6 @@ class XScreen extends XElement {
         })
     }
 
-    goToChild(route) {
-        document.location = this._location + '/' + route;
-    }
-
     back() {
         return new Promise(resolve => {
             XScreen._goToResolve = resolve;
@@ -610,21 +610,16 @@ class XScreen extends XElement {
         XScreen._goToResolve = null;
     }
 
-    _validateState(nextState, prevState, isNavigateBack) { return true /* Abstract Method */ }
-
-
     /** @param {function} callback */
     static _registerGlobalStateListener(callback) {
         if (this._stateListener) return; // We register only the first screen calling. All other screens get notified by their parent
         this._stateListener = window.addEventListener('popstate', e => this._onHistoryChange(callback));
-        this._onHistoryChange(callback, true);
+        setTimeout(e => this._onHistoryChange(callback), 0); // Trigger FF layout
     }
 
     /** @param {function} callback */
-    static _onHistoryChange(callback, isPageLoad) {
-        let nextState;
-        if (isPageLoad) nextState = XState.fromLocation('#');
-        else nextState = XState.fromLocation();
+    static _onHistoryChange(callback) {
+        const nextState = XState.fromLocation();
         if (nextState.isEqual(this.currState)) return;
         const isNavigateBack = (nextState.isEqual(this.prevState));
         this.prevState = this.currState;
@@ -636,7 +631,6 @@ class XScreen extends XElement {
 }
 
 // Todo: Fix kind of animations when using back and forward buttons in whatever order
-// Todo Fix general page layout (Firefox bugs, absolute positioning)
 
 class XScreenFit extends XScreen {
     styles() { return ['x-screen-fit'] }
@@ -679,6 +673,33 @@ class ScreenTerms extends XScreen {
 		    	</p>
 		    	<div class="same-size-buttons">
 				    <a id="disagree" button class="small fixed-size secondary" href="https://www.nimiq.com">I Disagree</a>
+				    <a id="agree" button class="small fixed-size" href="#terms2">I Agree</a>
+				</div>
+		    </section>
+		`
+    }
+}
+
+class ScreenTerms2 extends XScreen {
+    html() {
+        return `
+		    <h1>Activation Terms</h1>
+		    <h2>Please read the following terms carefully</h2>
+		    <section>
+		    	<h3>Heading 1</h3>
+		    	<p>
+		    		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		    	</p>
+		    	<h3>Heading 2</h3>
+		    	<p>
+		    		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		    	</p>
+		    	<h3>Heading 3</h3>
+		    	<p>
+		    		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		    	</p>
+		    	<div class="same-size-buttons">
+				    <a id="disagree" button class="small fixed-size secondary" href="https://www.nimiq.com">I Disagree</a>
 				    <a id="agree" button class="small fixed-size" href="#form-handler">I Agree</a>
 				</div>
 		    </section>
@@ -686,166 +707,19 @@ class ScreenTerms extends XScreen {
     }
 }
 
-class ActivationUtils {
-    static get API_ROOT() { return 'https://activate.nimiq-network.com' }
-
-    /** @param {string} ethAddress
-     *  @return {Promise<number>}*/
-    static async fetchBalance(ethAddress) {
-        const response = await fetch(`https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=0xcfb98637bcae43C13323EAa1731cED2B716962fD&tag=latest&address=${ethAddress}`);
-        return (await response.json()).result;
-    }
-
-    /** @param {string | Nimiq.Address} address 
-     * @return {Promise<string>} */
-    static async nim2ethAddress(address) {
-        const addressObj = (typeof address  === 'string') ? ActivationUtils.getUnfriendlyAddress(address) : address;
-        const hash = await Nimiq.Hash.sha256(addressObj.serialize());
-        return '0x' + Nimiq.BufferUtils.toHex(hash.subarray(0, 20));
-    }
-
-    /** @param {string} friendlyAddress */
-    static getUnfriendlyAddress(friendlyAddress) {
-        return Nimiq.Address.fromUserFriendlyAddress(friendlyAddress);
-    }
-
-    /** @param {string} dashboardToken */
-    async getDashboardData(dashboardToken) {
-        try {
-            const request = fetch(
-                `${ActivationUtils.API_ROOT}/list/${dashboardToken}`,
-                { method: 'GET' }
-            );
-
-            const result = await request.then(response => {
-                if (!response.ok) {
-                    this.onDashboardTokenError();
-                } else {
-                    return response.json();
-                }
-            });
-
-            if (result) {
-                this.onDashboardDataResult(result);
-            } 
-        } catch(e) {
-            this.onDashboardTokenError();
-        }
-    }
-
-
-    /** @param {string} activationToken */
-    async isValidToken(activationToken) {
-        const request = fetch(
-            `${ActivationUtils.API_ROOT}/activate/${activationToken}`,
-            { method: 'GET' }
-        );
-        try {
-            const response = await request;
-            this.onIsValidToken(response.ok);
-        } catch (e) {
-            this.onIsValidToken(false);
-        }
-    }
-
-    /** @param {string} activationToken
-     * @param {string} nimiqAddress */
-    async activateAddress(activationToken, nimiqAddress) {
-        const request = fetch(
-            `${ActivationUtils.API_ROOT}/activate/address`,
-            { 
-                method: 'POST',
-                body: JSON.stringify({
-                    'activation_token': activationToken,
-                    'nimiq_address': nimiqAddress
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            }
-        );
-
-        const response = await request;
-        this.onActivateAddress(response.ok);
-    }
-
-    /** @param {{birthday: Date, city: string, country_residence: string, country_nationality: string, email: string, sex: string, first_name: string, last_name: string, street: string, zip: string }} kycData */
-    async submitKyc(kycData) {
-        const request = fetch(
-            `${ActivationUtils.API_ROOT}/submit`,
-            {
-                method: 'POST',
-                body: JSON.stringify(kycData),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-
-        const response = await request;
-        if (response.ok) {
-            this.onKycSuccess(await response.json());
-        }
-        else {
-            this.onKycError(response.status);
-        }
-    }
-}
-
-class XActivationUtils extends XElement {
-    onCreate() {
-        this._api = new ActivationToolsWrapper(this);
-    }
-}
-
-class ActivationToolsWrapper extends ActivationUtils {
-    constructor(element) {
-        super();
-        this._element = element;
-    }
-
-    onDashboardDataResult(response) {
-        this._element.fire('x-activation-dashboard-data', response);
-    }
-
-    onDashboardTokenError() {
-        this._element.fire('x-activation-dashboard-token-error');
-    }
-
-    onIsValidToken(response) {
-        this._element.fire('x-activation-valid-token', response);
-    }
-
-    onWalletCreated(response) {
-        this._element.fire('x-activation-wallet-created', response);
-    }
-    
-    onActivateAddress(response) {
-        this._element.fire('x-activation-activate-address', response);
-    }
-
-    onKycSuccess(response) {
-        this._element.fire('x-activation-post-success', response);
-    }
-
-    onKycError(errorCode) {
-        this._element.fire('x-activation-post-error', errorCode);
-    }
-}
-
 class ScreenError extends XScreen {
     html() {
         return `
-            <img src="/elements/screen-error/screen-error.svg">
+            <img src="screen-error.svg">
             <h1>Error</h1>
             <h2>Unfortunately we don't know the reason</h2>
+            <a button href="" class="small hidden"></a>
         `
     }
 
     onCreate() {
         this.$h2 = this.$('h2');
+        this.$button = this.$('[button]');
         const message = this.$el.getAttribute('message');
         if (message !== undefined) {
             this.show(message);
@@ -855,26 +729,28 @@ class ScreenError extends XScreen {
     show(message) {
         this.$h2.textContent = message;
     }
+
+    setLink(href, text) {
+        this.$button.href = href;
+        this.$button.textContent = text;
+        this.$button.classList.remove('hidden');
+    }
 }
 
 class XCountrySelect extends XElement {
     html() {
         return `
-            <select>
+            <select name="nationality" required="">
                 <option value="">Select Country</option>
                 <option value="AFG">Afghanistan</option>
-                <option value="ALA">&Aring;land Islands</option>
                 <option value="ALB">Albania</option>
                 <option value="DZA">Algeria</option>
-                <option value="ASM">American Samoa</option>
                 <option value="AND">Andorra</option>
                 <option value="AGO">Angola</option>
                 <option value="AIA">Anguilla</option>
-                <option value="ATA">Antarctica</option>
                 <option value="ATG">Antigua and Barbuda</option>
                 <option value="ARG">Argentina</option>
                 <option value="ARM">Armenia</option>
-                <option value="ABW">Aruba</option>
                 <option value="AUS">Australia</option>
                 <option value="AUT">Austria</option>
                 <option value="AZE">Azerbaijan</option>
@@ -891,9 +767,7 @@ class XCountrySelect extends XElement {
                 <option value="BOL">Bolivia, Plurinational State of</option>
                 <option value="BIH">Bosnia and Herzegovina</option>
                 <option value="BWA">Botswana</option>
-                <option value="BVT">Bouvet Island</option>
                 <option value="BRA">Brazil</option>
-                <option value="IOT">British Indian Ocean Territory</option>
                 <option value="BRN">Brunei Darussalam</option>
                 <option value="BGR">Bulgaria</option>
                 <option value="BFA">Burkina Faso</option>
@@ -903,15 +777,11 @@ class XCountrySelect extends XElement {
                 <option value="CAN">Canada</option>
                 <option value="CPV">Cape Verde</option>
                 <option value="CYM">Cayman Islands</option>
-                <option value="CAF">Central African Republic</option>
                 <option value="TCD">Chad</option>
                 <option value="CHL">Chile</option>
                 <option value="CHN">China</option>
-                <option value="CXR">Christmas Island</option>
-                <option value="CCK">Cocos (Keeling) Islands</option>
                 <option value="COL">Colombia</option>
                 <option value="COM">Comoros</option>
-                <option value="COG">Congo</option>
                 <option value="COD">Congo, the Democratic Republic of the</option>
                 <option value="COK">Cook Islands</option>
                 <option value="CRI">Costa Rica</option>
@@ -928,17 +798,11 @@ class XCountrySelect extends XElement {
                 <option value="EGY">Egypt</option>
                 <option value="SLV">El Salvador</option>
                 <option value="GNQ">Equatorial Guinea</option>
-                <option value="ERI">Eritrea</option>
                 <option value="EST">Estonia</option>
                 <option value="ETH">Ethiopia</option>
-                <option value="FLK">Falkland Islands (Malvinas)</option>
-                <option value="FRO">Faroe Islands</option>
                 <option value="FJI">Fiji</option>
                 <option value="FIN">Finland</option>
                 <option value="FRA">France</option>
-                <option value="GUF">French Guiana</option>
-                <option value="PYF">French Polynesia</option>
-                <option value="ATF">French Southern Territories</option>
                 <option value="GAB">Gabon</option>
                 <option value="GMB">Gambia</option>
                 <option value="GEO">Georgia</option>
@@ -946,25 +810,19 @@ class XCountrySelect extends XElement {
                 <option value="GHA">Ghana</option>
                 <option value="GIB">Gibraltar</option>
                 <option value="GRC">Greece</option>
-                <option value="GRL">Greenland</option>
                 <option value="GRD">Grenada</option>
-                <option value="GLP">Guadeloupe</option>
-                <option value="GUM">Guam</option>
                 <option value="GTM">Guatemala</option>
                 <option value="GGY">Guernsey</option>
                 <option value="GIN">Guinea</option>
                 <option value="GNB">Guinea-Bissau</option>
                 <option value="GUY">Guyana</option>
                 <option value="HTI">Haiti</option>
-                <option value="HMD">Heard Island and McDonald Islands</option>
-                <option value="VAT">Holy See (Vatican City State)</option>
                 <option value="HND">Honduras</option>
                 <option value="HKG">Hong Kong</option>
                 <option value="HUN">Hungary</option>
                 <option value="ISL">Iceland</option>
                 <option value="IND">India</option>
                 <option value="IDN">Indonesia</option>
-                <option value="IRN">Iran, Islamic Republic of</option>
                 <option value="IRQ">Iraq</option>
                 <option value="IRL">Ireland</option>
                 <option value="IMN">Isle of Man</option>
@@ -976,9 +834,8 @@ class XCountrySelect extends XElement {
                 <option value="JOR">Jordan</option>
                 <option value="KAZ">Kazakhstan</option>
                 <option value="KEN">Kenya</option>
-                <option value="KIR">Kiribati</option>
-                <option value="PRK">Korea, Democratic People's Republic of</option>
                 <option value="KOR">Korea, Republic of</option>
+                <option value="XKX">Kosovo</option>
                 <option value="KWT">Kuwait</option>
                 <option value="KGZ">Kyrgyzstan</option>
                 <option value="LAO">Lao People's Democratic Republic</option>
@@ -999,10 +856,8 @@ class XCountrySelect extends XElement {
                 <option value="MLI">Mali</option>
                 <option value="MLT">Malta</option>
                 <option value="MHL">Marshall Islands</option>
-                <option value="MTQ">Martinique</option>
                 <option value="MRT">Mauritania</option>
                 <option value="MUS">Mauritius</option>
-                <option value="MYT">Mayotte</option>
                 <option value="MEX">Mexico</option>
                 <option value="FSM">Micronesia, Federated States of</option>
                 <option value="MDA">Moldova, Republic of</option>
@@ -1014,18 +869,12 @@ class XCountrySelect extends XElement {
                 <option value="MOZ">Mozambique</option>
                 <option value="MMR">Myanmar</option>
                 <option value="NAM">Namibia</option>
-                <option value="NRU">Nauru</option>
                 <option value="NPL">Nepal</option>
                 <option value="NLD">Netherlands</option>
-                <option value="ANT">Netherlands Antilles</option>
-                <option value="NCL">New Caledonia</option>
                 <option value="NZL">New Zealand</option>
                 <option value="NIC">Nicaragua</option>
                 <option value="NER">Niger</option>
                 <option value="NGA">Nigeria</option>
-                <option value="NIU">Niue</option>
-                <option value="NFK">Norfolk Island</option>
-                <option value="MNP">Northern Mariana Islands</option>
                 <option value="NOR">Norway</option>
                 <option value="OMN">Oman</option>
                 <option value="PAK">Pakistan</option>
@@ -1036,23 +885,15 @@ class XCountrySelect extends XElement {
                 <option value="PRY">Paraguay</option>
                 <option value="PER">Peru</option>
                 <option value="PHL">Philippines</option>
-                <option value="PCN">Pitcairn</option>
                 <option value="POL">Poland</option>
                 <option value="PRT">Portugal</option>
-                <option value="PRI">Puerto Rico</option>
                 <option value="QAT">Qatar</option>
-                <option value="REU">R&eacute;union</option>
                 <option value="ROU">Romania</option>
                 <option value="RUS">Russian Federation</option>
                 <option value="RWA">Rwanda</option>
-                <option value="BLM">Saint Barth&eacute;lemy</option>
-                <option value="SHN">Saint Helena, Ascension and Tristan da Cunha</option>
                 <option value="KNA">Saint Kitts and Nevis</option>
                 <option value="LCA">Saint Lucia</option>
-                <option value="MAF">Saint Martin (French part)</option>
-                <option value="SPM">Saint Pierre and Miquelon</option>
                 <option value="VCT">Saint Vincent and the Grenadines</option>
-                <option value="WSM">Samoa</option>
                 <option value="SMR">San Marino</option>
                 <option value="STP">Sao Tome and Principe</option>
                 <option value="SAU">Saudi Arabia</option>
@@ -1063,48 +904,37 @@ class XCountrySelect extends XElement {
                 <option value="SGP">Singapore</option>
                 <option value="SVK">Slovakia</option>
                 <option value="SVN">Slovenia</option>
-                <option value="SLB">Solomon Islands</option>
-                <option value="SOM">Somalia</option>
                 <option value="ZAF">South Africa</option>
-                <option value="SGS">South Georgia and the South Sandwich Islands</option>
                 <option value="ESP">Spain</option>
                 <option value="LKA">Sri Lanka</option>
                 <option value="SDN">Sudan</option>
                 <option value="SUR">Suriname</option>
-                <option value="SJM">Svalbard and Jan Mayen</option>
                 <option value="SWZ">Swaziland</option>
                 <option value="SWE">Sweden</option>
                 <option value="CHE">Switzerland</option>
                 <option value="SYR">Syrian Arab Republic</option>
-                <option value="TWN">Taiwan, Province of China</option>
+                <option value="TWN">Taiwan</option>
                 <option value="TJK">Tajikistan</option>
                 <option value="TZA">Tanzania, United Republic of</option>
                 <option value="THA">Thailand</option>
                 <option value="TLS">Timor-Leste</option>
                 <option value="TGO">Togo</option>
-                <option value="TKL">Tokelau</option>
                 <option value="TON">Tonga</option>
                 <option value="TTO">Trinidad and Tobago</option>
                 <option value="TUN">Tunisia</option>
                 <option value="TUR">Turkey</option>
                 <option value="TKM">Turkmenistan</option>
                 <option value="TCA">Turks and Caicos Islands</option>
-                <option value="TUV">Tuvalu</option>
                 <option value="UGA">Uganda</option>
                 <option value="UKR">Ukraine</option>
                 <option value="ARE">United Arab Emirates</option>
                 <option value="GBR">United Kingdom</option>
-                <option value="USA">United States</option>
-                <option value="UMI">United States Minor Outlying Islands</option>
                 <option value="URY">Uruguay</option>
                 <option value="UZB">Uzbekistan</option>
                 <option value="VUT">Vanuatu</option>
                 <option value="VEN">Venezuela, Bolivarian Republic of</option>
                 <option value="VNM">Viet Nam</option>
                 <option value="VGB">Virgin Islands, British</option>
-                <option value="VIR">Virgin Islands, U.S.</option>
-                <option value="WLF">Wallis and Futuna</option>
-                <option value="ESH">Western Sahara</option>
                 <option value="YEM">Yemen</option>
                 <option value="ZMB">Zambia</option>
                 <option value="ZWE">Zimbabwe</option>
@@ -1120,8 +950,6 @@ class XCountrySelect extends XElement {
         this.$select.setAttribute('required', required);
     }
 }
-
-// Todo: Remove disallowed countries
 
 class XDateofbirthSelect extends XElement {
     html() {
@@ -1380,8 +1208,8 @@ class ScreenForm extends XScreenFit {
     }
 
     types() {
-        /** @type {XCountrySelect} */
-        this.$countrySelect = null;
+        /** @type {XCountrySelect[]} */
+        this.$countrySelects = null;
         /** @type {XDateofbirthSelect} */
         this.$dateofbirthSelect = null;
         /** @type {Element} */
@@ -1404,6 +1232,8 @@ class ScreenForm extends XScreenFit {
         };
 
         $email.addEventListener('change', validateEmail);
+        $email.addEventListener('keyup', validateEmail);
+        $confirm_email.addEventListener('change', validateEmail);
         $confirm_email.addEventListener('keyup', validateEmail);
 
         // disallow paste in email fields
@@ -1864,10 +1694,88 @@ const getSelectValues = options => [].reduce.call(options, (values, option) => {
     return option.selected ? values.concat(option.value) : values;
 }, []);
 
+class ActivationUtils {
+    static get API_ROOT() { return 'https://activate.nimiq-network.com' }
+
+    /** @param {string} ethAddress
+     *  @return {Promise<number>}*/
+    static async fetchBalance(ethAddress) {
+        const response = await fetch(`https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=0xcfb98637bcae43C13323EAa1731cED2B716962fD&tag=latest&address=${ethAddress}`);
+        return (await response.json()).result;
+    }
+
+    /** @param {string} dashboardToken */
+    static async getDashboardData(dashboardToken) {
+        try {
+            const request = fetch(
+                `${ActivationUtils.API_ROOT}/list/${dashboardToken}`,
+                { method: 'GET' }
+            );
+            return await request;
+        } catch(e) {
+            throw Error('Request failed');
+        }
+    }
+
+    /** @param {string} activationToken
+     *  @returns {boolean} */
+    static async isValidToken(activationToken) {
+        const request = fetch(
+            `${ActivationUtils.API_ROOT}/activate/${activationToken}`,
+            { method: 'GET' }
+        );
+        try {
+            const response = await request;
+            return response.ok;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    /** @param {string} activationToken
+     * @param {string} nimiqAddress
+     * @returns {boolean} */
+    static async activateAddress(activationToken, nimiqAddress) {
+        const request = fetch(
+            `${ActivationUtils.API_ROOT}/activate/address`,
+            { 
+                method: 'POST',
+                body: JSON.stringify({
+                    'activation_token': activationToken,
+                    'nimiq_address': nimiqAddress
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            }
+        );
+
+        const response = await request;
+        return response.ok;
+    }
+
+    /** @param {{birthday: Date, city: string, country_residence: string, country_nationality: string, email: string, sex: string, first_name: string, last_name: string, street: string, zip: string }} kycData */
+    static async submitKyc(kycData) {
+        const request = fetch(
+            `${ActivationUtils.API_ROOT}/submit`,
+            {
+                method: 'POST',
+                body: JSON.stringify(kycData),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        return await request;
+    }
+}
+
 class ScreenFormHandler extends XScreen {
     html() {
         return `
-            <x-activation-utils></x-activation-utils>
             <x-slides>
                 <screen-form></screen-form>
                 <screen-confirm></screen-confirm>
@@ -1878,25 +1786,18 @@ class ScreenFormHandler extends XScreen {
     }
 
     types() {
-        /** @type {XActivationUtils} */
-        this.$activationUtils = null;
         /** @type {ScreenForm} */
         this.$screenForm = null;
         /** @type {ScreenConfirm} */
         this.$screenConfirm = null;
+        /** @type {ScreenLoading} */
+        this.$screenLoading = null;
         /** @type {ScreenError} */
         this.$screenError = null;
     }
 
     children() {
-        return [XActivationUtils, ScreenForm, ScreenConfirm, ScreenLoading, ScreenError];
-    }
-
-    listeners() {
-        return {
-            'x-activation-post-success': '_onPostSuccess',
-            'x-activation-post-error': '_onPostError'
-        }
+        return [ScreenForm, ScreenConfirm, ScreenLoading, ScreenError];
     }
 
     onCreate() {
@@ -1912,49 +1813,49 @@ class ScreenFormHandler extends XScreen {
         this.goTo('confirm');
     }
 
-    _onConfirmSubmit() {
+    async _onConfirmSubmit() {
         this.goTo('loading');
-        this.$activationUtils._api.submitKyc(this._data);
-    }
-
-    _onPostSuccess({clientRedirectUrl}) {
-        window.location.href = clientRedirectUrl;
-    }
-
-    _onPostError(errorCode) {
-        let message = '';
-        if (errorCode === 401) {
-           message = 'You have to be at least 18 years old.';
-        } else if (errorCode === 403) {
-            message = 'Your data was already used to initiate the KYC process.';
+        const submitResult = await ActivationUtils.submitKyc(this._data);
+        if (submitResult.ok) {
+            const result = await submitResult.json();
+            window.location.href = result.clientRedirectUrl;
         }
-        this.$screenError.show(message);
-        this.goTo('error');
+        else {
+            const errorCode = submitResult.status;
+            let message = '';
+            if (errorCode === 401) {
+                message = 'You have to be at least 18 years old.';
+            } else if (errorCode === 403) {
+                message = 'Your data was already used to initiate the KYC process.';
+            }
+            this.$screenError.show(message);
+            this.goTo('error');
+        }
     }
-
 }
 
 class XSuccessMark extends XElement {
     html() {
+        const uniqueId = 'circleFill' + Math.round(Math.random() * 1000000).toString();
         return `
             <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 168">
-                <radialGradient id="circleFill" gradientUnits="userSpaceOnUse" gradientTransform="translate(-4, -4)">
+                <radialGradient id="${uniqueId}" gradientUnits="userSpaceOnUse" gradientTransform="translate(-4, -4)">
                     <stop offset="1" stop-color="transparent">
-                        <animate dur=".4s" attributeName="offset" begin="indefinite" fill="freeze" from="1" to="0"
+                        <animate dur="0.4s" attributeName="offset" begin="indefinite" fill="freeze" from="1" to="0"
                         values="1;0"
                         keyTimes="0;1"
                         keySplines=".42 0 .58 1"
                         calcMode="spline" />
                     </stop>
                     <stop offset="1" stop-color="#64FFDA">
-                        <animate dur=".4s" attributeName="offset" begin="indefinite" fill="freeze" from="1" to="0"
+                        <animate dur="0.4s" attributeName="offset" begin="indefinite" fill="freeze" from="1" to="0"
                         values="1;0"
                         keyTimes="0;1"
                         keySplines=".42 0 .58 1"
                         calcMode="spline" />
                     </stop>
                 </radialGradient>
-                <path class="checkmark__circle" d="M88.1247411,2.6381084 L142.907644,34.2670322 C147.858061,37.125157 150.907644,42.4071893 150.907644,48.1234387 L150.907644,111.381286 C150.907644,117.097536 147.858061,122.379568 142.907644,125.237693 L88.1247411,156.866617 C83.1743239,159.724741 77.0751584,159.724741 72.1247411,156.866617 L17.3418381,125.237693 C12.3914209,122.379568 9.34183808,117.097536 9.34183808,111.381286 L9.34183808,48.1234387 C9.34183808,42.4071893 12.3914209,37.125157 17.3418381,34.2670322 L72.1247411,2.6381084 C77.0751584,-0.220016318 83.1743239,-0.220016318 88.1247411,2.6381084 Z" fill="url(#circleFill)" transform="translate(84.124741, 79.752363) rotate(30.000000) translate(-80.124741, -79.752363)"></path>
+                <path class="checkmark__circle" d="M88.1247411,2.6381084 L142.907644,34.2670322 C147.858061,37.125157 150.907644,42.4071893 150.907644,48.1234387 L150.907644,111.381286 C150.907644,117.097536 147.858061,122.379568 142.907644,125.237693 L88.1247411,156.866617 C83.1743239,159.724741 77.0751584,159.724741 72.1247411,156.866617 L17.3418381,125.237693 C12.3914209,122.379568 9.34183808,117.097536 9.34183808,111.381286 L9.34183808,48.1234387 C9.34183808,42.4071893 12.3914209,37.125157 17.3418381,34.2670322 L72.1247411,2.6381084 C77.0751584,-0.220016318 83.1743239,-0.220016318 88.1247411,2.6381084 Z" fill="url(#${uniqueId})" transform="translate(84.124741, 79.752363) rotate(30.000000) translate(-80.124741, -79.752363)"></path>
                 <path class="checkmark__check" fill="none" d="M42.3 81.6l21.3 21.6 50.1-50.4" transform="translate(4, 4)" />
             </svg>`;
     }
@@ -1993,49 +1894,14 @@ class ScreenSuccess extends XScreenFit {
     }
 }
 
-class ScreenProceed extends XScreen {
-    html() {
-        return `
-            <screen-loading>Generate new token and redirect...</screen-loading>
-            <screen-error message="Could not proceed"></screen-error>
-            <x-activation-utils></x-activation-utils>
-        `
-    }
-
-    children() { return [ScreenLoading, ScreenError, XActivationUtils]; }
-
-    types() {
-        /** @type {ScreenLoading} */
-        this.$screenLoading = null;
-        /** @type {XActivationUtils} */
-        this.$activationUtils = null;
-    }
-
-    _onEntry() {
-        const params = new URLSearchParams(window.location.search);
-        // Todo tba
-        //this.$activationUtils._api.proceed(params);
-    }
-
-    /** @param {string} redirectUrl */
-    _onPostSuccess(redirectUrl) {
-        window.location.href = redirectUrl;
-    }
-
-    _onPostError() {
-        this.goTo('error');
-    }
-}
-
 class Verify extends XAppScreen {
     html() {
         return `
             <screen-welcome></screen-welcome>
             <screen-terms></screen-terms>
+            <screen-terms2></screen-terms2>
             <screen-form-handler></screen-form-handler>
             <screen-success>Thank you! Soon you will receive an email with further information.</screen-success>
-            <screen-proceed></screen-proceed>
-            <screen-error message="The Safari browser and iOS devices are not supported by our external service providers. Please use another browser or device."></screen-error>
             <screen-error route="kyc-error" message="Thank you! Soon you will receive an email with further information."></screen-error>
         `
     }
@@ -2046,12 +1912,12 @@ class Verify extends XAppScreen {
         this.$screenWelcome = null;
         /** @type {ScreenTerms} */
         this.$screenTerms = null;
+        /** @type {ScreenTerms2} */
+        this.$screenTerms2 = null;
         /** @type {ScreenForm} */
         this.$screenFormHandler = null;
         /** @type {ScreenSuccess} */
         this.$screenSuccess = null;
-        /** @tpye {ScreenProceed} */
-        this.$screenProceed = null;
         /** @type {ScreenError} */
         this.$screenError = null;
     }
@@ -2060,29 +1926,21 @@ class Verify extends XAppScreen {
         return [
             ScreenWelcome,
             ScreenTerms,
+            ScreenTerms2,
             ScreenFormHandler,
             ScreenSuccess,
-            ScreenProceed,
-            [ ScreenError ]
+            ScreenError
         ]
     }
 
-    _onEntry() {
-        const ua = navigator.userAgent.toLowerCase();
-        const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
-        const safari = ua.includes('safari') && !ua.includes('chrome');
-        if (iOS || safari) {
-            this.goTo('error');
-        }
+    onCreate() {
+        location.href = "#";
     }
+
 }
 
 Verify.launch();
 
-// Todo: No safari, no iOS
-
 return Verify;
 
 }());
-
-//# sourceMappingURL=app.js.map

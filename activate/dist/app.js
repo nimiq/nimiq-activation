@@ -15,23 +15,24 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {XElement | Element | null} parent
      * @memberof XElement
      */
     __bindDOM(parent) {
-        if (parent instanceof XElement) this.$el = parent.$(this.__tagName); // query in parent for tag name
+        if (parent instanceof XElement) this.$el = parent.$(this.__tagName + ':not([x-initialized])'); // query in parent for tag name
         else if (parent instanceof Element) this.$el = parent; // The parent is this DOM-Element
         else this.$el = document.querySelector(this.__tagName); // query in document for tag name
+        this.$el.setAttribute('x-initialized', true);
         this.__fromHtml();
         this.__bindStyles(this.styles);
     }
 
     /**
-     * 
-     * 
-     * @returns 
+     *
+     *
+     * @returns
      * @memberof XElement
      */
     __createChildren() { // Create all children recursively
@@ -40,8 +41,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {XElement | XElement[]} child
      * @returns {void}
      * @memberof XElement
@@ -52,21 +53,21 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {XElement} child
      * @memberof XElement
      */
     __createArrayOfChild(child) {
         const name = child.__toChildName() + 's';
         const tagName = XElement.__toTagName(child.name);
-        const children = this.$$(tagName);
+        const foundChildren = this.$$(tagName + ':not([x-initialized])');
         this[name] = [];
-        children.forEach(c => this[name].push(new child(c)));
+        foundChildren.forEach(c => this[name].push(new child(c)));
     }
     /**
-     * 
-     * 
+     *
+     *
      * @static
      * @param {string} str
      * @returns {string}
@@ -80,8 +81,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @static
      * @returns {string}
      * @memberof XElement
@@ -93,9 +94,9 @@ class XElement {
     }
 
     /**
-     * 
-     * 
-     * @returns 
+     *
+     *
+     * @returns
      * @memberof XElement
      */
     __fromHtml() {
@@ -111,8 +112,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @readonly
      * @memberof XElement
      */
@@ -121,11 +122,11 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @static
      * @param {string} name
-     * @returns 
+     * @returns
      * @memberof XElement
      */
     static __toTagName(name) {
@@ -133,10 +134,10 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @static
-     * @returns 
+     * @returns
      * @memberof XElement
      */
     static createElement() {
@@ -146,8 +147,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     * Find the first match of a selector within this element.
+     *
      * @param {string} selector
      * @returns {Element}
      * @memberof XElement
@@ -155,34 +156,35 @@ class XElement {
     $(selector) { return this.$el.querySelector(selector) } // Query inside of this DOM-Element
 
     /**
-     * 
-     * 
+     * Finds all matches of a selector within this element.
+     *
      * @param {string} selector
-     * @returns {Element[]}
+     * @returns {NodeList}
      * @memberof XElement
      */
     $$(selector) { return this.$el.querySelectorAll(selector) } // QueryAll inside of this DOM-Element
+
     /**
-     * 
-     * 
+     *
+     *
      * @memberof XElement
      */
     clear() { while (this.$el.firstChild) this.$el.removeChild(this.$el.firstChild); } // Clear all DOM-Element children
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} type
      * @param {function} callback
      * @memberof XElement
      */
     addEventListener(type, callback) { this.$el.addEventListener(type, callback, false); }
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} eventType
-     * @param {any} [detail=null] 
-     * @param {boolean} [bubbles=true] 
+     * @param {any} [detail=null]
+     * @param {boolean} [bubbles=true]
      * @memberof XElement
      */
     fire(eventType, detail = null, bubbles = true) { // Fire DOM-Event
@@ -190,8 +192,8 @@ class XElement {
         this.$el.dispatchEvent(new CustomEvent(eventType, params));
     }
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} type
      * @param {function} callback
      * @param {Element | window} $el
@@ -206,24 +208,24 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} styleClass
      * @memberof XElement
      */
     addStyle(styleClass) { this.$el.classList.add(styleClass); }
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} styleClass
      * @memberof XElement
      */
     removeStyle(styleClass) { this.$el.classList.remove(styleClass); }
     /**
-     * 
-     * 
+     *
+     *
      * @param {() => string[]} styles
-     * @returns 
+     * @returns
      * @memberof XElement
      */
     __bindStyles(styles) {
@@ -233,8 +235,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} className
      * @param {Element | string} $el
      * @param {() => void} afterStartCallback
@@ -257,8 +259,8 @@ class XElement {
         })
     }
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} className
      * @param {Element | string} $el
      * @memberof XElement
@@ -278,8 +280,6 @@ class XElement {
     }
 }
 
-// Todo: Bug/Pitfall: When instantiating a screen twice on a path down a screen tree (e.g. loading), it has to be declared as an array on the higher level.
-
 class XState {
     constructor(path) {
         /** @type {string} */
@@ -291,11 +291,15 @@ class XState {
         if (child.length && child[0]) this._child = new XState(child);
         /** @type {boolean} */
         this._isLeaf = !this._child;
+        /** @type {string[]} */
         this._path = path;
     }
 
     /** @returns {boolean} */
     get isLeaf() { return this._isLeaf; }
+
+    /** @returns {string} */
+    get leafId() { return this._path[this._path.length]; }
 
     /** @returns {string} */
     get id() { return this._id; }
@@ -426,7 +430,7 @@ class XScreen extends XElement {
 
     _registerRootElement() {
         XScreen._registerGlobalStateListener(this._onRootStateChange.bind(this));
-        this._show();
+        setTimeout(e => this._show(), 100);
     }
 
     /**
@@ -552,10 +556,6 @@ class XScreen extends XElement {
         })
     }
 
-    goToChild(route) {
-        document.location = this._location + '/' + route;
-    }
-
     back() {
         return new Promise(resolve => {
             XScreen._goToResolve = resolve;
@@ -610,21 +610,16 @@ class XScreen extends XElement {
         XScreen._goToResolve = null;
     }
 
-    _validateState(nextState, prevState, isNavigateBack) { return true /* Abstract Method */ }
-
-
     /** @param {function} callback */
     static _registerGlobalStateListener(callback) {
         if (this._stateListener) return; // We register only the first screen calling. All other screens get notified by their parent
         this._stateListener = window.addEventListener('popstate', e => this._onHistoryChange(callback));
-        this._onHistoryChange(callback, true);
+        setTimeout(e => this._onHistoryChange(callback), 0); // Trigger FF layout
     }
 
     /** @param {function} callback */
-    static _onHistoryChange(callback, isPageLoad) {
-        let nextState;
-        if (isPageLoad) nextState = XState.fromLocation('#');
-        else nextState = XState.fromLocation();
+    static _onHistoryChange(callback) {
+        const nextState = XState.fromLocation();
         if (nextState.isEqual(this.currState)) return;
         const isNavigateBack = (nextState.isEqual(this.prevState));
         this.prevState = this.currState;
@@ -636,7 +631,6 @@ class XScreen extends XElement {
 }
 
 // Todo: Fix kind of animations when using back and forward buttons in whatever order
-// Todo Fix general page layout (Firefox bugs, absolute positioning)
 
 class XScreenFit extends XScreen {
     styles() { return ['x-screen-fit'] }
@@ -749,7 +743,7 @@ class Robohash {
 
     static _$svg(content) {
         return `
-            <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/2000/xlink" >
+            <svg viewBox="0 0 320 320" width="320" height="320" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/2000/xlink" >
                 ${content}
             </svg>`
     }
@@ -851,23 +845,301 @@ class XIdenticon extends XElement {
     }
 }
 
+class NanoApi {
+
+    static get API_URL() { return 'https://cdn.nimiq-network.com/branches/master/nimiq.js' }
+    static get satoshis() { return 100000000 }
+
+    static getApi() {
+        this._api = this._api || new NanoApi();
+        return this._api;
+    }
+
+    constructor() {
+        this._apiInitialized = new Promise(async resolve => {
+            await NanoApi._importApi();
+            this.$ = {};
+            Nimiq.init(async $ => {
+                await this._onApiReady();
+                resolve();
+            }, e => this.onDifferentTabError(e));
+        });
+    }
+
+    async _onApiReady() {
+        await Nimiq.Crypto.prepareSyncCryptoWorker();
+        this.$.walletStore = await new Nimiq.WalletStore();
+        this.$.wallet = this.$.wallet || await this.$.walletStore.getDefault();
+        this.onAddressChanged(this.address);
+        this.onInitialized();
+    }
+
+    async connect() {
+        await this._apiInitialized;
+        this.$.consensus = await Nimiq.Consensus.nano();
+        this.$.consensus.on('established', e => this._onConsensusEstablished());
+        this.$.consensus.network.connect();
+        this.$.consensus.blockchain.on('head-changed', e => this._headChanged());
+        this.$.consensus.mempool.on('transaction-added', tx => this._transactionAdded(tx));
+    }
+
+    async _headChanged() {
+        await this._apiInitialized;
+        if (!this.$.consensus.established) return;
+        const balance = await this._getBalance();
+        if (this._balance === balance) return;
+        this._balance = balance;
+        this.onBalanceChanged(this.balance);
+    }
+
+    async _getAccount() {
+        await this._apiInitialized;
+        const account = await this.$.consensus.getAccount(this.$.wallet.address);
+        return account || { balance: 0, nonce: 0 }
+    }
+
+    async _getBalance() {
+        await this._apiInitialized;
+        const account = await this._getAccount();
+        return account.balance;
+    }
+
+    _onConsensusEstablished() {
+        this._headChanged();
+        this.onConsensusEstablished();
+    }
+
+    _transactionAdded(tx) {
+        if (!tx.recipient.equals(this.$.wallet.address)) return;
+        const sender = tx.senderPubKey.toAddress();
+        this.onTransactionReceived(sender.toUserFriendlyAddress(), tx.value / NanoApi.satoshis, tx.fee);
+    }
+
+    /*
+        Public API
+    */
+    async sendTransaction(recipient, value, fees = 0) {
+        await this._apiInitialized;
+        const recipientAddr = Nimiq.Address.fromUserFriendlyAddress(recipient);
+        value = Math.round(Number(value) * NanoApi.satoshis);
+        fees = Math.round(Number(fees) * NanoApi.satoshis);
+        const tx = this.$.wallet.createTransaction(recipientAddr, value, fees, this.$.consensus.blockchain.height);
+        return this.$.consensus.relayTransaction(tx);
+    }
+
+    async getAddress() {
+        await this._apiInitialized;
+        return this.address;
+    }
+
+    async getBalance() {
+        await this._apiInitialized;
+        return this.balance;
+    }
+
+    get address() {
+        return this.$.wallet.address.toUserFriendlyAddress();
+    }
+
+    get balance() {
+        return (this._balance / NanoApi.satoshis) || 0;
+    }
+
+    /**
+     *
+     *
+     *
+     * @return {Object} An object containing `privateKey` in native format and `address` in user-friendly format.
+     */
+    async generateKeyPair() {
+        await this._apiInitialized;
+        const keys = Nimiq.KeyPair.generate();
+        const privKey = keys.privateKey;
+        const address = keys.publicKey.toAddress();
+        return {
+            privateKey: privKey,
+            address: address.toUserFriendlyAddress()
+        }
+    }
+
+    async importKey(privateKey, persist = true) {
+        await this._apiInitialized;
+        const keyPair = Nimiq.KeyPair.fromPrivateKey(privateKey);
+        this.$.wallet = new Nimiq.Wallet(keyPair);
+        if (persist) await this.$.walletStore.put(this.$.wallet);
+        return this.address;
+    }
+
+    async exportKey() {
+        await this._apiInitialized;
+        return this.$.wallet.keyPair.privateKey.toHex();
+    }
+
+    async lockWallet(pin) {
+        await this._apiInitialized;
+        return this.$.wallet.lock(pin);
+    }
+
+    async unlockWallet(pin) {
+        await this._apiInitialized;
+        return this.$.wallet.unlock(pin);
+    }
+
+    async importEncrypted(encryptedKey, password) {
+        await this._apiInitialized;
+        encryptedKey = Nimiq.BufferUtils.fromBase64(encryptedKey);
+        this.$.wallet = await Nimiq.Wallet.loadEncrypted(encryptedKey, password);
+        // this.$.walletStore = this.$.walletStore || await new Nimiq.WalletStore();
+        // this.$.walletStore.put(this.$.wallet);
+    }
+
+    async exportEncrypted(password) {
+        await this._apiInitialized;
+        const exportedWallet = await this.$.wallet.exportEncrypted(password);
+        return Nimiq.BufferUtils.toBase64(exportedWallet);
+    }
+
+    /** @param {string | Nimiq.Address} address
+     * @return {Promise<string>} */
+    async nim2ethAddress(address) {
+        await this._apiInitialized;
+        const addressObj = (typeof address  === 'string') ? await this.getUnfriendlyAddress(address) : address;
+        const hash = await Nimiq.Hash.sha256(addressObj.serialize());
+        return '0x' + Nimiq.BufferUtils.toHex(hash.subarray(0, 20));
+    }
+
+    /** @param {string} friendlyAddress */
+    async getUnfriendlyAddress(friendlyAddress) {
+        await this._apiInitialized;
+        return Nimiq.Address.fromUserFriendlyAddress(friendlyAddress);
+    }
+
+    onInitialized() {
+        console.log('Nimiq API ready to use');
+        this.fire('nimiq-api-ready');
+    }
+
+    onAddressChanged(address) {
+        console.log('address changed');
+        this.fire('nimiq-account', address);
+    }
+
+    onConsensusEstablished() {
+        console.log('consensus established');
+        this.fire('nimiq-consensus-established', this.address);
+    }
+
+    onBalanceChanged(balance) {
+        console.log('new balance:', balance);
+        this.fire('nimiq-balance', balance);
+    }
+
+    onTransactionReceived(sender, value, fee) {
+        console.log('received:', value, 'from:', sender, 'txfee:', fee);
+        this.fire('nimiq-transaction', { sender: sender, value: value, fee: fee });
+    }
+
+    onDifferentTabError() {
+        console.log('Nimiq API is already running in a different tab');
+        this.fire('nimiq-different-tab-error');
+    }
+
+    static formatValue(number, decimals = 3) {
+        number = Number(number);
+        decimals = Math.pow(10, decimals);
+        return Math.round(number * decimals) / decimals;
+    }
+
+    static formatValueInDollar(number) {
+        number = Number(number);
+        return this.formatValue(number * 17.1, 2);
+    }
+
+    static validateAddress(address) {
+        try {
+            this.isUserFriendlyAddress(address);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // Copied from: https://github.com/nimiq-network/core/blob/master/src/main/generic/consensus/base/account/Address.js
+
+    static isUserFriendlyAddress(str) {
+        str = str.replace(/ /g, '');
+        if (str.substr(0, 2).toUpperCase() !== 'NQ') {
+            throw new Error('Addresses start with NQ', 201);
+        }
+        if (str.length !== 36) {
+            throw new Error('Addresses are 36 chars (ignoring spaces)', 202);
+        }
+        if (this._ibanCheck(str.substr(4) + str.substr(0, 4)) !== 1) {
+            throw new Error('Address Checksum invalid', 203);
+        }
+    }
+
+    static _ibanCheck(str) {
+        const num = str.split('').map((c) => {
+            const code = c.toUpperCase().charCodeAt(0);
+            return code >= 48 && code <= 57 ? c : (code - 55).toString();
+        }).join('');
+        let tmp = '';
+
+        for (let i = 0; i < Math.ceil(num.length / 6); i++) {
+            tmp = (parseInt(tmp + num.substr(i * 6, 6)) % 97).toString();
+        }
+
+        return parseInt(tmp);
+    }
+
+    static _importApi() {
+        return new Promise((resolve, reject) => {
+            let script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = NanoApi.API_URL;
+            script.addEventListener('load', () => resolve(script), false);
+            script.addEventListener('error', () => reject(script), false);
+            document.body.appendChild(script);
+        });
+    }
+
+    setXElement(xElement) {
+       this._xElement = xElement;
+       this.fire = this._xElement.fire;
+    }
+
+    // Copied from x-element.
+    fire(eventType, detail = null, bubbles = true) { // Fire DOM-Event
+        const params = { detail: detail, bubbles: bubbles };
+        document.body.dispatchEvent(new CustomEvent(eventType, params));
+    }
+}
+
 class ScreenIdenticons extends XScreen {
 
     html() {
         return `
             <h1>Choose Your Avatar</h1>
             <h2>Your Avatar will be unique to this Account. You can not change it later.</h2>
-            <x-container></x-container>
+            <x-container>
+                <div class="center" id="loading">
+                    <x-loading-animation></x-loading-animation>
+                    <h2>Mixing colors</h2>
+                </div>
+            </x-container>
             <a secondary>Generate More</a>
             <x-backdrop class="center">
                 <x-address></x-address>
                 <a button>Confirm</a>
+                <a secondary>Back</a>
             </x-backdrop>
             `
     }
 
     onCreate() {
         this.$container = this.$('x-container');
+        this.$loading = this.$('#loading');
         this.$address = this.$('x-address');
         this.$('[secondary]').addEventListener('click', e => this._generateIdenticons());
         this.$('[button]').addEventListener('click', e => this._onConfirm(e));
@@ -883,21 +1155,18 @@ class ScreenIdenticons extends XScreen {
         this._clearIdenticons();
     }
 
-    onApiReady(api) {
-        this._api = api;
-        if (this._generated || !this.isVisible) return;
-        this._generateIdenticons();
-    }
-
     async _generateIdenticons() {
-        if (!this._api) return;
+        const api = NanoApi.getApi();
         this._clearIdenticons();
         this._generated = true;
         const promises = [];
-        for (var i = 0; i < 7; i++) { promises.push(this._api.generateKeyPair()); }
+        for (var i = 0; i < 7; i++) { promises.push(api.generateKeyPair()); }
         const keyPairs = await Promise.all(promises);
         keyPairs.forEach(keyPair => this._generateIdenticon(keyPair));
         setTimeout(e => this.$el.setAttribute('active', true), 100);
+        if(!this.$loading) return;
+        this.$container.removeChild(this.$loading);
+        this.$loading = null;
     }
 
     _generateIdenticon(keyPair) {
@@ -908,7 +1177,7 @@ class ScreenIdenticons extends XScreen {
     }
 
     _onIdenticonSelected(keyPair, identicon) {
-        this._clearSelection();
+        this.$('x-identicon.returning') && this.$('x-identicon.returning').classList.remove('returning');
         this._selectedKeyPair = keyPair;
         this._selectedIdenticon = identicon;
         this.$el.setAttribute('selected', true);
@@ -919,6 +1188,7 @@ class ScreenIdenticons extends XScreen {
     _clearSelection() {
         this._selectedKeyPair = null;
         if (!this._selectedIdenticon) return;
+        this._selectedIdenticon.$el.classList.add('returning');
         this.$el.removeAttribute('selected');
         this._selectedIdenticon.$el.removeAttribute('selected');
     }
@@ -926,7 +1196,9 @@ class ScreenIdenticons extends XScreen {
     _clearIdenticons() {
         this._generated = false;
         this._clearSelection();
-        this.$container.innerHTML = '';
+        while(this.$container.querySelector('x-identicon')) {
+            this.$container.removeChild(this.$container.querySelector('x-identicon'));
+        }
         this.$el.removeAttribute('active');
     }
 
@@ -936,11 +1208,8 @@ class ScreenIdenticons extends XScreen {
     }
 }
 
-// Todo: show loading screen while waiting for api to start
 // Todo: refactor api such that addresses can be generated before full api is loaded
 // Todo: [low priority] remove hack for overlay and find a general solution
-// Todo: [Max] Bug: Overlay broken on Android. But is to be refactored anyway
-// Todo: [Max] Bug: Totally broken on iOs
 
 class XSlideIndicator extends XElement {
     /** @param {number} nrOfSlides */
@@ -981,11 +1250,11 @@ class XSlidesScreen extends XScreen {
 
     /** @param {XState} nextState */
     async _onStateChange(nextState) {
-        if (this._childScreenFilter.includes(nextState.child._id)) {
+        if (this._childScreenFilter.includes(nextState.leafId)) {
             this.$slideIndicator.hide();
         }
         else {
-            this.$slideIndicator.show(this._getSlideIndex(nextState.child._id));
+            this.$slideIndicator.show(this._getSlideIndex(nextState.leafId));
         }
     }
 
@@ -1003,6 +1272,7 @@ class XSlidesScreen extends XScreen {
         return [];
     }
 
+    /** @returns {XScreen[]} */
     get _filteredChildScreens() {
         return Array.from(this._childScreens.entries())
             .filter(x => !this._childScreenFilter.includes(x[0]));
@@ -1019,25 +1289,26 @@ class XSlidesScreen extends XScreen {
 
 class XSuccessMark extends XElement {
     html() {
+        const uniqueId = 'circleFill' + Math.round(Math.random() * 1000000).toString();
         return `
             <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 168">
-                <radialGradient id="circleFill" gradientUnits="userSpaceOnUse" gradientTransform="translate(-4, -4)">
+                <radialGradient id="${uniqueId}" gradientUnits="userSpaceOnUse" gradientTransform="translate(-4, -4)">
                     <stop offset="1" stop-color="transparent">
-                        <animate dur=".4s" attributeName="offset" begin="indefinite" fill="freeze" from="1" to="0"
+                        <animate dur="0.4s" attributeName="offset" begin="indefinite" fill="freeze" from="1" to="0"
                         values="1;0"
                         keyTimes="0;1"
                         keySplines=".42 0 .58 1"
                         calcMode="spline" />
                     </stop>
                     <stop offset="1" stop-color="#64FFDA">
-                        <animate dur=".4s" attributeName="offset" begin="indefinite" fill="freeze" from="1" to="0"
+                        <animate dur="0.4s" attributeName="offset" begin="indefinite" fill="freeze" from="1" to="0"
                         values="1;0"
                         keyTimes="0;1"
                         keySplines=".42 0 .58 1"
                         calcMode="spline" />
                     </stop>
                 </radialGradient>
-                <path class="checkmark__circle" d="M88.1247411,2.6381084 L142.907644,34.2670322 C147.858061,37.125157 150.907644,42.4071893 150.907644,48.1234387 L150.907644,111.381286 C150.907644,117.097536 147.858061,122.379568 142.907644,125.237693 L88.1247411,156.866617 C83.1743239,159.724741 77.0751584,159.724741 72.1247411,156.866617 L17.3418381,125.237693 C12.3914209,122.379568 9.34183808,117.097536 9.34183808,111.381286 L9.34183808,48.1234387 C9.34183808,42.4071893 12.3914209,37.125157 17.3418381,34.2670322 L72.1247411,2.6381084 C77.0751584,-0.220016318 83.1743239,-0.220016318 88.1247411,2.6381084 Z" fill="url(#circleFill)" transform="translate(84.124741, 79.752363) rotate(30.000000) translate(-80.124741, -79.752363)"></path>
+                <path class="checkmark__circle" d="M88.1247411,2.6381084 L142.907644,34.2670322 C147.858061,37.125157 150.907644,42.4071893 150.907644,48.1234387 L150.907644,111.381286 C150.907644,117.097536 147.858061,122.379568 142.907644,125.237693 L88.1247411,156.866617 C83.1743239,159.724741 77.0751584,159.724741 72.1247411,156.866617 L17.3418381,125.237693 C12.3914209,122.379568 9.34183808,117.097536 9.34183808,111.381286 L9.34183808,48.1234387 C9.34183808,42.4071893 12.3914209,37.125157 17.3418381,34.2670322 L72.1247411,2.6381084 C77.0751584,-0.220016318 83.1743239,-0.220016318 88.1247411,2.6381084 Z" fill="url(#${uniqueId})" transform="translate(84.124741, 79.752363) rotate(30.000000) translate(-80.124741, -79.752363)"></path>
                 <path class="checkmark__check" fill="none" d="M42.3 81.6l21.3 21.6 50.1-50.4" transform="translate(4, 4)" />
             </svg>`;
     }
@@ -1329,7 +1600,6 @@ class ScreenCreatePassword extends XScreenFit {
 }
 
 // Todo: Password confirm, make visible hover eye
-// Todo: Indicate that click on image means to download it / download button
 
 class IdenticonImg extends Identicon {
 
@@ -1469,7 +1739,7 @@ class WalletBackup {
 
     _setFont() {
         const ctx = this._ctx;
-        ctx.fontFamily = 'system-ui, sans-serif';
+        ctx.fontFamily = 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif';
         ctx.textAlign = 'center';
     }
 
@@ -1477,7 +1747,7 @@ class WalletBackup {
         const ctx = this._ctx;
         const x = this._width / 2;
         const y = WalletBackup.PADDING * 6;
-        ctx.font = '500 20px system-ui';
+        ctx.font = '500 20px ' + ctx.fontFamily;
         ctx.fillStyle = 'rgba(255,255,255,0.7)';
         ctx.fillText('WALLET BACKUP', x, y);
     }
@@ -1486,7 +1756,7 @@ class WalletBackup {
         const ctx = this._ctx;
         const x = this._width / 2;
         const y = this._width;
-        ctx.font = '500 15px system-ui';
+        ctx.font = '500 15px ' + ctx.fontFamily;
         ctx.fillStyle = 'white';
         ctx.fillText(address, x, y);
     }
@@ -1561,7 +1831,6 @@ class WalletBackup {
     }
 }
 
-// Todo: [high priority] Backup should get tested automatically like in fuzzer. if backup can't get scanned; re-encrypt with different nonce
 // Todo: [high priority] Encrypted Private Key should have a version and a clear documentation
 
 class XToast extends XElement {
@@ -1599,24 +1868,12 @@ class XToastContainer extends XElement {
 
 // Inspired by: https://material.io/guidelines/components/snackbars-toasts.html#snackbars-toasts-specs
 
-class BrowserDetection {
-
-    static isDesktopSafari() {
-        // see https://stackoverflow.com/a/23522755
-        return /^((?!chrome|android).)*safari/i.test(navigator.userAgent) && !/mobile/i.test(navigator.userAgent);
-    }
-}
-
 class XDownloadableImage extends XElement {
     static get LONG_TOUCH_DURATION() {
         return 800;
     }
 
     static get DOWNLOAD_DURATION() {
-        return 7000;
-    }
-
-    static get DOWNLOAD_DURATION_DESKTOP_SAFARI() {
         return 1500;
     }
 
@@ -1624,6 +1881,8 @@ class XDownloadableImage extends XElement {
         return `
             <a>
                 <img draggable="false">
+                <p>&nbsp;</p>
+                <button>Download</button>
             </a>
             <svg long-touch-indicator xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
                 <defs>
@@ -1635,7 +1894,8 @@ class XDownloadableImage extends XElement {
                 <g clip-path="url(#hexClip)">
                     <circle id="circle" cx="32" cy="32" r="16" fill="none" stroke-width="32" stroke-dasharray="100.53 100.53" transform="rotate(-120 32 32)"/>
                 </g>
-            </svg>`;
+            </svg>
+            <p></p>`;
     }
 
     onCreate() {
@@ -1647,9 +1907,10 @@ class XDownloadableImage extends XElement {
         this._blurTimeout = null;
         this.$a = this.$('a');
         this.$img = this.$('img');
+        this.$p = this.$('p');
         this.$longTouchIndicator = this.$('[long-touch-indicator]');
         this._onWindowBlur = this._onWindowBlur.bind(this);
-        this.addEventListener('mousedown', e => this._onMouseDown()); // also gets triggered after touchstart
+        this.addEventListener('mousedown', e => this._onMouseDown(e)); // also gets triggered after touchstart
         this.addEventListener('touchstart', e => this._onTouchStart());
         this.addEventListener('touchend', e => this._onTouchEnd());
     }
@@ -1694,9 +1955,14 @@ class XDownloadableImage extends XElement {
         return typeof this.$a.download !== 'undefined';
     }
 
-    _onMouseDown() {
-        if (!this._supportsNativeDownload()) return;
-        this._onDownloadStart();
+    _onMouseDown(e) {
+        if(e.button === 0) { // primary button
+            if (!this._supportsNativeDownload()) return;
+            this._onDownloadStart();
+        }
+        else if(e.button === 2) { // secondary button
+            window.addEventListener('blur', this._onWindowBlur);
+        }
     }
 
     _onTouchStart() {
@@ -1730,7 +1996,7 @@ class XDownloadableImage extends XElement {
         // some browsers open a download dialog and blur the window focus, which we use as a hint for a download
         window.addEventListener('blur', this._onWindowBlur);
         // otherwise consider the download as successful after some time
-        this._blurTimeout = setTimeout(() => this._onDownloadEnd(), this._determineDownloadDuration());
+        this._blurTimeout = setTimeout(() => this._onDownloadEnd(), XDownloadableImage.DOWNLOAD_DURATION);
     }
 
     _onDownloadEnd() {
@@ -1755,14 +2021,20 @@ class XDownloadableImage extends XElement {
         this.$longTouchIndicator.style.display = 'none';
     }
 
-    _determineDownloadDuration() {
-        if (BrowserDetection.isDesktopSafari()) {
-            return XDownloadableImage.DOWNLOAD_DURATION_DESKTOP_SAFARI;
-        } else {
-            return XDownloadableImage.DOWNLOAD_DURATION;
-        }
-    }
 }
+
+'use strict';class QrScanner{constructor(video,onDecode,canvasSize=QrScanner.DEFAULT_CANVAS_SIZE){this.$video=video;this.$canvas=document.createElement("canvas");this._onDecode=onDecode;this._active=false;this.$canvas.width=canvasSize;this.$canvas.height=canvasSize;this._sourceRect={x:0,y:0,width:canvasSize,height:canvasSize};this.$video.addEventListener("canplay",()=>this._updateSourceRect());this.$video.addEventListener("play",()=>{this._updateSourceRect();this._scanFrame();},false);
+this._qrWorker=new Worker(QrScanner.WORKER_PATH);}_updateSourceRect(){const smallestDimension=Math.min(this.$video.videoWidth,this.$video.videoHeight);const sourceRectSize=Math.round(2/3*smallestDimension);this._sourceRect.width=this._sourceRect.height=sourceRectSize;this._sourceRect.x=(this.$video.videoWidth-sourceRectSize)/2;this._sourceRect.y=(this.$video.videoHeight-sourceRectSize)/2;}_scanFrame(){if(this.$video.paused||this.$video.ended)return false;requestAnimationFrame(()=>{QrScanner.scanImage(this.$video,
+this._sourceRect,this._qrWorker,this.$canvas,true).then(this._onDecode,(error)=>{if(error!=="QR code not found.")console.error(error);}).then(()=>this._scanFrame());});}_getCameraStream(facingMode,exact=false){const constraintsToTry=[{width:{min:1024}},{width:{min:768}},{}];if(facingMode){if(exact)facingMode={exact:facingMode};constraintsToTry.forEach((constraint)=>constraint.facingMode=facingMode);}return this._getMatchingCameraStream(constraintsToTry)}_getMatchingCameraStream(constraintsToTry){if(constraintsToTry.length===
+0)return Promise.reject("Camera not found.");return navigator.mediaDevices.getUserMedia({video:constraintsToTry.shift()}).catch(()=>this._getMatchingCameraStream(constraintsToTry))}start(){if(this._active)return Promise.resolve();this._active=true;clearTimeout(this._offTimeout);let facingMode="environment";return this._getCameraStream("environment",true).catch(()=>{facingMode="user";return this._getCameraStream()}).then((stream)=>{this.$video.srcObject=stream;this._setVideoMirror(facingMode);}).catch((e)=>
+{this._active=false;throw e;})}stop(){if(!this._active)return;this._active=false;this.$video.pause();this._offTimeout=setTimeout(()=>{this.$video.srcObject.getTracks()[0].stop();this.$video.srcObject=null;},3E3);}_setVideoMirror(facingMode){const scaleFactor=facingMode==="user"?-1:1;this.$video.style.transform="scaleX("+scaleFactor+")";}setGrayscaleWeights(red,green,blue){this._qrWorker.postMessage({type:"grayscaleWeights",data:{red,green,blue}});}static scanImage(imageOrFileOrUrl,sourceRect=null,worker=
+null,canvas=null,fixedCanvasSize=false,alsoTryWithoutSourceRect=false){const promise=new Promise((resolve,reject)=>{worker=worker||new Worker(QrScanner.WORKER_PATH);let timeout,onMessage,onError;onMessage=(event)=>{if(event.data.type!=="qrResult")return;worker.removeEventListener("message",onMessage);worker.removeEventListener("error",onError);clearTimeout(timeout);if(event.data.data!==null)resolve(event.data.data);else reject("QR code not found.");};onError=()=>{worker.removeEventListener("message",
+onMessage);worker.removeEventListener("error",onError);clearTimeout(timeout);reject("Worker error.");};worker.addEventListener("message",onMessage);worker.addEventListener("error",onError);timeout=setTimeout(onError,3E3);QrScanner._loadImage(imageOrFileOrUrl).then((image)=>{const imageData=QrScanner._getImageData(image,sourceRect,canvas,fixedCanvasSize);worker.postMessage({type:"decode",data:imageData},[imageData.data.buffer]);}).catch(reject);});if(sourceRect&&alsoTryWithoutSourceRect)return promise.catch(()=>
+QrScanner.scanImage(imageOrFileOrUrl,null,worker,canvas,fixedCanvasSize));else return promise}static _getImageData(image,sourceRect=null,canvas=null,fixedCanvasSize=false){canvas=canvas||document.createElement("canvas");const sourceRectX=sourceRect&&sourceRect.x?sourceRect.x:0;const sourceRectY=sourceRect&&sourceRect.y?sourceRect.y:0;const sourceRectWidth=sourceRect&&sourceRect.width?sourceRect.width:image.width||image.videoWidth;const sourceRectHeight=sourceRect&&sourceRect.height?sourceRect.height:
+image.height||image.videoHeight;if(!fixedCanvasSize&&(canvas.width!==sourceRectWidth||canvas.height!==sourceRectHeight)){canvas.width=sourceRectWidth;canvas.height=sourceRectHeight;}const context=canvas.getContext("2d",{alpha:false});context.imageSmoothingEnabled=false;context.drawImage(image,sourceRectX,sourceRectY,sourceRectWidth,sourceRectHeight,0,0,canvas.width,canvas.height);return context.getImageData(0,0,canvas.width,canvas.height)}static _loadImage(imageOrFileOrUrl){if(imageOrFileOrUrl instanceof
+HTMLCanvasElement||imageOrFileOrUrl instanceof HTMLVideoElement||window.ImageBitmap&&imageOrFileOrUrl instanceof window.ImageBitmap||window.OffscreenCanvas&&imageOrFileOrUrl instanceof window.OffscreenCanvas)return Promise.resolve(imageOrFileOrUrl);else if(imageOrFileOrUrl instanceof Image)return QrScanner._awaitImageLoad(imageOrFileOrUrl).then(()=>imageOrFileOrUrl);else if(imageOrFileOrUrl instanceof File||imageOrFileOrUrl instanceof URL||typeof imageOrFileOrUrl==="string"){const image=new Image;
+if(imageOrFileOrUrl instanceof File)image.src=URL.createObjectURL(imageOrFileOrUrl);else image.src=imageOrFileOrUrl;return QrScanner._awaitImageLoad(image).then(()=>{if(imageOrFileOrUrl instanceof File)URL.revokeObjectURL(image.src);return image})}else return Promise.reject("Unsupported image type.")}static _awaitImageLoad(image){return new Promise((resolve,reject)=>{if(image.complete&&image.naturalWidth!==0)resolve();else{let onLoad,onError;onLoad=()=>{image.removeEventListener("load",onLoad);image.removeEventListener("error",
+onError);resolve();};onError=()=>{image.removeEventListener("load",onLoad);image.removeEventListener("error",onError);reject("Image load error");};image.addEventListener("load",onLoad);image.addEventListener("error",onError);}})}}QrScanner.DEFAULT_CANVAS_SIZE=400;QrScanner.WORKER_PATH="/libraries/qr-scanner/qr-scanner-worker.min.js";
 
 class XWalletBackup extends XElement {
 
@@ -1783,16 +2055,56 @@ class XWalletBackup extends XElement {
         this.addEventListener('x-image-download', e => this._onImageDownload(e));
     }
 
-    async backup(address, privateKey) {
-        const backup = new WalletBackup(address, privateKey);
+    setKeyPair(keyPair) {
+        this._keyPair = keyPair;
+    }
+
+    async createBackup(password) {
+        const qrPosition = WalletBackup.calculateQrPosition();
+        qrPosition.x += qrPosition.padding / 2; /* add half padding to cut away the rounded corners */
+        qrPosition.y += qrPosition.padding / 2;
+        qrPosition.width = qrPosition.size - qrPosition.padding;
+        qrPosition.height = qrPosition.size - qrPosition.padding;
+
+        let backup = null;
+        let scanResult = null;
+        let encryptedKey;
+        do {
+            console.log('attempt');
+            encryptedKey = await this._importAndEncrypt(password);
+            backup = new WalletBackup(this._keyPair.address, encryptedKey);
+            try {
+                scanResult = await QrScanner.scanImage(backup.$canvas, qrPosition, null, null, false, true);
+            } catch(e) { }
+        } while (scanResult !== encryptedKey);
+
         const filename = backup.filename();
         this.$downloadableImage.src = await backup.toDataUrl();
         this.$downloadableImage.filename = filename;
     }
 
+    async _importAndEncrypt(password) {
+        const api = NanoApi.getApi();
+        await api.importKey(this._keyPair.privateKey, false);
+        const encryptedKey = await api.exportEncrypted(password);
+        return encryptedKey;
+    }
+
     _onImageDownload(e) {
         e.stopPropagation();
-        this.fire('x-wallet-backup-complete');
+        this.fire('x-wallet-download-complete');
+    }
+
+    _onBeforeEntry() {
+        if (!this._keyPair) {
+            throw Error('Not initialized');
+        }
+    }
+
+    _onExit() {
+        // Clear private information
+        this._keyPair.privateKey = null;
+        this._keyPair = null;
     }
 }
 
@@ -1813,16 +2125,209 @@ class ScreenDownloadRecovery extends XScreenFit {
     }
 
     children() { return [XWalletBackup] }
+}
+
+class XWalletBackupImport extends XElement {
+    html() {
+        return `
+            <x-wallet-backup-import-icon></x-wallet-backup-import-icon>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <button>Upload</button>
+            <x-wallet-backup-backdrop>Drop wallet file to import</x-wallet-backup-backdrop>
+            <input type="file" accept="image/*">`
+    }
+
+    children() { return [XToast] }
 
     onCreate() {
-        this.addEventListener('x-wallet-backup-complete', e => this._onWalletBackupComplete());
+        this.$fileInput = this.$('input');
+        this.$importIcon = this.$('x-wallet-backup-import-icon');
+        this._bindHandlers();
     }
 
-    async _onWalletBackupComplete() {
-        await this.goTo('success');
-        this.fire('x-backup-file-complete');
+    _bindHandlers() {
+        const dropZone = document.body;
+        dropZone.addEventListener('drop', e => this._onFileDrop(e), false);
+        dropZone.addEventListener('dragover', e => this._onDragOver(e), false);
+
+        dropZone.addEventListener('dragexit', e => this._onDragEnd(e), false);
+        dropZone.addEventListener('dragend', e => this._onDragEnd(e), false);
+
+        this.addEventListener('click', e => this._openFileInput());
+        this.$fileInput.addEventListener('change', e => this._onFileSelected(e));
+    }
+
+    _openFileInput() {
+        this.$fileInput.click();
+    }
+
+    _onFileSelected(e) {
+        this._onFileDrop(e);
+        this.$fileInput.value = null;
+    }
+
+    async _onFileDrop(event) {
+        this._stopPropagation(event);
+        this._onDragEnd();
+        // Get files
+        const files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
+        const file = files[0];
+
+        let qrPosition = WalletBackup.calculateQrPosition();
+        // add half padding to cut away the rounded corners
+        qrPosition.x += qrPosition.padding / 2;
+        qrPosition.y += qrPosition.padding / 2;
+        qrPosition.width = qrPosition.size - qrPosition.padding;
+        qrPosition.height = qrPosition.size - qrPosition.padding;
+
+        try {
+            const decoded = await QrScanner.scanImage(file, qrPosition, null, null, false, true);
+            this.fire('x-backup-import', decoded);
+        } catch (e) {
+            this._onQrError();
+        }
+    }
+
+    _onDragOver(event) {
+        this._stopPropagation(event);
+        event.dataTransfer.dropEffect = 'copy';
+        this.$el.setAttribute('active', 1);
+    }
+
+    _stopPropagation(event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+
+    _onDragEnd() {
+        this.$el.removeAttribute('active');
+    }
+
+    _onQrError() {
+        this.animate('shake', this.$importIcon);
+        this.$toast.show('Couldn\'t read Backup File');
     }
 }
+
+// Todo: debug backdrop
+// Todo: style backdrop
+// Todo: remove handlers on hide
+
+class ScreenBackupFileImportIntro extends XScreenFit {
+    html() {
+        return `
+            <h2 secondary>Select your backup file or drag it onto the page</h2>
+            <x-wallet-backup-import></x-wallet-backup-import>
+        `
+    }
+
+    get route() { return 'intro' }
+
+    children() { return [XWalletBackupImport] }
+}
+
+class ScreenBackupFileImportPassword extends XScreenFit {
+    html() {
+        return `
+            <h2 secondary>Enter the password to unlock this backup</h2>
+            <x-password-input></x-password-input>
+            <p id="screen-backup-file-import-password-error" class="hidden">
+                That password was incorrect.<br>Try again or <a href="javascript:void(0)">set a new password</a>.
+            </p>
+            <x-grow></x-grow>
+            <button disabled="yes">Unlock</button>
+        `
+    }
+
+    get route() { return 'password' }
+
+    children() { return [XPasswordInput] }
+
+    onCreate() {
+        this.addEventListener('x-password-input-valid', e => this._validityChanged(e.detail));
+        this.$hint = this.$('#screen-backup-file-import-password-error');
+        this.$a = this.$('a');
+        this.$a.addEventListener('click', e => this._onRetryClicked());
+        this.$button = this.$('button');
+        this.$button.addEventListener('click', e => this._onPasswordInput(e));
+    }
+
+    _onEntry() {
+        this.$passwordInput.focus();
+    }
+
+    _validityChanged(valid) {
+        if (valid)
+            this.$button.removeAttribute('disabled');
+        else
+            this.$button.setAttribute('disabled', true);
+    }
+
+    _onRetryClicked(e) {
+        this.fire('x-password-input-retry');
+        this.$hint.classList.add('hidden');
+        location.href = "#backup-file";
+    }
+
+    _onPasswordInput(e) {
+        this.fire('x-password-input', this.$passwordInput.value);
+        this.$passwordInput.value = '';
+        this.$hint.classList.add('hidden');
+    }
+
+    onPasswordIncorrect() {
+        this.$hint.classList.remove('hidden');
+    }
+}
+
+class ScreenBackupFileImport extends XScreen {
+    html() {
+        return `
+        <h2>Import Backup File</h2>
+        <x-slides>
+            <screen-backup-file-import-intro></screen-backup-file-import-intro>
+            <screen-backup-file-import-password></screen-backup-file-import-password>
+            <screen-loading>Unlocking the Backup</screen-loading>
+            <screen-success>Import successfull</screen-success>
+        </x-slides>
+        `;
+    }
+
+    children() { return [ScreenBackupFileImportIntro, ScreenBackupFileImportPassword, ScreenLoading, ScreenSuccess] }
+
+    onCreate() {
+        this.addEventListener('x-success', e => _onSuccess(e));
+        this.addEventListener('x-backup-import', e => this._onWalletImport(e));
+        this.addEventListener('x-password-input', e => this._onPasswordInput(e));
+    }
+
+    _onWalletImport(e) {
+        e.stopPropagation();
+        this._encryptedKey = e.detail;
+        this.goTo('password');
+    }
+
+    _onPasswordInput(e) {
+        const password = e.detail;
+        const result = { password: password, encryptedKey: this._encryptedKey };
+        this.fire('x-decrypt-backup', result);
+        this.goTo('loading');
+    }
+
+    async onPasswordCorrect() {
+        return await this.goTo('success');
+    }
+
+    async onPasswordIncorrect() {
+        await this.back();
+        this.$screenBackupFileImportPassword.onPasswordIncorrect();
+        this.$screenBackupFileImportPassword.$passwordInput._onInvalid();
+    }
+}
+
+// Todo: warn user upfront that importing a different account deletes the current account
+// Todo: [low priority] support multiple accounts at once
 
 class ScreenBackupFile extends XSlidesScreen {
     html() {
@@ -1832,10 +2337,72 @@ class ScreenBackupFile extends XSlidesScreen {
                 <screen-create-password></screen-create-password>
                 <screen-loading>Encrypting Backup</screen-loading>
                 <screen-download-recovery></screen-download-recovery>
+                <screen-backup-file-import></screen-backup-file-import>
                 <screen-success>Backup Complete</screen-success>
             </x-slides>
+            <a secondary class="hidden" href="#backup-file" id="x-screen-backup-file-a">I'm lost and want to try again</a>
             <screen-no-password-warning route="no-password"></screen-no-password-warning>
             `
+    }
+
+    children() {
+        return [
+            ScreenCreatePassword,
+            ScreenLoading,
+            ScreenDownloadRecovery,
+            ScreenBackupFileImport,
+            ScreenSuccess,
+            ScreenNoPasswordWarning
+        ]
+    }
+
+    /** Do not use those for slide indicator */
+    get __childScreenFilter() { return ['no-password']; }
+
+    listeners() {
+        return {
+            'x-wallet-download-complete': '_onWalletDownloadComplete',
+            'x-encrypt-backup': '_onSetPassword',
+            'x-decrypt-backup': '_onDecryptBackup',
+            'x-password-input-retry': '_onRetryClicked'
+        }
+    }
+
+    /** @param {Nimiq.KeyPair} */
+    setKeyPair(keyPair) {
+        this._keyPair = keyPair;
+        this.$screenDownloadRecovery.$walletBackup.setKeyPair(keyPair);
+    }
+
+    async _onSetPassword(password) {
+        await this.$screenDownloadRecovery.$walletBackup.createBackup(password);
+        this.goTo('download');
+    }
+
+    async _onWalletDownloadComplete() {
+        location.href = "#backup-file/backup-file-import";
+        const $a = this.$('#x-screen-backup-file-a');
+        $a.classList.remove('hidden');
+        $a.addEventListener('click', () => $a.classList.add('hidden'));
+    }
+
+    async _onDecryptBackup(backup) {
+        console.log(backup);
+        const password = backup.password;
+        const encryptedKey = backup.encryptedKey;
+        try {
+            await NanoApi.getApi().importEncrypted(encryptedKey, password);
+            await this.goTo('success');
+            this.fire('x-backup-file-complete');
+        } catch (e) {
+            console.error(e);
+            this.$screenBackupFileImport.onPasswordIncorrect();
+        }
+    }
+
+    _onRetryClicked() {
+        const $a = this.$('#x-screen-backup-file-a');
+        $a.classList.add('hidden');
     }
 
     types() {
@@ -1849,28 +2416,10 @@ class ScreenBackupFile extends XSlidesScreen {
         this.$screenSuccess = null;
         /** @type {ScreenNoPasswordWarning} */
         this.$screenNoPasswordWarning = null;
-    }
-
-    children() {
-        return [
-            ScreenCreatePassword,
-            ScreenLoading,
-            ScreenDownloadRecovery,
-            ScreenSuccess,
-            ScreenNoPasswordWarning
-        ]
-    }
-
-    /** Do not use those for slide indicator */
-    get __childScreenFilter() { return ['no-password']; }
-
-    async backup(address, privateKey) {
-        await this.$screenDownloadRecovery.$walletBackup.backup(address, privateKey);
-        this.goTo('download');
+        /** @type {ScreenBackupFileImport} */
+        this.$screenBackupFileImport = null;
     }
 }
-
-// Todo: Test import before proceed
 
 class XPrivacyAgent extends XElement {
     html() {
@@ -1889,7 +2438,7 @@ class XPrivacyAgent extends XElement {
 				  </g>
 				</svg>
 				<h1>Are you being watched?</h1>
-				<p>Now is the perfect time to asses your surroundings. Nearby windows? Hidden cameras? Shoulder spies?<br><b>Anyone with the following information can steal all your funds!</b></p>
+				<p>Now is the perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder spies?</p><p><strong>Anyone with the following information can steal all your funds!</strong></p>
 			</x-privacy-agent-container>
 			<x-grow></x-grow>
 			<button>I am safe</button>
@@ -2104,8 +2653,7 @@ class ScreenBackupPhraseValidate extends XScreen {
         this._mnemonic = mnemonic.split(/\s+/g);
     }
 
-
-    _onEntry() {
+    _onBeforeEntry() {
         this._activeSlideIndex = 0;
         this._generateIndices();
         this._setSlideContent(this._activeSlideIndex);
@@ -2181,14 +2729,16 @@ class ScreenBackupPhraseValidate extends XScreen {
 class ScreenError extends XScreen {
     html() {
         return `
-            <img src="/elements/screen-error/screen-error.svg">
+            <img src="screen-error.svg">
             <h1>Error</h1>
             <h2>Unfortunately we don't know the reason</h2>
+            <a button href="" class="small hidden"></a>
         `
     }
 
     onCreate() {
         this.$h2 = this.$('h2');
+        this.$button = this.$('[button]');
         const message = this.$el.getAttribute('message');
         if (message !== undefined) {
             this.show(message);
@@ -2197,6 +2747,12 @@ class ScreenError extends XScreen {
 
     show(message) {
         this.$h2.textContent = message;
+    }
+
+    setLink(href, text) {
+        this.$button.href = href;
+        this.$button.textContent = text;
+        this.$button.classList.remove('hidden');
     }
 }
 
@@ -2271,61 +2827,38 @@ class ActivationUtils {
         return (await response.json()).result;
     }
 
-    /** @param {string | Nimiq.Address} address 
-     * @return {Promise<string>} */
-    static async nim2ethAddress(address) {
-        const addressObj = (typeof address  === 'string') ? ActivationUtils.getUnfriendlyAddress(address) : address;
-        const hash = await Nimiq.Hash.sha256(addressObj.serialize());
-        return '0x' + Nimiq.BufferUtils.toHex(hash.subarray(0, 20));
-    }
-
-    /** @param {string} friendlyAddress */
-    static getUnfriendlyAddress(friendlyAddress) {
-        return Nimiq.Address.fromUserFriendlyAddress(friendlyAddress);
-    }
-
     /** @param {string} dashboardToken */
-    async getDashboardData(dashboardToken) {
+    static async getDashboardData(dashboardToken) {
         try {
             const request = fetch(
                 `${ActivationUtils.API_ROOT}/list/${dashboardToken}`,
                 { method: 'GET' }
             );
-
-            const result = await request.then(response => {
-                if (!response.ok) {
-                    this.onDashboardTokenError();
-                } else {
-                    return response.json();
-                }
-            });
-
-            if (result) {
-                this.onDashboardDataResult(result);
-            } 
+            return await request;
         } catch(e) {
-            this.onDashboardTokenError();
+            throw Error('Request failed');
         }
     }
 
-
-    /** @param {string} activationToken */
-    async isValidToken(activationToken) {
+    /** @param {string} activationToken
+     *  @returns {boolean} */
+    static async isValidToken(activationToken) {
         const request = fetch(
             `${ActivationUtils.API_ROOT}/activate/${activationToken}`,
             { method: 'GET' }
         );
         try {
             const response = await request;
-            this.onIsValidToken(response.ok);
+            return response.ok;
         } catch (e) {
-            this.onIsValidToken(false);
+            return false;
         }
     }
 
     /** @param {string} activationToken
-     * @param {string} nimiqAddress */
-    async activateAddress(activationToken, nimiqAddress) {
+     * @param {string} nimiqAddress
+     * @returns {boolean} */
+    static async activateAddress(activationToken, nimiqAddress) {
         const request = fetch(
             `${ActivationUtils.API_ROOT}/activate/address`,
             { 
@@ -2342,11 +2875,11 @@ class ActivationUtils {
         );
 
         const response = await request;
-        this.onActivateAddress(response.ok);
+        return response.ok;
     }
 
     /** @param {{birthday: Date, city: string, country_residence: string, country_nationality: string, email: string, sex: string, first_name: string, last_name: string, street: string, zip: string }} kycData */
-    async submitKyc(kycData) {
+    static async submitKyc(kycData) {
         const request = fetch(
             `${ActivationUtils.API_ROOT}/submit`,
             {
@@ -2359,13 +2892,7 @@ class ActivationUtils {
             }
         );
 
-        const response = await request;
-        if (response.ok) {
-            this.onKycSuccess(await response.json());
-        }
-        else {
-            this.onKycError(response.status);
-        }
+        return await request;
     }
 }
 
@@ -2410,13 +2937,13 @@ class ScreenActivation extends XScreen {
     html() {
         return `
             <h1>Activate your Nimiq Account</h1>
-            <h2 secondary>Send your NET to the unique Activation Address for your Nimiq Account</h2> 
+            <h2 secondary>Send your NET to the unique Activation Address for your Nimiq Account</h2>
             <x-slides>
                 <screen-warning>
-                    On the next screen you will see an Ethereum Address. 
+                    On the next screen you will see an Ethereum Address.
                     <ul>
-                        <li>Send only NET to this address.</li>  
-                        <li>If you send Ether it will get destroyed!</li>  
+                        <li>Send only NET to this address.</li>
+                        <li>If you send Ether it will become inaccessible!</li>
                     </ul>
                 </screen-warning>
                 <screen-activation-address></screen-activation-address>
@@ -2453,347 +2980,12 @@ class ScreenActivation extends XScreen {
     }
 }
 
-class NanoApi {
-
-    static get API_URL() { return 'https://cdn.nimiq-network.com/branches/master/nimiq.js' }
-    static get satoshis() { return 100000000 }
-
-    static getApi() {
-        this._api = this._api || new NanoApi();
-        return this._api;
-    }
-
-    constructor() {
-        this._apiInitialized = new Promise(resolve => {
-            this._resolveApiInitialized = resolve;
-            return 1;
-        });
-        this._init();
-    }
-
-    async _init(connect) {
-        await NanoApi._importApi();
-        this.$ = {};
-        Nimiq.init($ => this._onApiReady(), e => this.onDifferentTabError(e));
-    }
-
-    async _onApiReady() {
-        await Nimiq.Crypto.prepareSyncCryptoWorker();
-        this.$.walletStore = await new Nimiq.WalletStore();
-        this.$.wallet = this.$.wallet || await this.$.walletStore.getDefault();
-        this.onAddressChanged(this.address);
-        this.onInitialized();
-    }
-
-    async connect() {
-        await this._apiInitialized;
-        this.$.consensus = await Nimiq.Consensus.nano();
-        this.$.consensus.on('established', e => this._onConsensusEstablished());
-        this.$.consensus.network.connect();
-        this.$.consensus.blockchain.on('head-changed', e => this._headChanged());
-        this.$.consensus.mempool.on('transaction-added', tx => this._transactionAdded(tx));
-    }
-
-    async _headChanged() {
-        await this._apiInitialized;
-        if (!this.$.consensus.established) return;
-        const balance = await this._getBalance();
-        if (this._balance === balance) return;
-        this._balance = balance;
-        this.onBalanceChanged(this.balance);
-    }
-
-    async _getAccount() {
-        await this._apiInitialized;
-        const account = await this.$.consensus.getAccount(this.$.wallet.address);
-        return account || { balance: 0, nonce: 0 }
-    }
-
-    async _getBalance() {
-        await this._apiInitialized;
-        const account = await this._getAccount();
-        return account.balance;
-    }
-
-    _onConsensusEstablished() {
-        this._headChanged();
-        this.onConsensusEstablished();
-    }
-
-    _transactionAdded(tx) {
-        if (!tx.recipient.equals(this.$.wallet.address)) return;
-        const sender = tx.senderPubKey.toAddress();
-        this.onTransactionReceived(sender.toUserFriendlyAddress(), tx.value / NanoApi.satoshis, tx.fee);
-    }
-
-    /*
-        Public API
-    */
-    async sendTransaction(recipient, value, fees = 0) {
-        await this._apiInitialized;
-        const recipientAddr = Nimiq.Address.fromUserFriendlyAddress(recipient);
-        value = Math.round(Number(value) * NanoApi.satoshis);
-        fees = Math.round(Number(fees) * NanoApi.satoshis);
-        const tx = this.$.wallet.createTransaction(recipientAddr, value, fees, this.$.consensus.blockchain.height);
-        return this.$.consensus.relayTransaction(tx);
-    }
-
-    async getAddress() {
-        await this._apiInitialized;
-        return this.address;
-    }
-
-    async getBalance() {
-        await this._apiInitialized;
-        return this.balance;
-    }
-
-    get address() {
-        return this.$.wallet.address.toUserFriendlyAddress();
-    }
-
-    get balance() {
-        return (this._balance / NanoApi.satoshis) || 0;
-    }
-
-    async generateKeyPair() {
-        await this._apiInitialized;
-        const keys = Nimiq.KeyPair.generate();
-        const privKey = keys.privateKey;
-        const address = keys.publicKey.toAddress();
-        return {
-            privateKey: privKey,
-            address: address.toUserFriendlyAddress()
-        }
-    }
-
-    async importKey(privateKey, persist = true) {
-        await this._apiInitialized;
-        const keyPair = Nimiq.KeyPair.fromPrivateKey(privateKey);
-        this.$.wallet = new Nimiq.Wallet(keyPair);
-        if (persist) await this.$.walletStore.put(this.$.wallet);
-        return this.address;
-    }
-
-    async exportKey() {
-        await this._apiInitialized;
-        return this.$.wallet.keyPair.privateKey.toHex();
-    }
-
-    async lockWallet(pin) {
-        await this._apiInitialized;
-        return this.$.wallet.lock(pin);
-    }
-
-    async unlockWallet(pin) {
-        await this._apiInitialized;
-        return this.$.wallet.unlock(pin);
-    }
-
-    async importEncrypted(encryptedKey, password) {
-        await this._apiInitialized;
-        this.$.wallet = await Nimiq.Wallet.loadEncrypted(encryptedKey, password);
-        // this.$.walletStore = this.$.walletStore || await new Nimiq.WalletStore();
-        // this.$.walletStore.put(this.$.wallet);
-    }
-
-    async exportEncrypted(password) {
-        await this._apiInitialized;
-        const exportedWallet = await this.$.wallet.exportEncrypted(password);
-        return Nimiq.BufferUtils.toBase64(exportedWallet);
-    }
-
-    /** @param {string | Nimiq.Address} address
-     * @return {Promise<string>} */
-    async nim2ethAddress(address) {
-        await this._apiInitialized;
-        const addressObj = (typeof address  === 'string') ? await this.getUnfriendlyAddress(address) : address;
-        const hash = await Nimiq.Hash.sha256(addressObj.serialize());
-        return '0x' + Nimiq.BufferUtils.toHex(hash.subarray(0, 20));
-    }
-
-    /** @param {string} friendlyAddress */
-    async getUnfriendlyAddress(friendlyAddress) {
-        await this._apiInitialized;
-        return Nimiq.Address.fromUserFriendlyAddress(friendlyAddress);
-    }
-
-    onInitialized() {
-        console.log('Nimiq API ready to use');
-        this._resolveApiInitialized();
-        this.fire('nimiq-api-ready');
-    }
-
-    onAddressChanged(address) {
-        console.log('address changed');
-        this.fire('nimiq-account', address);
-    }
-
-    onConsensusEstablished() {
-        console.log('consensus established');
-        this.fire('nimiq-consensus-established', this.address);
-    }
-
-    onBalanceChanged(balance) {
-        console.log('new balance:', balance);
-        this.fire('nimiq-balance', balance);
-    }
-
-    onTransactionReceived(sender, value, fee) {
-        console.log('received:', value, 'from:', sender, 'txfee:', fee);
-        this.fire('nimiq-transaction', { sender: sender, value: value, fee: fee });
-    }
-
-    onDifferentTabError() {
-        console.log('Nimiq API is already running in a different tab');
-        this.fire('nimiq-different-tab-error');
-    }
-
-    static formatValue(number, decimals = 3) {
-        number = Number(number);
-        decimals = Math.pow(10, decimals);
-        return Math.round(number * decimals) / decimals;
-    }
-
-    static formatValueInDollar(number) {
-        number = Number(number);
-        return this.formatValue(number * 17.1, 2);
-    }
-
-    static validateAddress(address) {
-        try {
-            this.isUserFriendlyAddress(address);
-            return true;
-        } catch (e) {
-            return false;
-        }
-    }
-
-    // Copied from: https://github.com/nimiq-network/core/blob/master/src/main/generic/consensus/base/account/Address.js
-
-    static isUserFriendlyAddress(str) {
-        str = str.replace(/ /g, '');
-        if (str.substr(0, 2).toUpperCase() !== 'NQ') {
-            throw new Error('Addresses start with NQ', 201);
-        }
-        if (str.length !== 36) {
-            throw new Error('Addresses are 36 chars (ignoring spaces)', 202);
-        }
-        if (this._ibanCheck(str.substr(4) + str.substr(0, 4)) !== 1) {
-            throw new Error('Address Checksum invalid', 203);
-        }
-    }
-
-    static _ibanCheck(str) {
-        const num = str.split('').map((c) => {
-            const code = c.toUpperCase().charCodeAt(0);
-            return code >= 48 && code <= 57 ? c : (code - 55).toString();
-        }).join('');
-        let tmp = '';
-
-        for (let i = 0; i < Math.ceil(num.length / 6); i++) {
-            tmp = (parseInt(tmp + num.substr(i * 6, 6)) % 97).toString();
-        }
-
-        return parseInt(tmp);
-    }
-
-    static _importApi() {
-        return new Promise((resolve, reject) => {
-            let script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = NanoApi.API_URL;
-            script.addEventListener('load', () => resolve(script), false);
-            script.addEventListener('error', () => reject(script), false);
-            document.body.appendChild(script);
-        });
-    }
-
-    // Copied from x-element.
-    fire(eventType, detail = null, bubbles = true) { // Fire DOM-Event
-        const params = { detail: detail, bubbles: bubbles };
-        window.dispatchEvent(new CustomEvent(eventType, params));
-    }
-}
-
 class XNimiqApi extends XElement {
     onCreate() {
         const connect = this.$el.getAttribute('connect') === 'true';
-        this._api = new NimiqApi(connect, this);
-    }
-}
-
-class NimiqApi extends NanoApi {
-    constructor(connect, element) {
-        super(connect);
-        this._element = element;
-    }
-    onInitialized() {
-        this.initialized = true;
-        this._element.fire('x-api-ready', this);
-    }
-
-    onConsensusEstablished() {
-        this._element.fire('x-consensus-established', this.address);
-    }
-
-    onAddressChanged(address) {
-        this._element.fire('x-account', address);
-    }
-
-    onBalanceChanged(balance) {
-        this._element.fire('x-balance', balance);
-    }
-
-    onTransactionReceived(sender, value, fee) {
-        this._element.fire('x-transaction', { sender: sender, value: value, fee: fee });
-    }
-
-    onDifferentTabError() {
-        this._element.fire('x-different-tab-error');
-    }
-}
-
-// Todo: [low] Make api a singleton, so we can wait more fine-grained for api-ready, but load it right after starting the app
-
-class XActivationUtils extends XElement {
-    onCreate() {
-        this._api = new ActivationToolsWrapper(this);
-    }
-}
-
-class ActivationToolsWrapper extends ActivationUtils {
-    constructor(element) {
-        super();
-        this._element = element;
-    }
-
-    onDashboardDataResult(response) {
-        this._element.fire('x-activation-dashboard-data', response);
-    }
-
-    onDashboardTokenError() {
-        this._element.fire('x-activation-dashboard-token-error');
-    }
-
-    onIsValidToken(response) {
-        this._element.fire('x-activation-valid-token', response);
-    }
-
-    onWalletCreated(response) {
-        this._element.fire('x-activation-wallet-created', response);
-    }
-    
-    onActivateAddress(response) {
-        this._element.fire('x-activation-activate-address', response);
-    }
-
-    onKycSuccess(response) {
-        this._element.fire('x-activation-post-success', response);
-    }
-
-    onKycError(errorCode) {
-        this._element.fire('x-activation-post-error', errorCode);
+        this._api = NanoApi.getApi();
+        this._api.setXElement(this);
+        if (connect) this._api.connect();
     }
 }
 
@@ -2803,14 +2995,26 @@ class ActivationTool extends XAppScreen {
             <screen-loading><h2>Checking activation token...</h2></screen-loading>
             <screen-welcome></screen-welcome>
             <screen-identicons></screen-identicons>
+            <screen-backup-file></screen-backup-file>
             <screen-backup-phrase></screen-backup-phrase>
             <screen-backup-phrase-validate></screen-backup-phrase-validate>
-            <screen-backup-file></screen-backup-file>
             <screen-activation></screen-activation>
             <screen-error></screen-error>
             <x-nimiq-api></x-nimiq-api>
-            <x-activation-utils></x-activation-utils>
         `
+    }
+
+    types() {
+        /** @type {ScreenBackupPhrase} */
+        this.$screenBackupPhrase = null;
+        /** @type {ScreenBackupPhraseValidate} */
+        this.$screenBackupPhraseValidate = null;
+        /** @type {ScreenBackupFile} */
+        this.$screenBackupFile = null;
+        /** @type {ScreenActivation} */
+        this.$screenActivation = null;
+        /** @type {ScreenError} */
+        this.$screenError = null;
     }
 
     children() {
@@ -2820,104 +3024,58 @@ class ActivationTool extends XAppScreen {
             ScreenBackupPhrase,
             ScreenBackupPhraseValidate,
             ScreenBackupFile,
-            ScreenActivation,
-            ScreenSuccess,
-            ScreenError,
             ScreenIdenticons,
-            XNimiqApi,
-            XActivationUtils
+            ScreenActivation,
+            ScreenError,
+            XNimiqApi
         ]
     }
 
     listeners() {
         return {
-            'x-activation-valid-token': '_onValidToken',
-            'x-api-ready': '_onApiReady',
+            'nimiq-different-tab-error':'_onDifferentTabError',
             'x-keypair': '_onKeyPair',
             'x-phrase-validated': '_onPhraseValidated',
-            'x-encrypt-backup': '_onEncryptBackup',
             'x-backup-file-complete': '_onBackupFileComplete',
-            'x-different-tab-error':'_onDifferentTabError',
-            'x-activation-activate-address': '_onActivateAddress',
             'x-activation-complete': '_onActivationComplete'
         }
     }
 
-    allowedTransitions() {
-        return  [
-            { from: '', to: 'welcome' },
-        ]
+    onCreate() {
+        location.href = "#";
     }
 
-    onStateChange(state) {
-        if (this._keyInitialized) return true;
-        if (!(state === 'welcome' || state === 'identicons')) location = '';
-        else return true;
-    }
-
-    _onEntry() {
-        this._activationToken = new URLSearchParams(document.location.search).get("activation_token"); 
-        this.$activationUtils._api.isValidToken(this._activationToken);
-    }
-
-    _onActivateAddress(success) {
-        if (!success) {
-            this.$screenError.show('Your address could not be activated. Please try again.');
-            this.goTo('error');
-        }
-    }
-
-    _onActivationComplete() {
-        window.location.href = `../dashboard/?address=${this._userFriendlyNimAddress}#account`;
-    }
-
-    _onValidToken(response) {
-        if (response === true) {
-            if (this._api) this._onValidTokenAndApiReady();
-            else this._hasValidToken = true;
+    async _onEntry() {
+        this._activationToken = new URLSearchParams(document.location.search).get("activation_token");
+        const isValidToken = await ActivationUtils.isValidToken(this._activationToken);
+        if (isValidToken) {
+            location.href = '#welcome';
         }
         else {
-            this.$screenError.show('Your activation token is invalid. Please go back to the dashboard try again.');
-            this.goTo('error');
+            this.$screenError.show('Your activation token is invalid. Please go back to the dashboard and try again.');
+            this.$screenError.setLink('/apps/nimiq-activation/dashboard', 'Go to Dashboard');
+            location.href = '#error';
         }
     }
 
-    _onApiReady(api) {
-        console.log('api ready');
-        this._api = api;
-        this.$screenIdenticons.onApiReady(api);
-        if (this._hasValidToken) this._onValidTokenAndApiReady();
-    }
+    async _onKeyPair(keyPair) {
+        const api = NanoApi.getApi();
+        const nimAddress = keyPair.address;
 
-    _onValidTokenAndApiReady() {
-        this.goTo('welcome');
-    }
-
-    _onKeyPair(keyPair) {
-        const hexedPrivKey = keyPair.privateKey.toHex();
-        this.$screenBackupPhrase.privateKey = hexedPrivKey;
-        this.$screenBackupPhraseValidate.privateKey = hexedPrivKey;
-        this._keyPair = keyPair;
-        this._keyInitialized = true;
-        location.href = '#backup-file';
-    }
-
-    async _onEncryptBackup(password) {
-        const encryptedKey = await this._importAndEncrypt(password);
-        this.$screenBackupFile.backup(this._api.address, encryptedKey);
-    }
-
-    async _importAndEncrypt(password) {
-        await this._api.importKey(this._keyPair.privateKey, false);
-        const encryptedKey = await this._api.exportEncrypted(password);
-        this._keyPair.privateKey = null;
-        const nimAddress = this._api.$.wallet.address;
-        const ethAddress = await ActivationUtils.nim2ethAddress(nimAddress);
-        this._userFriendlyNimAddress = nimAddress.toUserFriendlyAddress();
-        this.$screenActivation.setAddress(ethAddress);
-        this.$activationUtils._api.activateAddress(this._activationToken, this._userFriendlyNimAddress);
-        this._keyPair = null;
-        return encryptedKey;
+        const activationSuccessfull = await ActivationUtils.activateAddress(this._activationToken, nimAddress);
+        if (activationSuccessfull) {
+            const ethAddress = await api.nim2ethAddress(nimAddress);
+            this.$screenActivation.setAddress(ethAddress);
+            const hexedPrivKey = keyPair.privateKey.toHex();
+            this.$screenBackupPhrase.privateKey = hexedPrivKey;
+            this.$screenBackupPhraseValidate.privateKey = hexedPrivKey;
+            this.$screenBackupFile.setKeyPair(keyPair);
+            location.href = '#backup-file';
+        } else {
+            this.$screenError.show('Your activation token is invalid. Please go back to the dashboard and try again.');
+            this.$screenError.setLink('/apps/nimiq-activation/dashboard', 'Go to Dashboard');
+            location.href = '#error';
+        }
     }
 
     _onBackupFileComplete() {
@@ -2926,6 +3084,10 @@ class ActivationTool extends XAppScreen {
 
     _onPhraseValidated() {
         location = '#activation';
+    }
+
+    _onActivationComplete() {
+        window.location.href = `../dashboard/?address=${this._userFriendlyNimAddress}#account`;
     }
 
     _onDifferentTabError() {
@@ -2941,5 +3103,3 @@ ActivationTool.launch();
 return ActivationTool;
 
 }());
-
-//# sourceMappingURL=app.js.map

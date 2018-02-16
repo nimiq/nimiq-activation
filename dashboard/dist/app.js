@@ -15,23 +15,24 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {XElement | Element | null} parent
      * @memberof XElement
      */
     __bindDOM(parent) {
-        if (parent instanceof XElement) this.$el = parent.$(this.__tagName); // query in parent for tag name
+        if (parent instanceof XElement) this.$el = parent.$(this.__tagName + ':not([x-initialized])'); // query in parent for tag name
         else if (parent instanceof Element) this.$el = parent; // The parent is this DOM-Element
         else this.$el = document.querySelector(this.__tagName); // query in document for tag name
+        this.$el.setAttribute('x-initialized', true);
         this.__fromHtml();
         this.__bindStyles(this.styles);
     }
 
     /**
-     * 
-     * 
-     * @returns 
+     *
+     *
+     * @returns
      * @memberof XElement
      */
     __createChildren() { // Create all children recursively
@@ -40,8 +41,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {XElement | XElement[]} child
      * @returns {void}
      * @memberof XElement
@@ -52,21 +53,21 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {XElement} child
      * @memberof XElement
      */
     __createArrayOfChild(child) {
         const name = child.__toChildName() + 's';
         const tagName = XElement.__toTagName(child.name);
-        const children = this.$$(tagName);
+        const foundChildren = this.$$(tagName + ':not([x-initialized])');
         this[name] = [];
-        children.forEach(c => this[name].push(new child(c)));
+        foundChildren.forEach(c => this[name].push(new child(c)));
     }
     /**
-     * 
-     * 
+     *
+     *
      * @static
      * @param {string} str
      * @returns {string}
@@ -80,8 +81,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @static
      * @returns {string}
      * @memberof XElement
@@ -93,9 +94,9 @@ class XElement {
     }
 
     /**
-     * 
-     * 
-     * @returns 
+     *
+     *
+     * @returns
      * @memberof XElement
      */
     __fromHtml() {
@@ -111,8 +112,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @readonly
      * @memberof XElement
      */
@@ -121,11 +122,11 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @static
      * @param {string} name
-     * @returns 
+     * @returns
      * @memberof XElement
      */
     static __toTagName(name) {
@@ -133,10 +134,10 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @static
-     * @returns 
+     * @returns
      * @memberof XElement
      */
     static createElement() {
@@ -146,8 +147,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     * Find the first match of a selector within this element.
+     *
      * @param {string} selector
      * @returns {Element}
      * @memberof XElement
@@ -155,34 +156,35 @@ class XElement {
     $(selector) { return this.$el.querySelector(selector) } // Query inside of this DOM-Element
 
     /**
-     * 
-     * 
+     * Finds all matches of a selector within this element.
+     *
      * @param {string} selector
-     * @returns {Element[]}
+     * @returns {NodeList}
      * @memberof XElement
      */
     $$(selector) { return this.$el.querySelectorAll(selector) } // QueryAll inside of this DOM-Element
+
     /**
-     * 
-     * 
+     *
+     *
      * @memberof XElement
      */
     clear() { while (this.$el.firstChild) this.$el.removeChild(this.$el.firstChild); } // Clear all DOM-Element children
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} type
      * @param {function} callback
      * @memberof XElement
      */
     addEventListener(type, callback) { this.$el.addEventListener(type, callback, false); }
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} eventType
-     * @param {any} [detail=null] 
-     * @param {boolean} [bubbles=true] 
+     * @param {any} [detail=null]
+     * @param {boolean} [bubbles=true]
      * @memberof XElement
      */
     fire(eventType, detail = null, bubbles = true) { // Fire DOM-Event
@@ -190,8 +192,8 @@ class XElement {
         this.$el.dispatchEvent(new CustomEvent(eventType, params));
     }
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} type
      * @param {function} callback
      * @param {Element | window} $el
@@ -206,24 +208,24 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} styleClass
      * @memberof XElement
      */
     addStyle(styleClass) { this.$el.classList.add(styleClass); }
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} styleClass
      * @memberof XElement
      */
     removeStyle(styleClass) { this.$el.classList.remove(styleClass); }
     /**
-     * 
-     * 
+     *
+     *
      * @param {() => string[]} styles
-     * @returns 
+     * @returns
      * @memberof XElement
      */
     __bindStyles(styles) {
@@ -233,8 +235,8 @@ class XElement {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} className
      * @param {Element | string} $el
      * @param {() => void} afterStartCallback
@@ -257,8 +259,8 @@ class XElement {
         })
     }
     /**
-     * 
-     * 
+     *
+     *
      * @param {string} className
      * @param {Element | string} $el
      * @memberof XElement
@@ -278,8 +280,6 @@ class XElement {
     }
 }
 
-// Todo: Bug/Pitfall: When instantiating a screen twice on a path down a screen tree (e.g. loading), it has to be declared as an array on the higher level.
-
 class XState {
     constructor(path) {
         /** @type {string} */
@@ -291,11 +291,15 @@ class XState {
         if (child.length && child[0]) this._child = new XState(child);
         /** @type {boolean} */
         this._isLeaf = !this._child;
+        /** @type {string[]} */
         this._path = path;
     }
 
     /** @returns {boolean} */
     get isLeaf() { return this._isLeaf; }
+
+    /** @returns {string} */
+    get leafId() { return this._path[this._path.length]; }
 
     /** @returns {string} */
     get id() { return this._id; }
@@ -426,7 +430,7 @@ class XScreen extends XElement {
 
     _registerRootElement() {
         XScreen._registerGlobalStateListener(this._onRootStateChange.bind(this));
-        this._show();
+        setTimeout(e => this._show(), 100);
     }
 
     /**
@@ -552,10 +556,6 @@ class XScreen extends XElement {
         })
     }
 
-    goToChild(route) {
-        document.location = this._location + '/' + route;
-    }
-
     back() {
         return new Promise(resolve => {
             XScreen._goToResolve = resolve;
@@ -610,21 +610,16 @@ class XScreen extends XElement {
         XScreen._goToResolve = null;
     }
 
-    _validateState(nextState, prevState, isNavigateBack) { return true /* Abstract Method */ }
-
-
     /** @param {function} callback */
     static _registerGlobalStateListener(callback) {
         if (this._stateListener) return; // We register only the first screen calling. All other screens get notified by their parent
         this._stateListener = window.addEventListener('popstate', e => this._onHistoryChange(callback));
-        this._onHistoryChange(callback, true);
+        setTimeout(e => this._onHistoryChange(callback), 0); // Trigger FF layout
     }
 
     /** @param {function} callback */
-    static _onHistoryChange(callback, isPageLoad) {
-        let nextState;
-        if (isPageLoad) nextState = XState.fromLocation('#');
-        else nextState = XState.fromLocation();
+    static _onHistoryChange(callback) {
+        const nextState = XState.fromLocation();
         if (nextState.isEqual(this.currState)) return;
         const isNavigateBack = (nextState.isEqual(this.prevState));
         this.prevState = this.currState;
@@ -636,7 +631,6 @@ class XScreen extends XElement {
 }
 
 // Todo: Fix kind of animations when using back and forward buttons in whatever order
-// Todo Fix general page layout (Firefox bugs, absolute positioning)
 
 class XScreenFit extends XScreen {
     styles() { return ['x-screen-fit'] }
@@ -660,14 +654,16 @@ class ScreenLoading extends XScreenFit {
 class ScreenError extends XScreen {
     html() {
         return `
-            <img src="/elements/screen-error/screen-error.svg">
+            <img src="screen-error.svg">
             <h1>Error</h1>
             <h2>Unfortunately we don't know the reason</h2>
+            <a button href="" class="small hidden"></a>
         `
     }
 
     onCreate() {
         this.$h2 = this.$('h2');
+        this.$button = this.$('[button]');
         const message = this.$el.getAttribute('message');
         if (message !== undefined) {
             this.show(message);
@@ -676,6 +672,12 @@ class ScreenError extends XScreen {
 
     show(message) {
         this.$h2.textContent = message;
+    }
+
+    setLink(href, text) {
+        this.$button.href = href;
+        this.$button.textContent = text;
+        this.$button.classList.remove('hidden');
     }
 }
 
@@ -689,61 +691,38 @@ class ActivationUtils {
         return (await response.json()).result;
     }
 
-    /** @param {string | Nimiq.Address} address 
-     * @return {Promise<string>} */
-    static async nim2ethAddress(address) {
-        const addressObj = (typeof address  === 'string') ? ActivationUtils.getUnfriendlyAddress(address) : address;
-        const hash = await Nimiq.Hash.sha256(addressObj.serialize());
-        return '0x' + Nimiq.BufferUtils.toHex(hash.subarray(0, 20));
-    }
-
-    /** @param {string} friendlyAddress */
-    static getUnfriendlyAddress(friendlyAddress) {
-        return Nimiq.Address.fromUserFriendlyAddress(friendlyAddress);
-    }
-
     /** @param {string} dashboardToken */
-    async getDashboardData(dashboardToken) {
+    static async getDashboardData(dashboardToken) {
         try {
             const request = fetch(
                 `${ActivationUtils.API_ROOT}/list/${dashboardToken}`,
                 { method: 'GET' }
             );
-
-            const result = await request.then(response => {
-                if (!response.ok) {
-                    this.onDashboardTokenError();
-                } else {
-                    return response.json();
-                }
-            });
-
-            if (result) {
-                this.onDashboardDataResult(result);
-            } 
+            return await request;
         } catch(e) {
-            this.onDashboardTokenError();
+            throw Error('Request failed');
         }
     }
 
-
-    /** @param {string} activationToken */
-    async isValidToken(activationToken) {
+    /** @param {string} activationToken
+     *  @returns {boolean} */
+    static async isValidToken(activationToken) {
         const request = fetch(
             `${ActivationUtils.API_ROOT}/activate/${activationToken}`,
             { method: 'GET' }
         );
         try {
             const response = await request;
-            this.onIsValidToken(response.ok);
+            return response.ok;
         } catch (e) {
-            this.onIsValidToken(false);
+            return false;
         }
     }
 
     /** @param {string} activationToken
-     * @param {string} nimiqAddress */
-    async activateAddress(activationToken, nimiqAddress) {
+     * @param {string} nimiqAddress
+     * @returns {boolean} */
+    static async activateAddress(activationToken, nimiqAddress) {
         const request = fetch(
             `${ActivationUtils.API_ROOT}/activate/address`,
             { 
@@ -760,11 +739,11 @@ class ActivationUtils {
         );
 
         const response = await request;
-        this.onActivateAddress(response.ok);
+        return response.ok;
     }
 
     /** @param {{birthday: Date, city: string, country_residence: string, country_nationality: string, email: string, sex: string, first_name: string, last_name: string, street: string, zip: string }} kycData */
-    async submitKyc(kycData) {
+    static async submitKyc(kycData) {
         const request = fetch(
             `${ActivationUtils.API_ROOT}/submit`,
             {
@@ -777,13 +756,7 @@ class ActivationUtils {
             }
         );
 
-        const response = await request;
-        if (response.ok) {
-            this.onKycSuccess(await response.json());
-        }
-        else {
-            this.onKycError(response.status);
-        }
+        return await request;
     }
 }
 
@@ -828,7 +801,7 @@ class Robohash {
 
     static _$svg(content) {
         return `
-            <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/2000/xlink" >
+            <svg viewBox="0 0 320 320" width="320" height="320" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/2000/xlink" >
                 ${content}
             </svg>`
     }
@@ -1082,47 +1055,6 @@ class ScreenAccounts extends XScreenFit {
     }
 }
 
-class XActivationUtils extends XElement {
-    onCreate() {
-        this._api = new ActivationToolsWrapper(this);
-    }
-}
-
-class ActivationToolsWrapper extends ActivationUtils {
-    constructor(element) {
-        super();
-        this._element = element;
-    }
-
-    onDashboardDataResult(response) {
-        this._element.fire('x-activation-dashboard-data', response);
-    }
-
-    onDashboardTokenError() {
-        this._element.fire('x-activation-dashboard-token-error');
-    }
-
-    onIsValidToken(response) {
-        this._element.fire('x-activation-valid-token', response);
-    }
-
-    onWalletCreated(response) {
-        this._element.fire('x-activation-wallet-created', response);
-    }
-    
-    onActivateAddress(response) {
-        this._element.fire('x-activation-activate-address', response);
-    }
-
-    onKycSuccess(response) {
-        this._element.fire('x-activation-post-success', response);
-    }
-
-    onKycError(errorCode) {
-        this._element.fire('x-activation-post-error', errorCode);
-    }
-}
-
 class ScreenHome extends XScreen {
     html() {
         return `
@@ -1133,42 +1065,38 @@ class ScreenHome extends XScreen {
                 <screen-error></screen-error>              
                 <screen-accounts></screen-accounts>
             </x-slides>
-            <x-activation-utils></x-activation-utils>
         `
     }
 
-    children() { return [ ScreenLoading, ScreenAccounts, ScreenError, XActivationUtils ] }
+    children() { return [ ScreenLoading, ScreenAccounts, ScreenError ] }
 
     listeners() {
         return {
-            'x-activation-dashboard-data': '_onDashboardDataResult',
-            'x-activation-dashboard-token-error': '_onDashboardTokenError',
             'x-create-account': '_onCreateAccount',
-            'x-api-ready': '_onApiReady'
         }
     }
 
-    _onBeforeEntry() {
+    async _onBeforeEntry() {
+        if (this._hasContent) return;
+        this._hasContent = true;
+
         let dashboardToken = new URLSearchParams(document.location.search).get("dashboard_token");
         if (dashboardToken !== null) {
             localStorage.setItem('dashboardToken', dashboardToken);
         } else {
             dashboardToken = localStorage.getItem('dashboardToken');
         }
-        this.$activationUtils._api.getDashboardData(dashboardToken);
-    }
 
-    _onDashboardDataResult(result) {
-        const addresses = result.addresses;
-        const activationToken = result.activation_token;
-        this._activationToken = activationToken;
-        this.$screenAccounts.accounts = addresses;
-        this.goTo('accounts');
-    }
-
-    _onDashboardTokenError() {
-        this.$screenError.show('Invalid dashboard token. Please use a valid link.');
-        this.goTo('error');
+        const apiResponse = await ActivationUtils.getDashboardData(dashboardToken);
+        if (apiResponse.ok) {
+            const result = await apiResponse.json();
+            this._activationToken = result.activation_token;
+            this.$screenAccounts.accounts = result.addresses;
+            this.goTo('accounts');
+        } else {
+            this.$screenError.show('Invalid dashboard token. Please use a valid link.');
+            this.goTo('error');
+        }
     }
 
     _onCreateAccount() {
@@ -1187,17 +1115,14 @@ class NanoApi {
     }
 
     constructor() {
-        this._apiInitialized = new Promise(resolve => {
-            this._resolveApiInitialized = resolve;
-            return 1;
+        this._apiInitialized = new Promise(async resolve => {
+            await NanoApi._importApi();
+            this.$ = {};
+            Nimiq.init(async $ => {
+                await this._onApiReady();
+                resolve();
+            }, e => this.onDifferentTabError(e));
         });
-        this._init();
-    }
-
-    async _init(connect) {
-        await NanoApi._importApi();
-        this.$ = {};
-        Nimiq.init($ => this._onApiReady(), e => this.onDifferentTabError(e));
     }
 
     async _onApiReady() {
@@ -1279,6 +1204,12 @@ class NanoApi {
         return (this._balance / NanoApi.satoshis) || 0;
     }
 
+    /**
+     *
+     *
+     *
+     * @return {Object} An object containing `privateKey` in native format and `address` in user-friendly format.
+     */
     async generateKeyPair() {
         await this._apiInitialized;
         const keys = Nimiq.KeyPair.generate();
@@ -1315,6 +1246,7 @@ class NanoApi {
 
     async importEncrypted(encryptedKey, password) {
         await this._apiInitialized;
+        encryptedKey = Nimiq.BufferUtils.fromBase64(encryptedKey);
         this.$.wallet = await Nimiq.Wallet.loadEncrypted(encryptedKey, password);
         // this.$.walletStore = this.$.walletStore || await new Nimiq.WalletStore();
         // this.$.walletStore.put(this.$.wallet);
@@ -1343,7 +1275,6 @@ class NanoApi {
 
     onInitialized() {
         console.log('Nimiq API ready to use');
-        this._resolveApiInitialized();
         this.fire('nimiq-api-ready');
     }
 
@@ -1432,10 +1363,15 @@ class NanoApi {
         });
     }
 
+    setXElement(xElement) {
+       this._xElement = xElement;
+       this.fire = this._xElement.fire;
+    }
+
     // Copied from x-element.
     fire(eventType, detail = null, bubbles = true) { // Fire DOM-Event
         const params = { detail: detail, bubbles: bubbles };
-        window.dispatchEvent(new CustomEvent(eventType, params));
+        document.body.dispatchEvent(new CustomEvent(eventType, params));
     }
 }
 
@@ -1458,46 +1394,6 @@ class XAmount extends XElement {
     }
 }
 
-class XNimiqApi extends XElement {
-    onCreate() {
-        const connect = this.$el.getAttribute('connect') === 'true';
-        this._api = new NimiqApi(connect, this);
-    }
-}
-
-class NimiqApi extends NanoApi {
-    constructor(connect, element) {
-        super(connect);
-        this._element = element;
-    }
-    onInitialized() {
-        this.initialized = true;
-        this._element.fire('x-api-ready', this);
-    }
-
-    onConsensusEstablished() {
-        this._element.fire('x-consensus-established', this.address);
-    }
-
-    onAddressChanged(address) {
-        this._element.fire('x-account', address);
-    }
-
-    onBalanceChanged(balance) {
-        this._element.fire('x-balance', balance);
-    }
-
-    onTransactionReceived(sender, value, fee) {
-        this._element.fire('x-transaction', { sender: sender, value: value, fee: fee });
-    }
-
-    onDifferentTabError() {
-        this._element.fire('x-different-tab-error');
-    }
-}
-
-// Todo: [low] Make api a singleton, so we can wait more fine-grained for api-ready, but load it right after starting the app
-
 class ScreenAccount extends XScreen {
     html() {
         return `
@@ -1508,18 +1404,11 @@ class ScreenAccount extends XScreen {
 				<x-address></x-address>
 				<x-amount></x-amount>
 			</x-grow>
-			<x-nimiq-api></x-nimiq-api>
 			<button>Back to Dashboard</button>
 		`
     }
 
-    children() { return [XIdenticon, XAddress, XAmount, XNimiqApi] }
-
-    listeners() {
-        return {
-            'x-api-ready': '_onApiReady'
-        }
-    }
+    children() { return [XIdenticon, XAddress, XAmount] }
 
     onCreate() {
         this.$('button').addEventListener('click', e => this._onBack());
@@ -1529,27 +1418,30 @@ class ScreenAccount extends XScreen {
         this.goTo('home/accounts');
     }
 
-    _onApiReady() {
-        if (!this._address) return;
-        this._fetchAmount(this._address);
+    async _onBeforeEntry() {
+        this.address = new URLSearchParams(document.location.search).get("address");
+        await this._fetchAmount();
     }
 
     set address(address) {
         this.$identicon.address = address;
         this.$address.address = address;
         this._address = address;
-        if (this.$nimiqApi.initialized)
-            this._onApiReady();
     }
 
-    async _fetchAmount(address) {
-        const ethAddress = await ActivationUtils.nim2ethAddress(address);
+    async _fetchAmount() {
+        const ethAddress = await NanoApi.getApi().nim2ethAddress(this._address);
         const balance = await ActivationUtils.fetchBalance(ethAddress);
         this.$amount.value = balance;
     }
+}
 
-    _onBeforeEntry() {
-        this.address = new URLSearchParams(document.location.search).get("address");
+class XNimiqApi extends XElement {
+    onCreate() {
+        const connect = this.$el.getAttribute('connect') === 'true';
+        this._api = NanoApi.getApi();
+        this._api.setXElement(this);
+        if (connect) this._api.connect();
     }
 }
 
@@ -1558,17 +1450,27 @@ class Dashboard extends XAppScreen {
         return `
             <screen-home></screen-home>
             <screen-account></screen-account>
+            <screen-error></screen-error>
+            <x-nimiq-api></x-nimiq-api>
         `
     }
 
-    children() { return [ScreenHome, ScreenAccount] }
+    children() { return [ScreenHome, ScreenAccount, ScreenError, XNimiqApi] }
 
     listeners() {
-        return { 'x-account-selected': '_onAccountSelected' }
+        return {
+            'nimiq-different-tab-error':'_onDifferentTabError',
+            'x-account-selected': '_onAccountSelected'
+        }
     }
 
     _onAccountSelected(address) {
         window.location = '?address=' + address + '#account';
+    }
+
+    _onDifferentTabError() {
+        this.$screenError.show('Nimiq is already running in a different tab');
+        location = '#error';
     }
 }
 
@@ -1577,5 +1479,3 @@ Dashboard.launch();
 return Dashboard;
 
 }());
-
-//# sourceMappingURL=app.js.map

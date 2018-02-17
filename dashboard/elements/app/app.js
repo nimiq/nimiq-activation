@@ -19,6 +19,7 @@ export default class Dashboard extends XAppScreen {
     listeners() {
         return {
             'nimiq-different-tab-error':'_onDifferentTabError',
+            'nimiq-api-fail':'_onApiInitFail',
             'x-account-selected': '_onAccountSelected'
         }
     }
@@ -28,8 +29,11 @@ export default class Dashboard extends XAppScreen {
     }
 
     _onDifferentTabError() {
-        this.$screenError.show('Nimiq is already running in a different tab');
-        location = '#error';
+        this._error = 'Nimiq is already running in a different tab';
+    }
+
+    _onApiInitFail() {
+        this._error = 'Your operating system version has a bug and is therefore not supported. Please use a different device.';
     }
 }
 

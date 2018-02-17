@@ -47,3 +47,6 @@ export default class Verify extends XAppScreen {
 }
 
 Verify.launch();
+
+
+// Todo: better scrolling experience with touch

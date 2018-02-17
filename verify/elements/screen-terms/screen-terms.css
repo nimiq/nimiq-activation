@@ -16,12 +16,12 @@ screen-terms ol {
 }
 
 screen-terms p {
-    text-align: justify;
+    text-align: left;
     padding-bottom: 8px;
 }
 
 screen-terms li {
-    text-align: justify;
+    text-align: left;
     line-height: 19px;
     margin-bottom: 24px;
     padding-left: 16px;
@@ -33,6 +33,7 @@ screen-terms h3 {
 
 screen-terms section {
 	overflow-y: auto;
+    margin-top: 10px;
 }
 
 screen-terms [button]{
@@ -42,4 +43,15 @@ screen-terms [button]{
 
 screen-terms .same-size-buttons {
     display: flex;
+}
+
+@media (max-width: 700px) {
+    screen-terms ol {
+        padding-left: 24px;
+    }
+
+    screen-terms li {
+        padding-left: 0;
+        margin-bottom: 0;
+    }
 }

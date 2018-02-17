@@ -24,7 +24,12 @@ form {
     width: 100%;
 }
 
-
+::-webkit-contacts-auto-fill-button, ::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+}
 
 input{
     background: none;
@@ -83,6 +88,13 @@ x-dateofbirth-select {
 
 x-dateofbirth-select select {
     flex: 1;
+}
+
+screen-confirm h2 {
+    font-size:16px;
+    font-weight: bold;
+    margin-top:10px;
+    padding: 0;
 }
 
 @media (max-width: 650px) {

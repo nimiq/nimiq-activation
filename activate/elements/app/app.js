@@ -6,7 +6,6 @@ import ScreenBackupPhrase from '/elements/screen-backup-phrase/screen-backup-phr
 import ScreenBackupPhraseValidate from '/elements/screen-backup-phrase-validate/screen-backup-phrase-validate.js';
 import ScreenError from '/elements/screen-error/screen-error.js';
 import ScreenActivation from '../screen-activation/screen-activation.js';
-import ScreenSuccess from '/elements/screen-success/screen-success.js';
 import ScreenLoading from '/elements/screen-loading/screen-loading.js';
 import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js';
 import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
@@ -57,6 +56,7 @@ export default class ActivationTool extends XAppScreen {
     listeners() {
         return {
             'nimiq-different-tab-error':'_onDifferentTabError',
+            'nimiq-api-fail':'_onApiInitFail',
             'x-keypair': '_onKeyPair',
             'x-phrase-validated': '_onPhraseValidated',
             'x-backup-file-complete': '_onBackupFileComplete',
@@ -64,23 +64,17 @@ export default class ActivationTool extends XAppScreen {
         }
     }
 
-    _onStateChange() {
-        if (this._error) {
-            location.href = '#error';
-        }
-    }
-
     async _onEntry() {
+        if (this.appState.isInitialized) return;
+        this.appState.isInitialized = true;
         this._activationToken = new URLSearchParams(document.location.search).get("activation_token");
         const isValidToken = await ActivationUtils.isValidToken(this._activationToken);
         if (isValidToken) {
             location.href = '#welcome';
         }
         else {
-            this._error = 'Your activation token is invalid. Please go back to the dashboard and try again.';
-            this.$screenError.show(this._error);
             this.$screenError.setLink('/apps/nimiq-activation/dashboard', 'Go to Dashboard');
-            location.href = '#error';
+            this._error = 'Your activation token is invalid. Please go back to the dashboard and try again.';
         }
     }
 
@@ -98,9 +92,8 @@ export default class ActivationTool extends XAppScreen {
             this.$screenBackupFile.setKeyPair(keyPair);
             location.href = '#backup-file'
         } else {
-            this.$screenError.show('Your activation token is invalid. Please go back to the dashboard and try again.');
             this.$screenError.setLink('/apps/nimiq-activation/dashboard', 'Go to Dashboard');
-            location.href = '#error';
+            this._error = 'Your activation token is invalid. Please go back to the dashboard and try again.';
         }
     }
 
@@ -118,8 +111,10 @@ export default class ActivationTool extends XAppScreen {
 
     _onDifferentTabError() {
         this._error = 'Nimiq is already running in a different tab';
-        this.$screenError.show(this._error);
-        location = '#error';
+    }
+
+    _onApiInitFail() {
+        this._error = 'Your operating system version has a bug and is therefore not supported. Please use a different device.';
     }
 }
 

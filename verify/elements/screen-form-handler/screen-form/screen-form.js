@@ -8,7 +8,7 @@ export default class ScreenForm extends XScreenFit {
             <h1>Enter your Details</h1>
             <form>
                 <fieldset>
-                <legend>Please match exactly information of identifying document</legend>
+                <legend>Please match exactly information on your identifying document.</legend>
                 <div>
                 <label>Nationality</label>
                 <x-country-select name="nationality" required></x-country-select>
@@ -16,6 +16,7 @@ export default class ScreenForm extends XScreenFit {
                 <div>
                     <label for="gender">Salutation</label>
                     <select name="gender" required>
+                        <option value=""></option>
                         <option value="0">Mr.</option>
                         <option value="1">Mrs./Ms.</option>
                     </select>
@@ -54,8 +55,8 @@ export default class ScreenForm extends XScreenFit {
                 </div>
                 </fieldset>
                 <fieldset>
-                <legend>Please provide your personal email address, to which the NIM activation link
-                        will be sent after passing the KYC/AML checks</legend>
+                <legend>Please provide your personal email address, to which the NIM Activation link
+                        will be sent after successfully passing the KYC process</legend>
                 <div>
                 <label>E-Mail</label>
                 <input name="email" maxlength="100" type="email" placeholder="satoshin@gmx.com" required/>
@@ -66,7 +67,7 @@ export default class ScreenForm extends XScreenFit {
                 </div>
                 </fieldset>
 
-                <button type="submit">Submit</button>
+                <button type="submit">Confirm</button>
             </form>
         `
     }
@@ -86,6 +87,22 @@ export default class ScreenForm extends XScreenFit {
 
     onCreate() {
         this.$form = this.$('form');
+
+        /*
+        // age check
+        const $birthdayField = this.$('[name="date_t of_birth"]');
+
+        const validateBirthday = () => {
+            const birthday = moment($birthdayField.value);
+            const now = moment();
+            if (birthday.diff(now, 'years') >= 18) {
+                $birthdayField.setCustomValidity("You must be at least 18 years old!");
+            } else {
+                $birthdayField.setCustomValidity('');
+            }
+        };
+
+        $birthdayField.addEventListener('change', validateBirthday);*/
 
         // email validation
         const $email = this.$('[name="email"]');
@@ -108,8 +125,6 @@ export default class ScreenForm extends XScreenFit {
         $email.addEventListener('paste', e => e.preventDefault());
         $confirm_email.addEventListener('paste', e => e.preventDefault());
     }
-
-
 }
 
-// Todo: Show somehow possibility to scroll on Apple?
+// Todo: age check client-side

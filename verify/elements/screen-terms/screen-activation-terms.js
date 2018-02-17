@@ -58,7 +58,7 @@ export default class ScreenActivationTerms extends XScreenFit {
                 <ol>
                     <li>The NET Holder agrees that if any portion of these Terms is found illegal or unenforcea-ble, in whole or in part, such provision shall, as to such jurisdiction, be ineffective solely to the extent of such determination of invalidity or unenforceability without affecting the validity or enforceability thereof in any other manner or jurisdiction and without affecting the remaining provisions of the Terms, which shall continue to be in full force and effect.</li>
                     <li>Applicable are the laws of Tortola, BVI. Any dispute arising out of or in connection with the NET Replacement and Activation of NIM shall be exclusively and finally settled according to the dispute resolution provisions as outlined within the Crowdsale Terms.</li>
-                    <li>In the event that there are any questions with respect to these terms and condition, please email us to activation[at]nimiq[dot]com and in any event, consult your legal and fi-nancial advisors.</li>
+                    <li>In the event that there are any questions with respect to these terms and condition, please email us to activation[at]nimiq[dot]com and in any event, consult your legal and financial advisors.</li>
                 </ol>
 
                 <div class="same-size-buttons">

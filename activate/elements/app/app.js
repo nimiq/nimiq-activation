@@ -64,26 +64,23 @@ export default class ActivationTool extends XAppScreen {
         }
     }
 
-    onCreate() {
-        if (!this._error) location.href = '#';
+    _onStateChange() {
+        if (this._error) {
+            location.href = '#error';
+        }
     }
 
     async _onEntry() {
         this._activationToken = new URLSearchParams(document.location.search).get("activation_token");
         const isValidToken = await ActivationUtils.isValidToken(this._activationToken);
-        try {
-            await NanoApi.getApi()._apiInitialized;
-            if (isValidToken) {
-                location.href = '#welcome';
-            }
-            else {
-                this._error = 'Your activation token is invalid. Please go back to the dashboard and try again.';
-                this.$screenError.show(this._error);
-                this.$screenError.setLink('/apps/nimiq-activation/dashboard', 'Go to Dashboard');
-                location.href = '#error';
-            }
-        } catch (e) {
-            console.log('catched api error');
+        if (isValidToken) {
+            location.href = '#welcome';
+        }
+        else {
+            this._error = 'Your activation token is invalid. Please go back to the dashboard and try again.';
+            this.$screenError.show(this._error);
+            this.$screenError.setLink('/apps/nimiq-activation/dashboard', 'Go to Dashboard');
+            location.href = '#error';
         }
     }
 

@@ -88,21 +88,21 @@ export default class ScreenForm extends XScreenFit {
     onCreate() {
         this.$form = this.$('form');
 
-        /*
         // age check
-        const $birthdayField = this.$('[name="date_t of_birth"]');
+        const $birthdayField = this.$dateofbirthSelect;
+        const $year = this.$('#year');
 
         const validateBirthday = () => {
-            const birthday = moment($birthdayField.value);
+            const birthday = moment($birthdayField.$input.value);
             const now = moment();
-            if (birthday.diff(now, 'years') >= 18) {
-                $birthdayField.setCustomValidity("You must be at least 18 years old!");
+            if (now.diff(birthday, 'years') < 18) {
+                $year.setCustomValidity("You must be at least 18 years old!");
             } else {
-                $birthdayField.setCustomValidity('');
+                $year.setCustomValidity('');
             }
         };
 
-        $birthdayField.addEventListener('change', validateBirthday);*/
+        $birthdayField.addEventListener('change', validateBirthday);
 
         // email validation
         const $email = this.$('[name="email"]');

@@ -4,7 +4,7 @@ export default class XDateofbirthSelect extends XElement {
     html() {
         return `
             <input type="hidden">
-            <select>
+            <select id="year">
                 <option value="">Year</option>
                 <option>2018</option>
                 <option>2017</option>
@@ -107,7 +107,7 @@ export default class XDateofbirthSelect extends XElement {
                 <option>1920</option>
                 <option>1919</option>
             </select>
-            <select>
+            <select id="month">
                 <option value="">Month</option>
                 <option value="01">Jan</option>
                 <option value="02">Feb</option>
@@ -122,7 +122,7 @@ export default class XDateofbirthSelect extends XElement {
                 <option value="11">Nov</option>
                 <option value="12">Dec</option>
             </select>
-            <select>
+            <select id="day">
                 <option value="">Day</option>
                 <option>01</option>
                 <option>02</option>

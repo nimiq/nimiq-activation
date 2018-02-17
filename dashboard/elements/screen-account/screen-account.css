@@ -21,6 +21,8 @@ screen-account x-address{
 	margin-bottom: 48px;
 }
 
-screen-account button{
-	margin-top: 72px;
+@media (min-width: 480px){
+	screen-account button{
+		margin-top: 72px;
+	}
 }

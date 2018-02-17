@@ -25,8 +25,8 @@ export default class ScreenAccount extends XScreen {
         this.$('button').addEventListener('click', e => this._onBack());
     }
 
-    _onBack() {
-        this.goTo('home/accounts');
+    async _onBack() {
+        await this.goTo('home/accounts');
     }
 
     async _onBeforeEntry() {
@@ -44,5 +44,14 @@ export default class ScreenAccount extends XScreen {
         const ethAddress = await NanoApi.getApi().nim2ethAddress(this._address);
         const balance = await ActivationUtils.fetchBalance(ethAddress);
         this.$amount.value = balance;
+    }
+
+    types() {
+        /** @type {XIdenticon} */
+        this.$identicon = null;
+        /&& @type {XAddress} */
+        this.$address = null;
+        /** @type {XAmount} */
+        this.$amount = null
     }
 }

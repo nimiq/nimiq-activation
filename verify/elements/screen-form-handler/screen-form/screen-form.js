@@ -8,7 +8,10 @@ export default class ScreenForm extends XScreenFit {
             <h1>Enter your Details</h1>
             <form>
                 <fieldset>
-                <legend>Please match exactly information on your identifying document.</legend>
+                <legend>
+                    Please match exactly information on your non-expired, identifying document:
+                    (Passports and some national IDs, no driver's licences)
+                </legend>
                 <div>
                 <label>Nationality</label>
                 <x-country-select name="nationality" required></x-country-select>
@@ -35,7 +38,7 @@ export default class ScreenForm extends XScreenFit {
                 </div>
                 </fieldset>
                 <fieldset>
-                    <legend>Please provide your current address of residence</legend>
+                    <legend>Please provide your current address of residence:</legend>
                 <div>
                 <label>Country of Residence</label>
                 <x-country-select name="country_of_residence" required></x-country-select>
@@ -56,7 +59,7 @@ export default class ScreenForm extends XScreenFit {
                 </fieldset>
                 <fieldset>
                 <legend>Please provide your personal email address, to which the NIM Activation link
-                        will be sent after successfully passing the KYC process</legend>
+                        will be sent after successfully passing the KYC process:</legend>
                 <div>
                 <label>E-Mail</label>
                 <input name="email" maxlength="100" type="email" placeholder="satoshin@gmx.com" required/>

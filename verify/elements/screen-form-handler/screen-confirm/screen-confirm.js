@@ -5,7 +5,7 @@ export default class ScreenConfirm extends XScreenFit {
     html() {
         return `
             <h1>Review your Details</h1>
-            <h2>NOTE: You will not be able to change this information for the KYC process once submitted. </h2>
+            <h2>NOTE: You will <strong>not</strong> be able to change this information once submitted.</h2>
             <div scroll-container>
                 <fieldset>
                     <legend>Information on your identifying document</legend>

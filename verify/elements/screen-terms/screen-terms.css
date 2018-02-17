@@ -8,6 +8,13 @@
     }
 }
 
+screen-terms ol {
+    list-style-type: upper-alpha;
+    padding-left: 16px;
+    margin: 0;
+    margin-bottom: 8px;
+}
+
 screen-terms p {
     text-align: justify;
     padding-bottom: 8px;
@@ -16,6 +23,12 @@ screen-terms p {
 screen-terms li {
     text-align: justify;
     line-height: 19px;
+    margin-bottom: 24px;
+    padding-left: 16px;
+}
+
+screen-terms h3 {
+    margin-top: 24px;
 }
 
 screen-terms section {

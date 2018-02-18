@@ -1,6 +1,7 @@
 import XScreenFit from '/elements/x-screen/x-screen-fit.js';
 import XCountrySelect from './x-country-select/x-country-select.js';
 import XDateofbirthSelect from './x-dateofbirth-select/x-dateofbirth-select.js';
+import intrumCountries from './intrum-countries.js';
 
 export default class ScreenForm extends XScreenFit {
     html() {
@@ -15,6 +16,13 @@ export default class ScreenForm extends XScreenFit {
                 <div>
                 <label>Nationality</label>
                 <x-country-select name="nationality" required></x-country-select>
+                </div>
+                <label>
+                    Identity verification available
+                </label>
+                <span id="office-times">
+                    24/7
+                </span>
                 </div>
                 <div>
                     <label for="gender">Salutation</label>
@@ -127,7 +135,24 @@ export default class ScreenForm extends XScreenFit {
         // disallow paste in email fields
         $email.addEventListener('paste', e => e.preventDefault());
         $confirm_email.addEventListener('paste', e => e.preventDefault());
+
+        // Show office times for certain countries
+        const $nationality = this.$('[name="nationality"]');
+        $nationality.addEventListener('change', e => this._updateOfficeTimes(e.target.value));
+    }
+
+    _updateOfficeTimes(nationality) {
+        const $officeTimes = this.$('#office-times');
+        if (intrumCountries.includes(nationality)) {
+            // Check for DST in Switzerland
+            if (moment().diff(moment('2018-03-24')) < 0) {
+                $officeTimes.textContent = 'Mo-Fr 7am to 10pm UTC+1';
+            }
+            else {
+                $officeTimes.textContent = 'Mo-Fr 7am to 10pm UTC+2';
+            }
+        } else {
+            $officeTimes.textContent = '24/7';
+        }
     }
 }
-
-// Todo: age check client-side

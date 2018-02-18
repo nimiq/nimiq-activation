@@ -83,8 +83,7 @@ function getAssets(appName) {
             return commonAssets;
     }
 }
-
-function build(appName) {
+function build(appName, toRoot = false) {
     let jsStream = bundleJs(appName);
     let cssStream = bundleCss(appName);
     let htmlStream = bundleHtml(appName);
@@ -98,7 +97,7 @@ function build(appName) {
         }));
     return merge([jsStream, minJsStream, cssStream, htmlStream, assetsStream])
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(`${appName}/dist/`));
+        .pipe(gulp.dest(`dist/${ toRoot ? '' : `${appName}/`}`));
 }
 
 function cleanBuild(buildName) {
@@ -111,7 +110,7 @@ gulp.task('clean-verify-app', () => cleanBuild('verify'));
 gulp.task('clean-dashboard-app', () => cleanBuild('dashboard'));
 
 gulp.task('build-activate-app', () => build('activate'));
-gulp.task('build-verify-app', () => build('verify'));
+gulp.task('build-verify-app', () => build('verify', true));
 gulp.task('build-dashboard-app', () => build('dashboard'));
 
 gulp.task('clean', ['clean-activate-app', 'clean-verify-app', 'clean-dashboard-app']);

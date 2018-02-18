@@ -5,6 +5,7 @@ import ScreenConfirm from './screen-confirm/screen-confirm.js';
 import ScreenLoading from '/elements/screen-loading/screen-loading.js';
 import FormToObject from '/libraries/nimiq-utils/form-to-object/form-to-object.js';
 import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js';
+import XAppState from '/elements/x-screen/x-app-state.js';
 
 export default class ScreenFormHandler extends XScreen {
     html() {
@@ -48,6 +49,9 @@ export default class ScreenFormHandler extends XScreen {
 
     async _onConfirmSubmit() {
         this.goTo('loading');
+        const appState = XAppState.getAppState();
+        this._data['terms_accepted'] = appState.termsAccepted;
+        this._data['privacy_terms_accepted'] = appState.privacyTermsAccepted;
         const submitResult = await ActivationUtils.submitKyc(this._data);
         if (submitResult.ok) {
             const result = await submitResult.json();

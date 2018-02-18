@@ -1,4 +1,5 @@
 import XScreenFit from '/elements/x-screen/x-screen-fit.js';
+import XAppState from '/elements/x-screen/x-app-state.js';
 
 export default class ScreenPrivacyTerms extends XScreenFit {
     html() {
@@ -25,5 +26,18 @@ export default class ScreenPrivacyTerms extends XScreenFit {
 				</div>
 		    </section>
 		`
+    }
+
+    onCreate() {
+        this.$('#disagree').addEventListener('click', e => this._onDisagree());
+        this.$('#agree').addEventListener('click', e => this._onAgree());
+    }
+
+    _onDisagree() {
+        XAppState.getAppState().privacyTermsAccepted = false;
+    }
+
+    _onAgree() {
+        XAppState.getAppState().privacyTermsAccepted = true;
     }
 }

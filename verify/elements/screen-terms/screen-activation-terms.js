@@ -1,4 +1,5 @@
 import XScreenFit from '/elements/x-screen/x-screen-fit.js';
+import XAppState from '/elements/x-screen/x-app-state.js';
 
 export default class ScreenActivationTerms extends XScreenFit {
     html() {
@@ -67,5 +68,18 @@ export default class ScreenActivationTerms extends XScreenFit {
 				</div>
 		    </section>
 		`
+    }
+
+    onCreate() {
+        this.$('#disagree').addEventListener('click', e => this._onDisagree());
+        this.$('#agree').addEventListener('click', e => this._onAgree());
+    }
+
+    _onDisagree() {
+        XAppState.getAppState().termsAccepted = false;
+    }
+
+    _onAgree() {
+        XAppState.getAppState().termsAccepted = true;
     }
 }

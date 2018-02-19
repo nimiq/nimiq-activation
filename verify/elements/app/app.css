@@ -1,5 +1,6 @@
 @import '/elements/x-screen/x-screen.css';
 @import '../screen-welcome/screen-welcome.css';
+@import '../screen-country-check-fallback/screen-country-check-fallback.css';
 @import '../screen-terms/screen-terms.css';
 @import '../screen-form-handler/screen-form-handler.css';
 @import '/elements/x-slide-indicator/x-slide-indicator.css';

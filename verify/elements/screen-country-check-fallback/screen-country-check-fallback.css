@@ -1,0 +1,15 @@
+@import '/elements/nimiq-logo/nimiq-logo.css';
+
+screen-country-check-fallback nimiq-logo {
+    flex-grow: 0 !important;
+    margin-bottom: 32px;
+}
+
+screen-country-check-fallback [buttons] {
+    margin-top: 32px;
+    display: flex;
+}
+
+screen-country-check-fallback [button] {
+    margin: 0 8px;
+}

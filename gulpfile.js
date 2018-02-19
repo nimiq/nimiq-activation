@@ -83,7 +83,8 @@ function getAssets(appName) {
             return commonAssets.concat([
                 '/apps/nimiq-activation/verify/moment.min.js',
                 '/apps/nimiq-activation/verify/success.html',
-                '/apps/nimiq-activation/verify/error.html'
+                '/apps/nimiq-activation/verify/error.html',
+                '/elements/screen-error/screen-error.svg'
             ]);
         default:
             return commonAssets;

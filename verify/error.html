@@ -15,15 +15,48 @@
     <link rel="apple-touch-icon" href="/libraries/nimiq-style/icons/apple-touch-icon.png">
     <link rel="apple-touch-startup-image" href="/libraries/nimiq-style/icons/icon-512x512.png">
 
-    <link rel="stylesheet" href="../terms/app.css">
+    <link rel="stylesheet" href="app.css">
 </head>
 <body x-initialized="true" class="x-screen-fit" style="display: flex;">
 <screen-terms x-initialized="true" class="x-screen" style="display: flex;">
     <x-slides>
-        <screen-activation-terms x-initialized="true" class="x-screen-fit" style="display: flex;">
-            Something went wrong. Soon you will receive an email with further information.
-        </screen-activation-terms>
+        <screen-error x-initialized="true" class="x-screen-fit" style="display: flex;">
+            <img src="/elements/screen-error/screen-error.svg">
+            <span id="error-details">Something went wrong.</span> You will receive an email with further information, which can take half an hour or more.
+        </screen-error>
     </x-slides>
 </screen-terms>
+<script type="application/javascript">
+    (function () {
+        'use strict';
+
+        const errorCode = parseInt(new URLSearchParams(location.search).get('errorCode'));
+
+        let message;
+        switch (errorCode) {
+            case 110:
+                message = 'There was a network communication problem.';
+                break;
+            case 210:
+                message = 'Your authorization token become invalid or expired.';
+                break;
+            case 310:
+                message = 'Fraud was detected.';
+                break;
+            case 320:
+                message = 'Your ID could not be processed.';
+                break;
+            case 340:
+                message = 'Your camera is not available.';
+                break;
+            default:
+                return;
+        }
+
+        const $errorDetails = document.querySelector('#error-details');
+
+        $errorDetails.textContent = message;
+    }());
+</script>
 </body>
 </html>

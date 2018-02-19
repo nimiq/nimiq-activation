@@ -53,7 +53,7 @@ export default class ScreenActivationTerms extends XScreenFit {
                 <p>After NET Holder has passed the KYC Procedure and has been admitted, he/she will receive a unique link to the e-mail address provided that allows him/her to access the personal dashboard ("Dashboard"). Within the Dashboard the NET Holder can generate a new "account" on the Nimiq blockchain, the private key and get instructions on how to send his NET to a unique Ethereum address where the NET are 'burned' (become immovable, "Burn Address"). Finally, the NET (must be one whole NET or more in order to Activate) arriving at the Burn Address shall be matched with equivalent NIM (1 NET equals 100 NIM) in the corresponding new "account" on the Nimiq Blockchain.</p>
 
                 <h3>V. Privacy Policy and Data Processors</h3>
-                <p>NET Holder understands and accepts that the KYC and Activation Procedure are subject to the terms of a <a href="https://nimiq.com/activation/privacy" target="_blank">supplemental Policy</a>.</p>
+                <p>NET Holder understands and accepts that the KYC and Activation Procedure are subject to the terms of the policy for <a href="https://nimiq.com/activation/privacy" target="_blank">KYC Process, Data Collection and Retention</a>.</p>
 
                 <h3>VI. Miscellaneous</h3>
                 <ol>

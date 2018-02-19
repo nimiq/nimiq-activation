@@ -80,7 +80,7 @@ function getAssets(appName) {
         case 'activate':
             return commonAssets.concat(['/libraries/qr-scanner/qr-scanner-worker.min.js']);
         case 'verify':
-            return commonAssets.concat(['/libraries/nimiq-utils/moment/moment.min.js']);
+            return commonAssets.concat(['/apps/nimiq-activation/verify/moment.min.js']);
         default:
             return commonAssets;
     }

@@ -29,11 +29,11 @@ export default class Dashboard extends XAppScreen {
     }
 
     _onDifferentTabError() {
-        this._error = 'Nimiq is already running in a different tab';
+        XAppScreen.instance.showError('Nimiq is already running in a different tab');
     }
 
     _onApiInitFail() {
-        this._error = 'Your operating system version has a bug and is therefore not supported. Please use a different device.';
+        XAppScreen.instance.showError('Your operating system version has a bug and is therefore not supported. Please use a different device.');
     }
 }
 

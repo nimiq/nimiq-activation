@@ -68,13 +68,24 @@ export default class ActivationTool extends XAppScreen {
         if (this.isInitialized) return;
         this.isInitialized = true;
         this._activationToken = new URLSearchParams(document.location.search).get("activation_token");
-        const isValidToken = await ActivationUtils.isValidToken(this._activationToken);
+
+        let isValidToken;
+        try {
+            isValidToken = await ActivationUtils.isValidToken(this._activationToken);
+        } catch (e) {
+            XAppScreen.instance.showError('Server unavailable. Please try again later.');
+            return;
+        }
+
         if (isValidToken) {
             location.href = '#welcome';
         }
         else {
-            this.$screenError.setLink('/apps/nimiq-activation/dashboard', 'Go to Dashboard');
-            this._error = 'Your activation token is invalid. Please go back to the dashboard and try again.';
+            XAppScreen.instance.showError(
+                'Your activation token is invalid. Please go back to the dashboard and try again.',
+                '/apps/nimiq-activation/dashboard',
+                'Go to Dashboard'
+            );
         }
     }
 
@@ -92,8 +103,11 @@ export default class ActivationTool extends XAppScreen {
             this.$screenBackupFile.setKeyPair(keyPair);
             location.href = '#backup-file'
         } else {
-            this.$screenError.setLink('/apps/nimiq-activation/dashboard', 'Go to Dashboard');
-            this._error = 'Your activation token is invalid. Please go back to the dashboard and try again.';
+            XAppScreen.instance.showError(
+                'Your activation token is invalid. Please go back to the dashboard and try again.',
+                '/apps/nimiq-activation/dashboard',
+                'Go to Dashboard'
+            );
         }
     }
 
@@ -110,11 +124,11 @@ export default class ActivationTool extends XAppScreen {
     }
 
     _onDifferentTabError() {
-        this._error = 'Nimiq is already running in a different tab';
+        XAppScreen.instance.showError('Nimiq is already running in a different tab');
     }
 
     _onApiInitFail() {
-        this._error = 'Your operating system version has a bug and is therefore not supported. Please use a different device.';
+        XAppScreen.instance.showError('Your operating system version has a bug and is therefore not supported. Please use a different device.');
     }
 }
 

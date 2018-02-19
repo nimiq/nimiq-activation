@@ -43,7 +43,6 @@ export default class Verify extends XAppScreen {
     onCreate() {
         location.href = "#";
     }
-
 }
 
 Verify.launch();

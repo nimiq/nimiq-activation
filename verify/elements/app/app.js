@@ -12,7 +12,7 @@ export default class Verify extends XAppScreen {
             <screen-terms></screen-terms>
             <screen-form-handler></screen-form-handler>
             <screen-success>Thank you! Soon you will receive an email with further information.</screen-success>
-            <screen-error route="kyc-error" message="Thank you! Soon you will receive an email with further information."></screen-error>
+            <screen-error></screen-error>
         `
     }
 

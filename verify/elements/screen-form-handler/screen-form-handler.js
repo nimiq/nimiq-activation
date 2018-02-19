@@ -6,6 +6,7 @@ import ScreenLoading from '/elements/screen-loading/screen-loading.js';
 import FormToObject from '/libraries/nimiq-utils/form-to-object/form-to-object.js';
 import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js';
 import XAppState from '/elements/x-screen/x-app-state.js';
+import XAppScreen from '/elements/x-screen/x-app-screen.js';
 
 export default class ScreenFormHandler extends XScreen {
     html() {
@@ -52,7 +53,16 @@ export default class ScreenFormHandler extends XScreen {
         const appState = XAppState.getAppState();
         this._data['terms_accepted'] = appState.termsAccepted;
         this._data['privacy_terms_accepted'] = appState.privacyTermsAccepted;
-        const submitResult = await ActivationUtils.submitKyc(this._data);
+
+        let submitResult;
+        try {
+            submitResult = await ActivationUtils.submitKyc(this._data);
+        }
+        catch (e) {
+            XAppScreen.instance.showError('Server unavailable. Please try again later.');
+            return;
+        }
+
         if (submitResult.ok) {
             const result = await submitResult.json();
             window.location.href = result.clientRedirectUrl;

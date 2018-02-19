@@ -79,6 +79,7 @@ div[scroll-container] {
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    width: 100%;
 }
 
 x-dateofbirth-select {

@@ -6,7 +6,7 @@ export default class ScreenCountryCheckFallback extends XScreen {
         return `
             <nimiq-logo large>Nimiq Activation</nimiq-logo>
             <h2>Are you a citizen, resident or green card holder of the United States or Puerto Rico?</h2>
-            <div buttons>
+            <div class="same-size-buttons">
                 <a href="#" button button-yes>Yes</a><a button href="#welcome">No</a>
             </div>
         `;

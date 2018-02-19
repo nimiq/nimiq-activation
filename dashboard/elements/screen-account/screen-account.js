@@ -9,7 +9,7 @@ export default class ScreenAccount extends XScreen {
     html() {
         return `
         	<h1>Nimiq Account</h1>
-        	<h2>Check your activated account's identicon, address and balance</h2>
+        	<h2>View account information</h2>
 			<x-grow>
 				<x-identicon></x-identicon>
 				<x-address></x-address>

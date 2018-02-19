@@ -9,7 +9,7 @@ export default class ScreenHome extends XScreen {
     html() {
         return `
             <h1>Accounts Dashboard</h1>
-            <h2>Activate Nimiq Accounts and manage your activated Accounts</h2>
+            <h2>Create and manage your Nimiq Accounts</h2>
             <x-slides>
                 <screen-loading>Loading Data</screen-loading>                
                 <screen-error></screen-error>              

@@ -92,16 +92,31 @@ export default class ActivationTool extends XAppScreen {
     async _onKeyPair(keyPair) {
         const api = NanoApi.getApi();
         const nimAddress = keyPair.address;
+        this._nimAddress = nimAddress;
+        const ethAddress = await api.nim2ethAddress(nimAddress);
+        this.$screenActivation.setAddress(ethAddress);
+        const hexedPrivKey = keyPair.privateKey.toHex();
+        this.$screenBackupPhrase.privateKey = hexedPrivKey
+        this.$screenBackupPhraseValidate.privateKey = hexedPrivKey;
+        this.$screenBackupFile.setKeyPair(keyPair);
+        location.href = '#backup-file';
+    }
 
-        const activationSuccessfull = await ActivationUtils.activateAddress(this._activationToken, nimAddress);
+    _onBackupFileComplete() {
+        location = '#backup-phrase';
+    }
+
+    async _onPhraseValidated() {
+        let activationSuccessfull;
+        try {
+            activationSuccessfull = await ActivationUtils.activateAddress(this._activationToken, this._nimAddress);
+        } catch (e) {
+            XAppScreen.instance.showError('Server unavailable. Please try again later.');
+            return;
+        }
+
         if (activationSuccessfull) {
-            const ethAddress = await api.nim2ethAddress(nimAddress);
-            this.$screenActivation.setAddress(ethAddress);
-            const hexedPrivKey = keyPair.privateKey.toHex();
-            this.$screenBackupPhrase.privateKey = hexedPrivKey
-            this.$screenBackupPhraseValidate.privateKey = hexedPrivKey;
-            this.$screenBackupFile.setKeyPair(keyPair);
-            location.href = '#backup-file'
+            location = '#activation';
         } else {
             XAppScreen.instance.showError(
                 'Your activation token is invalid. Please go back to the dashboard and try again.',
@@ -109,14 +124,6 @@ export default class ActivationTool extends XAppScreen {
                 'Go to Dashboard'
             );
         }
-    }
-
-    _onBackupFileComplete() {
-        location = '#backup-phrase';
-    }
-
-    _onPhraseValidated() {
-        location = '#activation';
     }
 
     _onActivationComplete() {

@@ -5,7 +5,7 @@ screen-country-check-fallback nimiq-logo {
     margin-bottom: 32px;
 }
 
-screen-country-check-fallback [buttons] {
+screen-country-check-fallback .same-size-buttons {
     margin-top: 32px;
     display: flex;
 }

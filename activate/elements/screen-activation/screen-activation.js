@@ -6,13 +6,13 @@ import ScreenActivationAddress from './screen-activation-address/screen-activati
 export default class ScreenActivation extends XScreen {
     html() {
         return `
-            <h1>Activate your Nimiq Account</h1>
-            <h2 secondary>Send your NET to the unique Activation Address for your Nimiq Account</h2>
+            <h1>Activate your NIM</h1>
+            <h2 secondary>To activate NIM for your NET in the account you just created, precisely follow these steps.</h2>
             <x-slides>
                 <screen-warning>
                     On the next screen you will see an Ethereum Address.
                     <ul>
-                        <li>Send <strong>at least 1 NET</strong> to this address.</li>
+                        <li>Send <strong class="red">at least 1 NET</strong> to this address.</li>
                         <li>Sending any other digital asset or less then 1 NET will result in permanent loss!</li>
                     </ul>
                 </screen-warning>

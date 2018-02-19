@@ -5,18 +5,17 @@ import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-
 export default class ScreenActivationAddress extends XScreenFit {
     html() {
         return `
-            1. Copy your Activation Address
+            <strong>1. Copy the following specific Ethereum Address:</strong>
             <x-address></x-address>
 
-            2. On the Ethereum Blockchain send your NET from your wallet to your Activation Address.                        
+            <strong>2. From your NET wallet send your NET to this specific Ethereum address.</strong>
             <h3>Transfer Options</h3>
             <ul>
-                <li>Send your NET directly from an exchange,</li>
-                <li>or you can use <a href="https://www.myetherwallet.com/" target="_blank" class="my-ether-wallet">MyEtherWallet.com</a>,</li>
-                <li>or any wallet that supports ERC20 tokens.</li>
+                <li>Send your NET directly from an exchange</li>
+                <li>or from <a href="https://www.myetherwallet.com/" target="_blank" class="my-ether-wallet">MyEtherWallet.com</a></li>
+                <li>or from any wallet that supports ERC20 tokens</li>
             </ul>
-            <x-grow></x-grow>
-            3. Wait here until your activation balance arrives.
+            <strong>3. Once NET arrive at the above Ethereum address, your NIM account will update and Activation is complete!</strong>
         `
     }
 

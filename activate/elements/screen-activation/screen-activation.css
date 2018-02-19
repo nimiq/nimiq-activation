@@ -6,12 +6,13 @@ screen-activation  x-address{
 
 screen-activation h3{
     margin: 32px 0 0;
+    font-weight: normal;
 }
 
 screen-activation button{
 	margin-top: 16px;
 }
 
-screen-activation strong {
+screen-activation strong.red {
     color: var(--error-color);
 }

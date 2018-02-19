@@ -65,8 +65,8 @@ export default class ActivationTool extends XAppScreen {
     }
 
     async _onEntry() {
-        if (this.appState.isInitialized) return;
-        this.appState.isInitialized = true;
+        if (this.isInitialized) return;
+        this.isInitialized = true;
         this._activationToken = new URLSearchParams(document.location.search).get("activation_token");
         const isValidToken = await ActivationUtils.isValidToken(this._activationToken);
         if (isValidToken) {

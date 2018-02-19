@@ -1,0 +1,10 @@
+@import '/elements/nimiq-logo/nimiq-logo.css';
+
+screen-forward h1+h2 {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+screen-forward [button] {
+  margin-top: 128px;
+}

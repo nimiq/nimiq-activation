@@ -6,5 +6,5 @@ screen-forward h1+h2 {
 }
 
 screen-forward [button] {
-  margin-top: 128px;
+  margin-top: 64px;
 }

@@ -10,19 +10,21 @@ export default class ScreenForm extends XScreenFit {
             <form>
                 <fieldset>
                 <legend>
-                    Please match exactly information on your non-expired, identifying document:
+                    Please match exactly the information on your non-expired, identifying document:
                     (Passports and some national IDs, no driver's licences)
                 </legend>
                 <div>
                 <label>Nationality</label>
                 <x-country-select name="nationality" required></x-country-select>
                 </div>
-                <label>
-                    Identity verification available
-                </label>
-                <span id="office-times">
-                    24/7
-                </span>
+                <div style="font-style: oblique;">
+                    <label>
+                        Identity verification hours:
+                    </label>
+                    <span id="office-times">
+                        &lt;please select a country&gt;
+                    </span>
+                </div>
                 </div>
                 <div>
                     <label for="gender">Salutation</label>
@@ -66,8 +68,8 @@ export default class ScreenForm extends XScreenFit {
                 </div>
                 </fieldset>
                 <fieldset>
-                <legend>Please provide your personal email address, to which the NIM Activation link
-                        will be sent after successfully passing the KYC process:</legend>
+                <legend>Please provide your personal email address<br>to which important NIM Activation links
+                        will be sent:</legend>
                 <div>
                 <label>E-Mail</label>
                 <input name="email" maxlength="100" type="email" placeholder="satoshin@gmx.com" required/>
@@ -143,6 +145,10 @@ export default class ScreenForm extends XScreenFit {
 
     _updateOfficeTimes(nationality) {
         const $officeTimes = this.$('#office-times');
+        if(nationality === "") {
+            $officeTimes.textContent = '<please select a country>';
+            return;
+        }
         if (intrumCountries.includes(nationality)) {
             // Check for DST in Switzerland
             if (moment().diff(moment('2018-03-24')) < 0) {

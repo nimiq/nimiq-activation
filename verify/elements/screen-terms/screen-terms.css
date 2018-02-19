@@ -20,6 +20,10 @@ screen-terms p {
     padding-bottom: 8px;
 }
 
+screen-terms p.last-p {
+    padding-bottom: 24px;
+}
+
 screen-terms li {
     text-align: left;
     line-height: 19px;

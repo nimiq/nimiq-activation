@@ -16,7 +16,7 @@ export default class ScreenPrivacyTerms extends XScreenFit {
 
                 <p>After successfully passing the ComplyAdvantage check, Nimiq will send you an email containing instructions on how to activate your NIM. The Personal Information and Verification Information will be encrypted by Nimiq and stored with ISO 27001 certified hosts in Germany or Switzerland for a period of up to 10 years. This allows Nimiq to demonstrate to regulators that the KYC Procedure was implemented. Nimiq will delete all non-encrypted data within 48 hours after sending the acceptance email.</p>
 
-                <p>If you want to learn more about your rights with regard to your Personal Information, please take a look at our <a href="https://www.nimiq.com/privacy" target="_blank">Privacy Policy</a>, consult with your personal advisors, and review the <a href="http://data.consilium.europa.eu/doc/document/ST-5419-2016-INIT/en/pdf" target="_blank">EU General Data Protection Regulation</a> ("GDPR"), which we comply with.</p>
+                <p class="last-p">If you want to learn more about your rights with regard to your Personal Information, please take a look at our <a href="https://www.nimiq.com/privacy" target="_blank">Privacy Policy</a>, consult with your personal advisors, and review the <a href="http://data.consilium.europa.eu/doc/document/ST-5419-2016-INIT/en/pdf" target="_blank">EU General Data Protection Regulation</a> ("GDPR"), which we comply with.</p>
 
                 <strong>I hereby consent to the use of my personal information as described above:</strong>
 

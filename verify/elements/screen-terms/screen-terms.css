@@ -45,13 +45,15 @@ screen-terms .same-size-buttons {
     display: flex;
 }
 
+screen-terms li {
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
 @media (max-width: 700px) {
     screen-terms ol {
         padding-left: 24px;
     }
 
-    screen-terms li {
-        padding-left: 0;
-        margin-bottom: 0;
-    }
+
 }

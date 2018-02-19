@@ -18,6 +18,6 @@ export default class ScreenCountryCheckFallback extends XScreen {
     }
 
     _showError() {
-        Verify.instance.showError('Please be aware that according to our KYC and Contribution Terms the NIM Activation is not available to citizens, green card holders or residents of the US and citizens or residents of Puerto Rico.');
+        Verify.instance.showError('Please be aware that NIM Activation from NET is not available to citizens, green card holders or residents of the US and citizens or residents of Puerto Rico.');
     }
 }

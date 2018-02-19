@@ -68,7 +68,7 @@ export default class Verify extends XAppScreen {
                 country = country.toUpperCase();
                 if (country==='US' || country==='PR') {
                     // US or puerto rico
-                    this.showError('It appears as if you are accessing our site from the US or Puerto Rico. Please be aware that according to our KYC and Contribution Terms the NIM Activation is not available to citizens, green card holders or residents of the US and citizens or residents of Puerto Rico.');
+                    this.showError('It appears as if you are accessing our site from the US or a US territory. Please be aware that NIM Activation from NET is not available to citizens, green card holders or residents of the US and citizens or residents of Puerto Rico.');
                 }
             }
         };

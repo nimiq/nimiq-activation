@@ -3,6 +3,7 @@ import ScreenHome from '../screen-home/screen-home.js';
 import ScreenAccount from '../screen-account/screen-account.js';
 import ScreenError from '/elements/screen-error/screen-error.js';
 import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
+import XState from '/elements/x-screen/x-state.js';
 
 export default class Dashboard extends XAppScreen {
     html() {
@@ -21,6 +22,13 @@ export default class Dashboard extends XAppScreen {
             'nimiq-different-tab-error':'_onDifferentTabError',
             'nimiq-api-fail':'_onApiInitFail',
             'x-account-selected': '_onAccountSelected'
+        }
+    }
+
+    onCreate() {
+        // when reloading error page, redirect to start
+        if (XState._currFragment() === 'error') {
+            location.href = '#';
         }
     }
 

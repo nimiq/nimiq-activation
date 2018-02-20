@@ -44,6 +44,7 @@ export default class Verify extends XAppScreen {
     }
 
     onCreate() {
+        // Go to start at page (re-)load
         location.href = "#";
         this._checkUserCountry();
     }

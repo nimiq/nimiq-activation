@@ -64,6 +64,11 @@ export default class ActivationTool extends XAppScreen {
         }
     }
 
+    onCreate() {
+        // Go to start at page (re-)load
+        location.href = '#';
+    }
+
     async _onEntry() {
         if (this.isInitialized) return;
         this.isInitialized = true;

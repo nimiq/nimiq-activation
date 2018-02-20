@@ -67,7 +67,7 @@ export default class ScreenAccount extends XScreen {
     }
 
     set address(address) {
-        this.$identicon.address = address;
+        this.$identicon.addressAsImg = address;
         this.$address.address = address;
         this._address = address;
     }

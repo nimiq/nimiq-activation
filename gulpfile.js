@@ -104,7 +104,7 @@ function build(appName, toRoot = false) {
         }));
     return merge([jsStream, minJsStream, cssStream, htmlStream, assetsStream])
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(`dist/${ toRoot ? '' : `${appName}/`}`));
+        .pipe(gulp.dest(`deployment/dist/${ toRoot ? '' : `${appName}/`}`));
 }
 
 function cleanBuild(buildName) {

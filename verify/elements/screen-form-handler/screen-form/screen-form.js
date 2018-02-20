@@ -35,11 +35,11 @@ export default class ScreenForm extends XScreenFit {
                     </select>
                 </div>
                 <div>
-                <label for="first_name">First name(s)</label>
+                <label for="first_name">All first names</label>
                 <input name="first_name" maxlength="100" placeholder="Satoshi" required />
                 </div>
                 <div>
-                <label for="last_name">Last name(s)</label>
+                <label for="last_name">All last names</label>
                 <input name="last_name" maxlength="100" placeholder="Nakamoto" required />
                 </div>
                 <div>

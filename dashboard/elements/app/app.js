@@ -26,8 +26,9 @@ export default class Dashboard extends XAppScreen {
     }
 
     onCreate() {
-        // when reloading error page, redirect to start
-        if (XState._currFragment() === 'error') {
+        const allowedStartPages = [ '', 'account', 'home/accounts' ];
+
+        if (!allowedStartPages.includes(XState._currFragment())) {
             location.href = '#';
         }
     }

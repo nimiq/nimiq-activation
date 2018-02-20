@@ -112,15 +112,15 @@ export default class ActivationTool extends XAppScreen {
     }
 
     async _onPhraseValidated() {
-        let activationSuccessfull;
+        let activationSuccessful;
         try {
-            activationSuccessfull = await ActivationUtils.activateAddress(this._activationToken, this._nimAddress);
+            activationSuccessful = await ActivationUtils.activateAddress(this._activationToken, this._nimAddress);
         } catch (e) {
             XAppScreen.instance.showError('Server unavailable. Please try again later.');
             return;
         }
 
-        if (activationSuccessfull) {
+        if (activationSuccessful) {
             location = '#activation';
         } else {
             XAppScreen.instance.showError(
@@ -132,7 +132,7 @@ export default class ActivationTool extends XAppScreen {
     }
 
     _onActivationComplete() {
-        window.location.href = `../dashboard/?address=${this._userFriendlyNimAddress}#account`;
+        window.location.href = `../dashboard/?address=${this._nimAddress}#account`;
     }
 
     _onDifferentTabError() {

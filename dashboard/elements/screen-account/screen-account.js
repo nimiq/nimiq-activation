@@ -43,8 +43,7 @@ export default class ScreenAccount extends XScreen {
     async _fetchAmount() {
         const ethAddress = await NanoApi.getApi().nim2ethAddress(this._address);
         const netBalance = await ActivationUtils.fetchBalance(ethAddress);
-        const nimBalance = netBalance / 1e16;
-        this.$amount.value = nimBalance;
+        this.$amount.value = netBalance * 100; // 1 NET = 100 NIM
     }
 
     types() {

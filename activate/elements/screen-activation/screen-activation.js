@@ -10,9 +10,9 @@ export default class ScreenActivation extends XScreen {
             <h2 secondary>To activate NIM for your NET in the account you just created, precisely follow these steps.</h2>
             <x-slides>
                 <screen-warning>
-                    On the next screen you will see an Ethereum Address.
+                    On the next screen you will see an Ethereum address.
                     <ul>
-                        <li>Send <strong class="red">at least 1 NET</strong> to this address</li>
+                        <li>Send all NET with which you want to activate NIM to this address (<strong class="red">at least 1 NET</strong>)</li>
                         <li>Sending any other digital asset or less then 1 NET will result in permanent loss!</li>
                     </ul>
                 </screen-warning>

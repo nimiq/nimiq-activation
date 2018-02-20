@@ -6,7 +6,7 @@ export default class ScreenActivationTerms extends XScreenFit {
         return `
 		    <h1>NIM Activation Terms, NET Replacement, and Explanatory Note</h1>
 		    <section>
-                <p>The following Terms shall govern the activation of NIM and the replacement of NET tokens ("Replacement", collectively called "Activation"). Upon Activation, for every NET 100 NIM shall be allocated. The allocation is made automatically via the Genesis Block of the Nimiq Blockchain ("Nimiq Blockchain").</p>
+                <p>The following Terms shall govern the activation of NIM and the replacement of NET tokens ("Replacement", collectively called "Activation"). Upon Activation, for every 1 NET, 100 NIM shall be allocated. The allocation will be made via the Genesis Block of the Nimiq Blockchain ("Nimiq Blockchain").</p>
 
                 <p>NIM are transferable cryptographic blockchain-based digital information tokens that allow the usage of and the interaction with the decentralized Nimiq Mainnet and Ecosystem (the "Nimiq Network"). Nimiq Network Ltd. develops and supports new technologies and applications, especially in the fields of open and decentralized software architectures.</p>
 
@@ -35,7 +35,7 @@ export default class ScreenActivationTerms extends XScreenFit {
                 <ol>
                     <li>SIGN INTO THE ACTIVATION TOOL (<a href="https://activation.nimiq.com" target="_blank">https://activation.nimiq.com</a>)</li>
                     <li>READ AND AGREE TO ACTIVATION TERMS (<a href="https://nimiq.com/activation/terms" target="_blank">https://nimiq.com/activation/terms</a>)</li>
-                    <li>READ AND AGREE TO DATA COLLECTION AND RETENTION TERMS (<a href="https://nimiq.com/activation/privacy" target="_blank">https://nimiq.com/activation/privacy</a>)</li>
+                    <li>READ AND AGREE TO THE POLICY FOR KYC PROCEDURE, DATA COLLECTION AND RETENTION (<a href="https://nimiq.com/activation/privacy" target="_blank">https://nimiq.com/activation/privacy</a>)</li>
                     <li>FILL IN NECESSARY INFORMATION FOR THE KYC</li>
                     <li>GO THROUGH THE KYC PROCESS (as described in section III below)</li>
                     <li>COMPLETE THE ACTIVATION WHERBY NET ARE "BURNED" AND NIM ACTIVATED (as described in section 4 below and only if the KYC Process has been passed successfully)</li>
@@ -44,16 +44,16 @@ export default class ScreenActivationTerms extends XScreenFit {
                 <h3>III. KYC (“Know-Your-Customer”) Procedure</h3>
                 <ol>
                     <li>As per Section V. (page 5) of the Crowdsale Terms, Nimiq Network Ltd. reserved the right to conduct know-your-customer procedures ("KYC Procedure") for reasons of regulatory compliance. Such a KYC Procedure will now be conducted in the course of the Activation and Replacement.</li>
-                    <li>Once NET Holder accesses the online Activation Tool at www.nimiq.com/activate he/she will have to read and accept these Activation Terms, read and agree to data collection and retention terms, provide information concerning nationality, name, date of birth and residence address and will automatically be redirected to the Servers of Jumio Corporation in the United Kingdom or Intrum AG in Switzerland (applicable provider individually chosen at the discretion of Nimiq Network Ltd.), which then verifies the identity of the respective NET Holder based on the requested documentation.</li>
+                    <li>Once NET Holder accesses the online Activation Tool at https://activation.nimiq.com he/she will have to read and accept these Activation Terms, in a next step read and agree to the policy for KYC Procedure, Data Collection and Retention, then provide information concerning nationality, name, date of birth and residence address and will automatically be redirected to the Servers of Jumio Corporation in the United Kingdom or Intrum AG in Switzerland (applicable provider individually chosen at the discretion of Nimiq Network Ltd.), which then verifies the identity of the respective NET Holder based on the requested documentation.</li>
                     <li>The verified identity of the NET Holder will then be forwarded to servers of Comply Advantage (a service of IVXS Technology USA Inc.) situated in Ireland and Germany, in order to conduct a Global Sanctions, Watchlist and Politically Exposed Persons check. Depending on the result of this check, the NET Holder may or may not proceed with the Activation procedure by creating the relevant NIM address.</li>
                     <li><strong>All citizens, residents and Greencard holders of the USA, as well as citizens and residents of other sanctioned countries, identified during the KYC procedure, may be blocked</strong> and are not able to participate in the Activation. Also, other countries have limitations with regard to the ownership and/or transfer of cryptographic tokens. Each holder of NIM and NET is solely responsible to ensure that he/she is in compliance with all laws applicable to him/her with respect to this Activation.</li>
                 </ol>
 
                 <h3>IV. Activation Procedure</h3>
-                <p>After NET Holder has passed the KYC Procedure and has been admitted, he/she will receive a unique link to the e-mail address provided that allows him/her to access the personal dashboard ("Dashboard"). Within the Dashboard the NET Holder can generate a new "account" on the Nimiq blockchain, the private key and get instructions on how to send his NET to a unique Ethereum address where the NET are 'burned' (become immovable, "Burn Address"). Finally, the NET (must be one whole NET or more in order to Activate) arriving at the Burn Address shall be matched with equivalent NIM (1 NET equals 100 NIM) in the corresponding new "account" on the Nimiq Blockchain.</p>
+                <p>After NET Holder has passed the KYC Procedure and has been admitted, he/she will receive a unique link to the e-mail address provided that allows him/her to access the personal dashboard ("Dashboard"). Within the Dashboard the NET Holder can generate a new 'account' on the Nimiq blockchain, the private key and get instructions on how to send his NET to a unique Ethereum address where the NET are 'burned' (become immovable, "Burn Address"). Finally, the NET (must be one whole NET or more in order to Activate) arriving at the Burn Address shall be matched with equivalent NIM (1 NET equals 100 NIM) in the corresponding new 'account' on the Nimiq Blockchain.</p>
 
                 <h3>V. Privacy Policy and Data Processors</h3>
-                <p>NET Holder understands and accepts that the KYC and Activation Procedure are subject to the terms of the policy for <a href="https://nimiq.com/activation/privacy" target="_blank">KYC Process, Data Collection and Retention</a>.</p>
+                <p>NET Holder understands and accepts that the KYC and Activation Procedure are subject to the terms of the policy for the <a href="https://nimiq.com/activation/privacy" target="_blank">KYC Procedure, Data Collection and Retention</a>.</p>
 
                 <h3>VI. Miscellaneous</h3>
                 <ol>
@@ -80,6 +80,7 @@ export default class ScreenActivationTerms extends XScreenFit {
     }
 
     _onAgree() {
+        XAppState.getAppState().termsAccepted = true;
         XAppState.getAppState().termsAccepted = true;
     }
 }

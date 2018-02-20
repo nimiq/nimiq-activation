@@ -86,9 +86,10 @@ export default class ActivationTool extends XAppScreen {
             location.href = '#welcome';
         }
         else {
+            const href = location.pathname.replace('/activate', '/dashboard');
             XAppScreen.instance.showError(
                 'Your activation token is invalid. Please go back to the dashboard and try again.',
-                '/apps/nimiq-activation/dashboard',
+                href,
                 'Go to Dashboard'
             );
         }

@@ -75,10 +75,16 @@ export default class ScreenFormHandler extends XScreen {
         else {
             const errorCode = submitResult.status;
             let message = '';
-            if (errorCode === 401) {
+            if (errorCode === 400) {
+                message = 'Please fill out all fields.';
+            } else if (errorCode === 401) {
                 message = 'You have to be at least 18 years old.';
             } else if (errorCode === 403) {
                 message = 'Your data was already used to initiate the KYC process. Please check your email for a message from us.';
+            } else if (errorCode === 502) {
+                message = 'There has been a problem with the Identification Provider. Please wait for an email for us in the next 2-24h.';
+            } else {
+                message = 'Something went wrong. Please reload the page and try again.';
             }
             this.$screenError.show(message);
             this.goTo('error');

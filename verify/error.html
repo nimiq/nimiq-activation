@@ -22,7 +22,7 @@
     <x-slides>
         <screen-error x-initialized="true" class="x-screen-fit" style="display: flex;">
             <img src="screen-error.svg">
-            <span id="error-details">Something went wrong. You will receive an email with further information, which can take half an hour or more.</span>
+            <span id="error-details">Something went wrong. You should receive an email with further information within the next 2-24 hours (make sure to check your spam folder).</span>
         </screen-error>
     </x-slides>
 </screen-terms>
@@ -32,7 +32,7 @@
 
         const errorCode = parseInt(new URLSearchParams(location.search).get('errorCode'));
 
-        const emailNote = ' You will receive an email with further information, which can take half an hour or more.';
+        const emailNote = ' You should receive an email with further information within the next 2-24 hours (make sure to check your spam folder).';
 
         let message;
         switch (errorCode) {

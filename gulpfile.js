@@ -78,7 +78,9 @@ function getAssets(appName) {
     ];
     switch (appName) {
         case 'activate':
-            return commonAssets.concat(['/libraries/qr-scanner/qr-scanner-worker.min.js']);
+            return commonAssets.concat(['/libraries/qr-scanner/qr-scanner-worker.min.js', '/libraries/iqons/dist/iqons.min.svg']);
+        case 'dashboard':
+            return commonAssets.concat(['/libraries/iqons/dist/iqons.min.svg']);
         case 'verify':
             return commonAssets.concat([
                 '/apps/nimiq-activation/verify/moment.min.js',

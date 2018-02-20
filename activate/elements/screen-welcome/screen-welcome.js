@@ -9,9 +9,9 @@ export default class ScreenWelcome extends XScreen {
                 <screen-welcome-intro></screen-welcome-intro>
                 <screen-warning>
                     <ul>
-                        <li>You can NOT change a Nimiq Account once created (You can only create new accounts)</li>
-                        <li>Complete ALL of the following steps to secure future access to this Nimiq Account</li>
-                        <li>You can NOT transfer your activated NIM until Mainnet launch</li>
+                        <li>You can <strong class="red">NOT</strong> change a Nimiq Account once created (You can only create new accounts)</li>
+                        <li>Complete <strong class="red">ALL</strong> of the following steps to secure future access to this Nimiq Account</li>
+                        <li>You can <strong class="red">NOT</strong> transfer your activated NIM until Mainnet launch</li>
                     <ul>
                 </screen-warning>
             <x-slides>

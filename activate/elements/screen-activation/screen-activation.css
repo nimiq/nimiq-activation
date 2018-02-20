@@ -13,6 +13,12 @@ screen-activation button{
 	margin-top: 16px;
 }
 
-screen-activation strong.red {
+strong.red {
     color: var(--error-color);
+}
+
+screen-activation-address big {
+    font-size: 2em;
+    position: relative;
+    top: 4px;
 }

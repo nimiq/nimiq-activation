@@ -5,17 +5,17 @@ import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-
 export default class ScreenActivationAddress extends XScreenFit {
     html() {
         return `
-            <strong>1. Copy the following specific Ethereum Address:</strong>
+            <strong><big>1.</big> Copy the following specific Ethereum Address:</strong>
             <x-address></x-address>
 
-            <strong>2. From your NET wallet send your NET to this specific Ethereum address.</strong>
+            <strong><big>2.</big> From your NET wallet send your NET to this specific Ethereum address.</strong>
             <h3>Transfer Options</h3>
             <ul>
                 <li>Send your NET directly from an exchange</li>
                 <li>or from <a href="https://www.myetherwallet.com/" target="_blank" class="my-ether-wallet">MyEtherWallet.com</a></li>
                 <li>or from any wallet that supports ERC20 tokens</li>
             </ul>
-            <strong>3. Once NET arrive at the above Ethereum address, this page will redirect you to your dashboard and Activation is complete!</strong>
+            <strong><big>3.</big> Once NET arrive at the above Ethereum address, this page will redirect you to your dashboard and Activation is complete!</strong>
         `
     }
 

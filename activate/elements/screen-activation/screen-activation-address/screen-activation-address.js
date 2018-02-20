@@ -15,7 +15,7 @@ export default class ScreenActivationAddress extends XScreenFit {
                 <li>or from <a href="https://www.myetherwallet.com/" target="_blank" class="my-ether-wallet">MyEtherWallet.com</a></li>
                 <li>or from any wallet that supports ERC20 tokens</li>
             </ul>
-            <strong>3. Once NET arrive at the above Ethereum address, your NIM account will update and Activation is complete!</strong>
+            <strong>3. Once NET arrive at the above Ethereum address, this page will redirect you to your dashboard and Activation is complete!</strong>
         `
     }
 

@@ -3,6 +3,7 @@ import XIdenticon from '/elements/x-identicon/x-identicon.js';
 import XAddress from '/elements/x-address/x-address.js';
 import XAmount from '/elements/x-amount/x-amount.js';
 import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js';
+import XAppScreen from '/elements/x-screen/x-app-screen.js';
 import NanoApi from '/libraries/nano-api/nano-api.js';
 
 export default class ScreenAccount extends XScreen {
@@ -15,7 +16,8 @@ export default class ScreenAccount extends XScreen {
 				<x-address></x-address>
 				<x-amount></x-amount>
 			</x-grow>
-			<button>Back to Dashboard</button>
+            <a secondary class="activate-nim hidden">Click here to activate more NIM from NET on this account</a>
+			<button class="secondary">Back to Dashboard</button>
 		`
     }
 
@@ -23,6 +25,10 @@ export default class ScreenAccount extends XScreen {
 
     onCreate() {
         this.$('button').addEventListener('click', e => this._onBack());
+
+        this.$('.activate-nim').addEventListener('click', e => {
+            this.fire('x-activate-nim', this._address);
+        });
     }
 
     async _onBack() {
@@ -31,7 +37,33 @@ export default class ScreenAccount extends XScreen {
 
     async _onBeforeEntry() {
         this.address = new URLSearchParams(document.location.search).get("address");
-        await this._fetchAmount();
+        this._fetchAmount();
+
+        if (!XAppScreen.instance.accounts) {
+            const dashboardToken = localStorage.getItem('dashboardToken');
+
+            if (dashboardToken === null) return;
+
+            let apiResponse;
+            try {
+                apiResponse = await ActivationUtils.getDashboardData(dashboardToken);
+            } catch (e) {
+               XAppScreen.instance.showError('Server unavailable. Please try again later.');
+               return;
+            }
+
+            if (apiResponse.ok) {
+                const result = await apiResponse.json();
+                XAppScreen.instance.activationToken = result.activation_token;
+                XAppScreen.instance.accounts = result.addresses;
+            } else {
+                XAppScreen.instance.showError('Invalid dashboard token. Please use a valid link.');
+                return;
+            }
+        }
+
+       if(XAppScreen.instance.accounts.includes(this._address)) this.$('.activate-nim').classList.remove('hidden');
+
     }
 
     set address(address) {

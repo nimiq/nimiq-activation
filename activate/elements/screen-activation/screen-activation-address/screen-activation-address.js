@@ -11,8 +11,7 @@ export default class ScreenActivationAddress extends XScreenFit {
             <strong><big>2.</big> From your NET wallet send all NET with which you want to activate NIM to this specific Ethereum address.</strong>
             <h3>Transfer Options</h3>
             <ul>
-                <li>Send your NET directly from an exchange</li>
-                <li>or from <a href="https://www.myetherwallet.com/" target="_blank" class="my-ether-wallet">MyEtherWallet.com</a></li>
+                <li>Send your NET from <a href="https://www.myetherwallet.com/" target="_blank" class="my-ether-wallet">MyEtherWallet.com</a></li>
                 <li>or from any wallet that supports ERC20 tokens</li>
             </ul>
             <strong><big>3.</big> Once NET arrive at the above Ethereum address, this page will redirect you to your dashboard and Activation is complete!</strong>

@@ -18,15 +18,15 @@ export default class ScreenAccount extends XScreen {
                 </div>
 				<x-amount></x-amount>
 			</x-grow>
-            <a secondary class="activate-nim hidden">Click here to activate more NIM from NET on this account</a>
-			<button class="secondary">Back to Dashboard</button>
+            <button class="secondary activate-nim hidden">Activate more NIM</button>
+            <button class="to-dashboard">Back to Dashboard</button>
 		`
     }
 
     children() { return [XIdenticon, XAddress, XAmount] }
 
     onCreate() {
-        this.$('button').addEventListener('click', e => this._onBack());
+        this.$('.to-dashboard').addEventListener('click', e => this._onBack());
 
         this.$('.activate-nim').addEventListener('click', e => {
             this.fire('x-activate-nim', this._address);

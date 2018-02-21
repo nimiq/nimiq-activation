@@ -23,7 +23,8 @@ screen-activation-address big {
     top: 4px;
 }
 
-screen-activation x-address, screen-activation .x-address {
+screen-warning x-address,
+screen-warning .x-address {
     padding: 0;
     font-weight: inherit;
 }

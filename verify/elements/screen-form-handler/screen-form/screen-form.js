@@ -152,10 +152,10 @@ export default class ScreenForm extends XScreenFit {
         if (intrumCountries.includes(nationality)) {
             // Check for DST in Switzerland
             if (moment().diff(moment('2018-03-24')) < 0) {
-                $officeTimes.textContent = 'Mo-Fr 7am to 10pm UTC+1';
+                $officeTimes.textContent = 'Mo-Sa 7am to 10pm UTC+1';
             }
             else {
-                $officeTimes.textContent = 'Mo-Fr 7am to 10pm UTC+2';
+                $officeTimes.textContent = 'Mo-Sa 7am to 10pm UTC+2';
             }
         } else {
             $officeTimes.textContent = '24/7';

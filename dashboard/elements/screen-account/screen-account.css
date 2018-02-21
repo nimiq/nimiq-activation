@@ -1,7 +1,8 @@
 @import '/elements/x-amount/x-amount.css';
 
 screen-account x-identicon img {
-    width: 200px;
+    width: 140px;
+    margin-top: 32px;
 }
 
 screen-account x-grow {
@@ -20,8 +21,6 @@ screen-account .identicon-address-container {
 	flex-flow: column;
 }
 
-@media (min-width: 480px){
-	screen-account button{
-		margin-top: 72px;
-	}
+screen-account button{
+    margin-top: 12px;
 }

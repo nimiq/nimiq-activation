@@ -15,7 +15,7 @@ export default class ScreenFormHandler extends XScreen {
             <x-slides>
                 <screen-form></screen-form>
                 <screen-confirm></screen-confirm>
-                <screen-loading>Uploading your data...</screen-loading>
+                <screen-loading>Uploading data...</screen-loading>
                 <screen-forward></screen-forward>
                 <screen-error></screen-error>
             </x-slides>
@@ -68,8 +68,6 @@ export default class ScreenFormHandler extends XScreen {
         }
 
         if (submitResult.ok) {
-            const result = await submitResult.json();
-            this.$screenForward.setKycUrl(result.clientRedirectUrl);
             this.goTo('forward');
         }
         else {

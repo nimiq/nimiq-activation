@@ -12,8 +12,10 @@ export default class ScreenAccount extends XScreen {
         	<h1>Nimiq Account</h1>
         	<h2>View account information</h2>
 			<x-grow>
-				<x-identicon></x-identicon>
-				<x-address></x-address>
+			    <div class="identicon-address-container">
+    				<x-identicon></x-identicon>
+    				<x-address></x-address>
+                </div>
 				<x-amount></x-amount>
 			</x-grow>
             <a secondary class="activate-nim hidden">Click here to activate more NIM from NET on this account</a>
@@ -36,7 +38,13 @@ export default class ScreenAccount extends XScreen {
     }
 
     async _onBeforeEntry() {
-        this.address = new URLSearchParams(document.location.search).get("address");
+        try {
+            this.address = new URLSearchParams(document.location.search).get("address");
+        } catch(e) {
+            XAppScreen.instance.showError('Your browser does not support certain functionality. Please use e.g. Chrome, Firefox or Safari.');
+            return;
+        }
+
         this._fetchAmount();
 
         if (!XAppScreen.instance.accounts) {

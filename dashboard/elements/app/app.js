@@ -42,11 +42,14 @@ export default class Dashboard extends XAppScreen {
     }
 
     async _onActivateMoreNIMSelected(nimAddress) {
+        if (this._loadingAddress) return;
+        this._loadingAddress = true;
         const api = NanoApi.getApi();
         const ethAddress = await api.nim2ethAddress(nimAddress);
         this.$screenActivation.setNimAddress(nimAddress);
         this.$screenActivation.setAddress(ethAddress);
-        this.goTo('activation');
+        location.href = '#activation';
+        this._loadingAddress = false;
     }
 
     _onDifferentTabError() {

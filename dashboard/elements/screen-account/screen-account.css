@@ -1,24 +1,23 @@
 @import '/elements/x-amount/x-amount.css';
 
-screen-account x-identicon {
-	width: 104px;
-	height: 104px;
-}
-
 screen-account x-identicon img {
-    width: 100%;
-    height: 100%;
+    width: 200px;
 }
 
-screen-account x-grow{
+screen-account x-grow {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-around;
 }
 
-screen-account x-address{
-	margin-bottom: 48px;
+screen-account x-grow > * {
+	flex: 1;
+}
+
+screen-account .identicon-address-container {
+	display: flex;
+	flex-flow: column;
 }
 
 @media (min-width: 480px){

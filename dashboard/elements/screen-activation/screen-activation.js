@@ -19,7 +19,7 @@ export default class ScreenActivation extends XScreen {
                 <screen-warning route="warning2">
                     On the next screen you will see an Ethereum address.
                     <ul>
-                        <li>Send all NET with which you want to activate NIM to this address (<strong class="red">at least 1 NET</strong>)</li>
+                        <li>Send all NET with which you want to activate NIM to this address (<span class="red">at least 1 NET</span>)</li>
                         <li>Sending any other digital asset or less then 1 NET will result in permanent loss!</li>
                     </ul>
                 </screen-warning>

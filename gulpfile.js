@@ -109,19 +109,23 @@ function build(appName, toRoot = false) {
         .pipe(gulp.dest(`deployment/dist/${ toRoot ? '' : `${appName}/`}`));
 }
 
-function cleanBuild(buildName) {
-    return gulp.src(`${buildName}/dist`, {read: false})
+function cleanBuild(appName) {
+    return gulp.src(`deployment/dist/${appName}`, {read: false})
         .pipe(clean());
 }
 
 gulp.task('clean-activate-app', () => cleanBuild('activate'));
 gulp.task('clean-verify-app', () => cleanBuild('verify'));
 gulp.task('clean-dashboard-app', () => cleanBuild('dashboard'));
+gulp.task('clean-validate-app', () => cleanBuild('validate'));
 
 gulp.task('build-activate-app', () => build('activate'));
 gulp.task('build-verify-app', () => build('verify', true));
 gulp.task('build-dashboard-app', () => build('dashboard'));
+gulp.task('build-validate-app', () => build('validate'));
 
-gulp.task('clean', ['clean-activate-app', 'clean-verify-app', 'clean-dashboard-app']);
-gulp.task('default', ['build-activate-app', 'build-dashboard-app', 'build-verify-app']);
+gulp.task('clean', ['clean-activate-app', 'clean-verify-app', 'clean-dashboard-app', 'clean-validate-app']);
+gulp.task('build', ['build-activate-app', 'build-verify-app', 'build-dashboard-app', 'build-validate-app']);
+
+gulp.task('default', ['build']);
 

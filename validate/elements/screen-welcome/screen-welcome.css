@@ -1,0 +1,10 @@
+@import '/elements/nimiq-logo/nimiq-logo.css';
+@import '/elements/screen-warning/screen-warning.css';
+
+screen-welcome.x-screen {
+    padding: 0px 16px 24px;
+}
+
+screen-welcome [button] {
+    margin-top: 12px;
+}

@@ -61,7 +61,7 @@ export default class ValidationTool extends XAppScreen {
         const password = backup.password;
         const encryptedKey = backup.encryptedKey;
         try {
-            await NanoApi.getApi().importEncrypted(encryptedKey, password);
+            await NanoApi.getApi().importEncrypted(encryptedKey, password, false); // false = do not persist
             const decryptedAddress = await NanoApi.getApi().getAddress();
             this.$screenForward.setAddress(decryptedAddress);
             this.$screenBackupFileImport.onPasswordCorrect();

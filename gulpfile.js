@@ -118,14 +118,16 @@ gulp.task('clean-activate-app', () => cleanBuild('activate'));
 gulp.task('clean-verify-app', () => cleanBuild('verify'));
 gulp.task('clean-dashboard-app', () => cleanBuild('dashboard'));
 gulp.task('clean-validate-app', () => cleanBuild('validate'));
+gulp.task('clean-contributors-app', () => cleanBuild('contributors'));
 
 gulp.task('build-activate-app', () => build('activate'));
 gulp.task('build-verify-app', () => build('verify', true));
 gulp.task('build-dashboard-app', () => build('dashboard'));
 gulp.task('build-validate-app', () => build('validate'));
+gulp.task('build-contributors-app', () => build('contributors'));
 
-gulp.task('clean', ['clean-activate-app', 'clean-verify-app', 'clean-dashboard-app', 'clean-validate-app']);
-gulp.task('build', ['build-activate-app', 'build-verify-app', 'build-dashboard-app', 'build-validate-app']);
+gulp.task('clean', ['clean-activate-app', 'clean-verify-app', 'clean-dashboard-app', 'clean-contributors-app', 'clean-contributors-app']);
+gulp.task('build', ['build-activate-app', 'build-verify-app', 'build-dashboard-app', 'build-contributors-app', 'build-contributors-app']);
 
 gulp.task('default', ['build']);
 

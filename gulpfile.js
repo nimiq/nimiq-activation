@@ -30,7 +30,7 @@ function build(appName, toRoot = false) {
 }
 
 function cleanBuild(appName = null) {
-    const path = appName === null? 'deployment' : `deployment/dist/${appName}`;
+    const path = appName === null? 'deployment/dist' : `deployment/dist/${appName}`;
     return NimiqBuild.cleanBuild(path);
 }
 

@@ -47,7 +47,7 @@ gulp.task('build-validate-app', () => build('validate'));
 gulp.task('build-contributors-app', () => build('contributors'));
 
 gulp.task('clean', () => cleanBuild());
-gulp.task('build', ['build-activate-app', 'build-verify-app', 'build-dashboard-app', 'build-contributors-app', 'build-contributors-app']);
+gulp.task('build', ['build-activate-app', 'build-verify-app', 'build-dashboard-app', 'build-validate-app', 'build-contributors-app']);
 
 gulp.task('default', ['build']);
 

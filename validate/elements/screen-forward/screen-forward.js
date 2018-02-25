@@ -12,7 +12,7 @@ export default class ScreenForward extends XScreen {
             <x-identicon></x-identicon>
             <x-address></x-address>
             <x-grow></x-grow>
-            <a button href="">View NIM Balance</a>
+            <a button href="#welcome">Start over</a>
         `
     }
 
@@ -25,6 +25,5 @@ export default class ScreenForward extends XScreen {
     setAddress(address) {
         this.$address.address = address;
         this.$identicon.address = address;
-        this.$a.href = 'https://activation.nimiq.com/dashboard/?address=' + encodeURIComponent(address) + '#account';
     }
 }

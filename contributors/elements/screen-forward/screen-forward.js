@@ -12,7 +12,9 @@ export default class ScreenForward extends XScreen {
             <x-identicon></x-identicon>
             <x-address></x-address>
             <x-grow></x-grow>
-            <p>Thank you for your continued support!</p>
+            <p>Please copy this account number (by clicking on it) and send it back to us as reply to the personalized email you received.</p>
+            <x-grow></x-grow>
+            <h2>Thank you for your continued support!</h2>
         `
     }
 

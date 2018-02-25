@@ -6,15 +6,12 @@ import ScreenBackupPhrase from '/elements/screen-backup-phrase/screen-backup-phr
 import ScreenBackupPhraseValidate from '/elements/screen-backup-phrase-validate/screen-backup-phrase-validate.js';
 import ScreenError from '/elements/screen-error/screen-error.js';
 import ScreenForward from '../screen-forward/screen-forward.js';
-import ScreenLoading from '/elements/screen-loading/screen-loading.js';
-import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js';
 import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
 import NanoApi from '/libraries/nano-api/nano-api.js';
 
 export default class ContributorsActivationTool extends XAppScreen {
     html() {
         return `
-            <screen-loading><h2>Checking contributor token...</h2></screen-loading>
             <screen-welcome></screen-welcome>
             <screen-identicons></screen-identicons>
             <screen-backup-file></screen-backup-file>
@@ -41,7 +38,6 @@ export default class ContributorsActivationTool extends XAppScreen {
 
     children() {
         return [
-            ScreenLoading,
             ScreenWelcome,
             ScreenBackupPhrase,
             ScreenBackupPhraseValidate,
@@ -65,28 +61,7 @@ export default class ContributorsActivationTool extends XAppScreen {
 
     onCreate() {
         // Go to start at page (re-)load
-        location.href = '#';
-    }
-
-    async _onEntry() {
-        if (this.isInitialized) return;
-        this.isInitialized = true;
-        this._contributorToken = new URLSearchParams(document.location.search).get("contributor_token");
-
-        let isValidToken;
-        try {
-            isValidToken = await ActivationUtils.isValidContributorToken(this._contributorToken);
-        } catch (e) {
-            XAppScreen.instance.showError('Server unavailable. Please try again later.');
-            return;
-        }
-
-        if (isValidToken) {
-            location.href = '#welcome';
-        }
-        else {
-            XAppScreen.instance.showError('Your contributor token is invalid. Please contact Nimiq to troubleshoot.');
-        }
+        location.href = '#welcome';
     }
 
     async _onKeyPair(keyPair) {
@@ -103,21 +78,9 @@ export default class ContributorsActivationTool extends XAppScreen {
         location.href = '#backup-phrase';
     }
 
-    async _onPhraseValidated() {
-        let activationSuccessful;
-        try {
-            activationSuccessful = await ActivationUtils.activateAddress(this._contributorToken, this._nimAddress);
-        } catch (e) {
-            XAppScreen.instance.showError('Server unavailable. Please try again later.');
-            return;
-        }
-
-        if (activationSuccessful) {
-            this.$screenForward.setAddress(this._nimAddress);
-            location.href = '#forward';
-        } else {
-            XAppScreen.instance.showError('Your contributor token is invalid. Please visit this link again or contact Nimiq to troubleshoot.');
-        }
+    _onPhraseValidated() {
+        this.$screenForward.setAddress(this._nimAddress);
+        location.href = '#forward';
     }
 
     _onDifferentTabError() {

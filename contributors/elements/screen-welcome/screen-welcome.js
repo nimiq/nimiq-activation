@@ -11,7 +11,7 @@ export default class ScreenWelcome extends XScreen {
                     <ul>
                         <li>You can <strong class="red">NOT</strong> change your Nimiq Account once created</li>
                         <li>Complete <strong class="red">ALL</strong> of the following steps to secure future access to this Nimiq Account</li>
-                        <li>You can <strong class="red">NOT</strong> transfer your allocated NIM until Mainnet launch</li>
+                        <li>You can <strong class="red">NOT</strong> use your allocated NIM until Mainnet launch</li>
                     <ul>
                 </screen-warning>
             <x-slides>

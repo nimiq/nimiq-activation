@@ -18,6 +18,10 @@ function getAssets(appName) {
                 '/apps/nimiq-activation/verify/success.html',
                 '/apps/nimiq-activation/verify/error.html'
             ]);
+        case 'validate':
+            return commonAssets.concat(['/libraries/iqons/dist/iqons.min.svg']);
+        case 'contributors':
+            return commonAssets.concat(['/libraries/iqons/dist/iqons.min.svg']);
         default:
             return commonAssets;
     }
@@ -35,7 +39,7 @@ function cleanBuild(appName = null) {
 }
 
 gulp.task('clean-activate-app', () => cleanBuild('activate'));
-gulp.task('clean-verify-app', () => cleanBuild('verify'));
+gulp.task('clean-verify-app', () => cleanBuild());
 gulp.task('clean-dashboard-app', () => cleanBuild('dashboard'));
 gulp.task('clean-validate-app', () => cleanBuild('validate'));
 gulp.task('clean-contributors-app', () => cleanBuild('contributors'));
@@ -47,7 +51,7 @@ gulp.task('build-validate-app', () => build('validate'));
 gulp.task('build-contributors-app', () => build('contributors'));
 
 gulp.task('clean', () => cleanBuild());
-gulp.task('build', ['build-activate-app', 'build-verify-app', 'build-dashboard-app', 'build-validate-app', 'build-contributors-app']);
+gulp.task('build', ['build-activate-app', 'build-verify-app', 'build-dashboard-app', /*'build-validate-app',*/ 'build-contributors-app']);
 
 gulp.task('default', ['build']);
 

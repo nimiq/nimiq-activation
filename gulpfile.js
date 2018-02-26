@@ -19,9 +19,9 @@ function getAssets(appName) {
                 '/apps/nimiq-activation/verify/error.html'
             ]);
         case 'validate':
-            return commonAssets.concat(['/libraries/iqons/dist/iqons.min.svg']);
+            return commonAssets.concat(['/libraries/qr-scanner/qr-scanner-worker.min.js', '/libraries/iqons/dist/iqons.min.svg']);
         case 'contributors':
-            return commonAssets.concat(['/libraries/iqons/dist/iqons.min.svg']);
+            return commonAssets.concat(['/libraries/qr-scanner/qr-scanner-worker.min.js', '/libraries/iqons/dist/iqons.min.svg']);
         default:
             return commonAssets;
     }

@@ -2,35 +2,12 @@ const gulp = require('gulp');
 
 const NimiqBuild = require('../../meta/build-process/nimiq-base-gulpfile.js');
 
-function getAssets(appName) {
-    const commonAssets = [
-        '/elements/screen-error/screen-error.svg',
-        '/elements/browser-warning/browser-warning.js'
-    ];
-    switch (appName) {
-        case 'activate':
-            return commonAssets.concat(['/libraries/qr-scanner/qr-scanner-worker.min.js', '/libraries/iqons/dist/iqons.min.svg']);
-        case 'dashboard':
-            return commonAssets.concat(['/libraries/iqons/dist/iqons.min.svg']);
-        case 'verify':
-            return commonAssets.concat([
-                '/apps/nimiq-activation/verify/moment.min.js',
-                '/apps/nimiq-activation/verify/success.html',
-                '/apps/nimiq-activation/verify/error.html'
-            ]);
-        case 'validate':
-            return commonAssets.concat(['/libraries/qr-scanner/qr-scanner-worker.min.js', '/libraries/iqons/dist/iqons.min.svg']);
-        case 'contributors':
-            return commonAssets.concat(['/libraries/qr-scanner/qr-scanner-worker.min.js', '/libraries/iqons/dist/iqons.min.svg']);
-        default:
-            return commonAssets;
-    }
-}
+const commonAssets = [];
 
 function build(appName, toRoot = false) {
     return NimiqBuild.build(`${appName}/elements/app/app.js`, `${appName}/elements/app/app.css`,
-        `${appName}/index.html`, getAssets(appName), `${__dirname}/../../`,
-        `deployment/dist/${ toRoot ? '' : `${appName}/`}`)
+        `${appName}/index.html`, commonAssets, `${__dirname}/../../`,
+        `deployment/dist/${ toRoot ? '' : `${appName}/`}`);
 }
 
 function cleanBuild(appName = null) {

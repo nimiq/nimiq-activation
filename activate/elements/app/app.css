@@ -10,3 +10,9 @@
 screen-create-password > a[secondary]{
 	display: none; 
 }
+
+@media (max-height: 740px) {
+    body {
+        padding-top: 20px;
+    }
+}

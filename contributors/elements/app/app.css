@@ -14,3 +14,9 @@ screen-create-password > a[secondary]{
 .red {
     color: var(--error-color);
 }
+
+@media (max-height: 740px) {
+    body {
+        padding-top: 20px;
+    }
+}

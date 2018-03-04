@@ -10,7 +10,7 @@ or
 ```
 npm i
 ```
-to install dependencies. Finally, run
+to install dependencies. Do the same in /meta/build-process. Finally, run
 ```
 gulp
 ```

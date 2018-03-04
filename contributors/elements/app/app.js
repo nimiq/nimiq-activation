@@ -92,7 +92,7 @@ export default class ContributorsActivationTool extends XAppIndicatorScreen {
         XAppScreen.instance.showError('Your operating system version has a bug and is therefore not supported. Please use a different device.');
     }
 
-    get __childScreenFilter() { return ['no-password']; }
+    get __childScreenFilter() { return ['no-password', 'welcome']; }
 }
 
 ContributorsActivationTool.launch();

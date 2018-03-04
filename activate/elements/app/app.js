@@ -1,4 +1,4 @@
-import XAppScreen from '/elements/x-screen/x-app-screen.js';
+import XAppIndicatorScreen from '/elements/x-screen/x-app-indicator-screen.js';
 import ScreenWelcome from '../screen-welcome/screen-welcome.js';
 import ScreenIdenticons from '/elements/screen-identicons/screen-identicons.js';
 import ScreenBackupFile from '/elements/screen-backup-file/screen-backup-file.js';
@@ -11,7 +11,7 @@ import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-
 import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
 import NanoApi from '/libraries/nano-api/nano-api.js';
 
-export default class ActivationTool extends XAppScreen {
+export default class ActivationTool extends XAppIndicatorScreen {
     html() {
         return `
             <screen-loading><h2>Checking activation token...</h2></screen-loading>
@@ -43,10 +43,10 @@ export default class ActivationTool extends XAppScreen {
         return [
             ScreenLoading,
             ScreenWelcome,
+            ScreenIdenticons,
+            ScreenBackupFile,
             ScreenBackupPhrase,
             ScreenBackupPhraseValidate,
-            ScreenBackupFile,
-            ScreenIdenticons,
             ScreenActivation,
             ScreenError,
             XNimiqApi
@@ -65,6 +65,7 @@ export default class ActivationTool extends XAppScreen {
     }
 
     onCreate() {
+        super.onCreate();
         // Go to start at page (re-)load
         location.href = '#';
     }
@@ -143,6 +144,8 @@ export default class ActivationTool extends XAppScreen {
     _onApiInitFail() {
         XAppScreen.instance.showError('Your operating system version has a bug and is therefore not supported. Please use a different device.');
     }
+ 
+    get __childScreenFilter() { return ['no-password']; } 
 }
 
 ActivationTool.launch();

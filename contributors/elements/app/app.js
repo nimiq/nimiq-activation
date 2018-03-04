@@ -1,4 +1,4 @@
-import XAppScreen from '/elements/x-screen/x-app-screen.js';
+import XAppIndicatorScreen from '/elements/x-screen/x-app-indicator-screen.js';
 import ScreenWelcome from '../screen-welcome/screen-welcome.js';
 import ScreenIdenticons from '/elements/screen-identicons/screen-identicons.js';
 import ScreenBackupFile from '/elements/screen-backup-file/screen-backup-file.js';
@@ -9,7 +9,7 @@ import ScreenForward from '../screen-forward/screen-forward.js';
 import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
 import NanoApi from '/libraries/nano-api/nano-api.js';
 
-export default class ContributorsActivationTool extends XAppScreen {
+export default class ContributorsActivationTool extends XAppIndicatorScreen {
     html() {
         return `
             <screen-welcome></screen-welcome>
@@ -39,10 +39,10 @@ export default class ContributorsActivationTool extends XAppScreen {
     children() {
         return [
             ScreenWelcome,
+            ScreenIdenticons,
+            ScreenBackupFile,
             ScreenBackupPhrase,
             ScreenBackupPhraseValidate,
-            ScreenBackupFile,
-            ScreenIdenticons,
             ScreenForward,
             ScreenError,
             XNimiqApi
@@ -60,6 +60,7 @@ export default class ContributorsActivationTool extends XAppScreen {
     }
 
     onCreate() {
+        super.onCreate();
         // Go to start at page (re-)load
         location.href = '#welcome';
     }
@@ -90,6 +91,8 @@ export default class ContributorsActivationTool extends XAppScreen {
     _onApiInitFail() {
         XAppScreen.instance.showError('Your operating system version has a bug and is therefore not supported. Please use a different device.');
     }
+
+    get __childScreenFilter() { return ['no-password']; }
 }
 
 ContributorsActivationTool.launch();

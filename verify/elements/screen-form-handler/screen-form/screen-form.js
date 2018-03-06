@@ -70,7 +70,6 @@ export default class ScreenForm extends XScreenFit {
                 <fieldset>
                 <legend>Please provide your personal email address<br>to which important NIM Activation links
                         will be sent:</legend>
-                <em>Please do not use HOTMAIL or OUTLOOK accounts.</em>
                 <div>
                 <label>E-Mail</label>
                 <input name="email" maxlength="100" type="email" placeholder="satoshin@gmx.com" required/>
@@ -123,10 +122,7 @@ export default class ScreenForm extends XScreenFit {
         const $confirm_email = this.$('[name="confirm_email"]');
 
         const validateEmail = () => {
-            if($email.value.indexOf('@hotmail.') > 0 || $email.value.indexOf('@outlook.') > 0) {
-                $confirm_email.setCustomValidity("Please do not use HOTMAIL or OUTLOOK accounts");
-            }
-            else if($email.value != $confirm_email.value) {
+            if($email.value != $confirm_email.value) {
                 $confirm_email.setCustomValidity("Emails don't match");
             } else {
                 $confirm_email.setCustomValidity('');

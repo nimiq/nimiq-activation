@@ -79,7 +79,7 @@ export default class ActivationTool extends XAppIndicatorScreen {
         try {
             isValidToken = await ActivationUtils.isValidToken(this._activationToken);
         } catch (e) {
-            XAppScreen.instance.showError('Server unavailable. Please try again later.');
+            XAppIndicatorScreen.instance.showError('Server unavailable. Please try again later.');
             return;
         }
 
@@ -88,7 +88,7 @@ export default class ActivationTool extends XAppIndicatorScreen {
         }
         else {
             const href = location.pathname.replace('/activate', '/dashboard');
-            XAppScreen.instance.showError(
+            XAppIndicatorScreen.instance.showError(
                 'Your activation token is invalid. Please go back to the dashboard and try again.',
                 href,
                 'Go to Dashboard'
@@ -118,14 +118,14 @@ export default class ActivationTool extends XAppIndicatorScreen {
         try {
             activationSuccessful = await ActivationUtils.activateAddress(this._activationToken, this._nimAddress);
         } catch (e) {
-            XAppScreen.instance.showError('Server unavailable. Please try again later.');
+            XAppIndicatorScreen.instance.showError('Server unavailable. Please try again later.');
             return;
         }
 
         if (activationSuccessful) {
             location = '#activation';
         } else {
-            XAppScreen.instance.showError(
+            XAppIndicatorScreen.instance.showError(
                 'Your activation token is invalid. Please go back to the dashboard and try again.',
                 '/apps/nimiq-activation/dashboard',
                 'Go to Dashboard'
@@ -138,11 +138,11 @@ export default class ActivationTool extends XAppIndicatorScreen {
     }
 
     _onDifferentTabError() {
-        XAppScreen.instance.showError('Nimiq is already running in a different tab');
+        XAppIndicatorScreen.instance.showError('Nimiq is already running in a different tab');
     }
 
     _onApiInitFail() {
-        XAppScreen.instance.showError('Your operating system version has a bug and is therefore not supported. Please use a different device.');
+        XAppIndicatorScreen.instance.showError('Your operating system version has a bug and is therefore not supported. Please use a different device.');
     }
  
     get __childScreenFilter() { return ['no-password', 'welcome']; } 

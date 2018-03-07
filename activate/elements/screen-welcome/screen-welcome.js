@@ -34,7 +34,7 @@ class ScreenWelcomeIntro extends XScreenFit {
     html() {
         return `
             <nimiq-logo large>Nimiq Activation Tool</nimiq-logo>
-            <h1>Welcome to Nimiq Account Creation</h1>
+            <h1>Welcome to Nimiq Account Creation for NET Holders</h1>
             <h2>To activate your NIM from NET:</h2>
             <ol>
                 <li>Create your Nimiq Account</li>

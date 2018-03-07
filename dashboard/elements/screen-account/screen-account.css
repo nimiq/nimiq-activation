@@ -24,3 +24,7 @@ screen-account .identicon-address-container {
 screen-account button{
     margin-top: 12px;
 }
+
+screen-account a {
+	text-decoration: underline;
+}

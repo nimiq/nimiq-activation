@@ -9,18 +9,19 @@ import NanoApi from '/libraries/nano-api/nano-api.js';
 export default class ScreenAccount extends XScreen {
     html() {
         return `
-        	<h1>Nimiq Account</h1>
-        	<h2>View account information</h2>
-			<x-grow>
-			    <div class="identicon-address-container">
-    				<x-identicon></x-identicon>
-    				<x-address></x-address>
+            <h1>Nimiq Account</h1>
+            <h2>View account information</h2>
+            <x-grow>
+                <div class="identicon-address-container">
+                    <x-identicon></x-identicon>
+                    <x-address></x-address>
                 </div>
-				<x-amount></x-amount>
-			</x-grow>
+                <x-amount></x-amount>
+                <span class="warning">Minimum of 1 NET = 100 NIM required per Account for Genesis Block (see <a href="https://nimiq.com/activation/terms">Terms</a>)!</span>
+            </x-grow>
             <button class="secondary activate-nim hidden">Activate more NIM</button>
             <button class="to-dashboard">Back to Dashboard</button>
-		`
+        `
     }
 
     children() { return [XIdenticon, XAddress, XAmount] }
@@ -31,6 +32,8 @@ export default class ScreenAccount extends XScreen {
         this.$('.activate-nim').addEventListener('click', e => {
             this.fire('x-activate-nim', this._address);
         });
+
+        this.$warning = this.$('span.warning');
     }
 
     async _onBack() {
@@ -45,6 +48,7 @@ export default class ScreenAccount extends XScreen {
             return;
         }
 
+        this.$warning.style.display = 'none';
         this._fetchAmount();
 
         if (!XAppScreen.instance.accounts) {
@@ -83,7 +87,9 @@ export default class ScreenAccount extends XScreen {
     async _fetchAmount() {
         const ethAddress = await NanoApi.getApi().nim2ethAddress(this._address);
         const netBalance = await ActivationUtils.fetchBalance(ethAddress);
-        this.$amount.value = netBalance * 100; // 1 NET = 100 NIM
+        const balance = netBalance * 100; // 1 NET = 100 NIM
+        this.$amount.value = balance;
+        if (balance < 100) this.$warning.style.display = 'initial';
     }
 
     types() {

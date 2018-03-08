@@ -85,11 +85,11 @@ export default class ContributorsActivationTool extends XAppIndicatorScreen {
     }
 
     _onDifferentTabError() {
-        XAppScreen.instance.showError('Nimiq is already running in a different tab');
+        XAppIndicatorScreen.instance.showError('Nimiq is already running in a different tab');
     }
 
     _onApiInitFail() {
-        XAppScreen.instance.showError('Your operating system version has a bug and is therefore not supported. Please use a different device.');
+        XAppIndicatorScreen.instance.showError('Your operating system version has a bug and is therefore not supported. Please use a different device.');
     }
 
     get __childScreenFilter() { return ['no-password', 'welcome']; }

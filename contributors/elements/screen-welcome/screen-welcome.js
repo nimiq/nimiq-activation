@@ -1,6 +1,6 @@
 import XScreen from '/elements/x-screen/x-screen.js';
 import XScreenFit from '/elements/x-screen/x-screen-fit.js';
-import ScreenWarning from '/elements/screen-warning/screen-warning.js';
+import ScreenWarning from '/elements/legacy/screen-warning/screen-warning.js';
 
 export default class ScreenWelcome extends XScreen {
     html() {

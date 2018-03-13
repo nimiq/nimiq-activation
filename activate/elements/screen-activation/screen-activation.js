@@ -1,6 +1,6 @@
 import XScreen from '/elements/x-screen/x-screen.js';
-import ScreenWarning from '/elements/screen-warning/screen-warning.js';
-import ScreenSuccess from '/elements/screen-success/screen-success.js';
+import ScreenWarning from '/elements/legacy/screen-warning/screen-warning.js';
+import ScreenSuccess from '/elements/legacy/screen-success/screen-success.js';
 import ScreenActivationAddress from './screen-activation-address/screen-activation-address.js'
 
 export default class ScreenActivation extends XScreen {

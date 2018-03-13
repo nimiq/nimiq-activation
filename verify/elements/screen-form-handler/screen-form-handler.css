@@ -1,4 +1,4 @@
-@import '/elements/screen-loading/screen-loading.css';
+@import '/elements/legacy/screen-loading/screen-loading.css';
 @import './screen-forward/screen-forward.css';
 
 input, x-country-select {

@@ -1,9 +1,9 @@
 import XAppScreen from '/elements/x-screen/x-app-screen.js';
 import ScreenWelcome from '../screen-welcome/screen-welcome.js';
-import ScreenBackupFileImport from '/elements/screen-backup-file-import/screen-backup-file-import.js';
-import ScreenBackupPhraseImport from '/elements/screen-backup-phrase-import/screen-backup-phrase-import.js';
+import ScreenBackupFileImport from '/elements/legacy/screen-backup-file-import/screen-backup-file-import.js';
+import ScreenBackupPhraseImport from '/elements/legacy/screen-backup-phrase-import/screen-backup-phrase-import.js';
 import ScreenForward from '../screen-forward/screen-forward.js';
-import ScreenError from '/elements/screen-error/screen-error.js';
+import ScreenError from '/elements/legacy/screen-error/screen-error.js';
 import XNimiqApi from '/elements/x-nimiq-api/x-nimiq-api.js';
 import NanoApi from '/libraries/nano-api/nano-api.js';
 

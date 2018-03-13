@@ -1,6 +1,6 @@
 @import '/elements/x-screen/x-screen.css';
-@import '/elements/screen-accounts/screen-accounts.css';
-@import '/elements/screen-loading/screen-loading.css';
+@import '/elements/legacy/screen-accounts/screen-accounts.css';
+@import '/elements/legacy/screen-loading/screen-loading.css';
 @import '../screen-account/screen-account.css';
 @import '../screen-activation/screen-activation.css';
 @import '/elements/browser-warning/browser-warning.css';

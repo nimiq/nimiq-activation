@@ -1,4 +1,4 @@
-@import '/elements/screen-warning/screen-warning.css';
+@import '/elements/legacy/screen-warning/screen-warning.css';
 screen-activation  x-address{
 	margin: 16px 0 48px;
     background: rgba(255,255,255,0.1);

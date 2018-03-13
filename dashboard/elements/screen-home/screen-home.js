@@ -1,7 +1,7 @@
 import XScreen from '/elements/x-screen/x-screen.js';
-import ScreenLoading from '/elements/screen-loading/screen-loading.js';
-import ScreenError from '/elements/screen-error/screen-error.js';
-import ScreenAccounts from '/elements/screen-accounts/screen-accounts.js';
+import ScreenLoading from '/elements/legacy/screen-loading/screen-loading.js';
+import ScreenError from '/elements/legacy/screen-error/screen-error.js';
+import ScreenAccounts from '/elements/legacy/screen-accounts/screen-accounts.js';
 import ActivationUtils from '/libraries/nimiq-utils/activation-utils/activation-utils.js';
 import XAppScreen from '/elements/x-screen/x-app-screen.js';
 

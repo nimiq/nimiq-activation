@@ -3,8 +3,8 @@ import ScreenWelcome from '../screen-welcome/screen-welcome.js';
 import ScreenCountryCheckFallback from '../screen-country-check-fallback/screen-country-check-fallback.js';
 import ScreenTerms from '../screen-terms/screen-terms.js';
 import ScreenFormHandler from '../screen-form-handler/screen-form-handler.js';
-import ScreenSuccess from '/elements/screen-success/screen-success.js';
-import ScreenError from '/elements/screen-error/screen-error.js';
+import ScreenSuccess from '/elements/legacy/screen-success/screen-success.js';
+import ScreenError from '/elements/legacy/screen-error/screen-error.js';
 
 export default class Verify extends XAppScreen {
     html() {

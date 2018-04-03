@@ -14,6 +14,7 @@ import NanoApi from '/libraries/nano-api/nano-api.js';
 export default class ActivationTool extends XAppIndicatorScreen {
     html() {
         return `
+            <div id="genesis-warning">Cut-off for inclusion of activated NIM in the Genesis Block was <a href="https://medium.com/nimiq-network/mainnet-release-candidate-376941e87782#e0f2">March 31</a>. NIM activated from NET now, will be manually processed after Mainnet Launch.</div>
             <screen-loading><h2>Checking activation token...</h2></screen-loading>
             <screen-welcome></screen-welcome>
             <screen-identicons></screen-identicons>
@@ -144,8 +145,8 @@ export default class ActivationTool extends XAppIndicatorScreen {
     _onApiInitFail() {
         XAppIndicatorScreen.instance.showError('Your operating system version has a bug and is therefore not supported. Please use a different device.');
     }
- 
-    get __childScreenFilter() { return ['no-password', 'welcome']; } 
+
+    get __childScreenFilter() { return ['no-password', 'welcome']; }
 }
 
 ActivationTool.launch();

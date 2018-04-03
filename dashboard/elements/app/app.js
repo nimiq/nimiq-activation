@@ -10,6 +10,7 @@ import NanoApi from '/libraries/nano-api/nano-api.js';
 export default class Dashboard extends XAppScreen {
     html() {
         return `
+            <div id="genesis-warning">Cut-off for inclusion of activated NIM in the Genesis Block was <a href="https://medium.com/nimiq-network/mainnet-release-candidate-376941e87782#e0f2">March 31</a>. NIM activated from NET now, will be manually processed after Mainnet Launch.</div>
             <screen-home></screen-home>
             <screen-account></screen-account>
             <screen-activation></screen-activation>

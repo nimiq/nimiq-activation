@@ -9,6 +9,7 @@ import ScreenError from '/elements/screen-error/screen-error.js';
 export default class Verify extends XAppScreen {
     html() {
         return `
+            <div id="genesis-warning">Cut-off for inclusion of activated NIM in the Genesis Block was <a href="https://medium.com/nimiq-network/mainnet-release-candidate-376941e87782#e0f2">March 31</a>. NIM activated from NET now, will be manually processed after Mainnet Launch.</div>
             <screen-welcome></screen-welcome>
             <screen-country-check-fallback></screen-country-check-fallback>
             <screen-terms></screen-terms>

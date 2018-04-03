@@ -5,3 +5,41 @@
 @import '../screen-form-handler/screen-form-handler.css';
 @import '/elements/x-slide-indicator/x-slide-indicator.css';
 @import '/elements/browser-warning/browser-warning.css';
+
+#genesis-warning {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1em;
+    background: var(--warning-color);
+    color: #3b3b3b;
+    margin-top: 0;
+}
+
+#genesis-warning a {
+    color: #3b3b3b;
+    text-decoration: underline;
+}
+
+body {
+    padding-top: 48px;
+}
+
+@media (max-width: 1060px) {
+    body {
+        padding-top: 66px;
+    }
+}
+
+@media (max-width: 560px) {
+    body {
+        padding-top: 84px;
+    }
+}
+
+@media (max-width: 310px) {
+    body {
+        padding-top: 102px;
+    }
+}

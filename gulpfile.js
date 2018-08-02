@@ -5,9 +5,14 @@ const NimiqBuild = require('../../meta/build-process/nimiq-base-gulpfile.js');
 const commonAssets = [];
 
 function build(appName, toRoot = false) {
-    return NimiqBuild.build(`${appName}/elements/app/app.js`, `${appName}/elements/app/app.css`,
-        `${appName}/index.html`, commonAssets, `${__dirname}/../../`,
-        `deployment/dist/${ toRoot ? '' : `${appName}/`}`);
+    return NimiqBuild.build({
+          jsEntry: `${appName}/elements/app/app.js`,
+          cssEntry: `${appName}/elements/app/app.css`,
+          htmlEntry: `${appName}/index.html`,
+          assetPaths: commonAssets,
+          rootPath: `${__dirname}/../../`,
+          distPath: `deployment/dist/${ toRoot ? '' : `${appName}/`}`
+    });
 }
 
 function cleanBuild(appName = null) {
@@ -28,7 +33,7 @@ gulp.task('build-validate-app', () => build('validate'));
 gulp.task('build-contributors-app', () => build('contributors'));
 
 gulp.task('clean', () => cleanBuild());
-gulp.task('build', ['build-activate-app', 'build-verify-app', 'build-dashboard-app', /*'build-validate-app',*/ 'build-contributors-app']);
+gulp.task('build', gulp.parallel('build-activate-app', 'build-verify-app', 'build-dashboard-app', /*'build-validate-app',*/ 'build-contributors-app'));
 
-gulp.task('default', ['build']);
+gulp.task('default', gulp.series('build'));
 
